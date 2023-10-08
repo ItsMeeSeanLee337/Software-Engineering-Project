@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Home from './Pages/Home';
-import Login from './Pages/Login';
 import Navbar from './Pages/Navbar';
 import Create_Recipe from './Pages/Create_Recipe';
 import Home2 from './Pages/Home2';
@@ -22,10 +21,6 @@ const router = createBrowserRouter([
   {
     path: "home",
     element: <Home/>,
-  },
-  {
-    path: "login",
-    element: <Login/>,
   },
   {
     path: "create_recipe",
