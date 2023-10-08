@@ -1,5 +1,6 @@
 import React from 'react'
 import Navbar from './Navbar';
+import axios from 'axios';
 import { useState } from 'react';
 import '../styles/create_recipe.css'
 import '../Modules/IngredientListForm'
@@ -18,6 +19,25 @@ function handleTitle(e){
 function handleSteps(e){
   e.preventDefault()
 }
+
+//This is a function going to be passed as a prop to the child IngredientList
+const updateIngredients = (updatedIngredients) => {
+  setNewIngredient(updatedIngredients);
+};
+
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+  const apiUrl = 'http://localhost:8080/createRecipe';  // Server Endpoint
+  axios.post(apiUrl, { title, steps, ingredients }) // Using axios to send the variables to the server endpoint
+    .then(response => {
+      console.log('Response:', response.data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+};
+
   return (
     
     <div>
@@ -46,18 +66,8 @@ function handleSteps(e){
         Be as thorough or verbose as needed<br></br>
         You can label the steps, write a paragraph,<br></br> 
         however you want to format the steps</h5>
-        <form className='form center'  onSubmit={handleSteps}>
-          <label htmlFor='Steps' className='headerCompliment'>Enter Ingredients</label>
-          <textarea 
-          value = {steps} 
-          onChange = {e => setNewStep(e.target.value)} 
-          id="steps"
-          rows={"8"}
-          cols={"30"}
-          maxLength={"255"}
-           />
-        </form>
-        <IngredientList></IngredientList>
+        <IngredientList updateIngredients={updateIngredients}/> {/* this passes the function to the child */}
+        <button onClick={handleSubmit}>Create Recipe</button>
       </div>
     </div>
   )
