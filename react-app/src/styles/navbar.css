@@ -39,3 +39,32 @@
     text-decoration: none;
   }
   
+  .create-recipe-dropdown {
+    position: relative;
+}
+
+.create-recipe-link:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+}
+
+.dropdown-content span {
+    display: block;
+}
+
+.dropdown-content span:hover {
+    background-color: #ddd;
+}
+.noDecoration{
+  text-decoration: none;
+  color: white;
+  text-align: left;
+}
