@@ -6,7 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import Home from './Pages/Home';
 import Navbar from './Pages/Navbar';
 import Create_Recipe from './Pages/Create_Recipe';
-import Home2 from './Pages/Home2';
+import Login from './Pages/Login';
+import Login_Success from './Pages/Login_Success';
 
 import {
   createBrowserRouter,
@@ -27,8 +28,13 @@ const router = createBrowserRouter([
     element: <Create_Recipe/>,
   },
   {
-    path: "home2",
-    element: <Home2/>,
+    path: "login",
+    element: <Login/>,
+
+  },
+  {
+    path: "login_success",
+    element: <Login_Success/>,
   }
 ]);
 
