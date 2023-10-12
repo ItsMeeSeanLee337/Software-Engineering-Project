@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const PORT = 8080;
+const PORT = 8083;
 
 app.use(cors());
 app.use(express.json());
@@ -12,17 +12,13 @@ app.get('/home', (req, res) => {
   res.json({ message: 'Hello FROM the server!' });
 });
 
-/*
-app.get('/login', (req, res) => {
-  res.send('This is the login.');
-});
-*/
-
 app.post('/login', (req, res) => {
-  //const username = req.body;
+  const { username } = req.body;
+  const { password } = req.body;
+  console.log('This is the username:', username)
+  console.log('This is the password:', password)
   res.json({ message: 'Recieved Data'});
 });
-
 
 
 app.listen(PORT, () => {

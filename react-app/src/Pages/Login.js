@@ -32,7 +32,7 @@ function Login() {
   
     try {
       //sending username and password values to the server
-      const response = await axios.post('http://localhost:8080/login', {username, password});
+      const response = await axios.post('http://localhost:8083/login', {username, password});
       console.log(response.data); // Log the response from the server
     } catch (error) {
       console.error('Error submitting form:', error);
