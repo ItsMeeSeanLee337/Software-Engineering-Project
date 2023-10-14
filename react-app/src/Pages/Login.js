@@ -33,10 +33,10 @@ function Login() {
       .then(response => {
         if (response.status === 200) {
           console.log('Response:', response.data);
-          const encodedData = encodeURIComponent(username)
+          const dataToSend = encodeURIComponent(username)
           setUsername('');
           setPassword ('');
-          window.location.href = `/Login_Success?data=${encodedData}`;
+          window.location.href = `/Login_Success?data=${dataToSend}`;
         } 
       })
       .catch(error => {
