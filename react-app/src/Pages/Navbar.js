@@ -4,7 +4,8 @@ import '../styles/navbar.css'
 import NavDropDown from '../Modules/NavDropDown';
 function Navbar(){
   const [dropVisible, setDropVisible] = useState(false);
-
+  const urlParams = new URLSearchParams(window.location.search);
+  const dataToSend = urlParams.get('data');
   const handleMouseEnter = () =>{
     setDropVisible(true);
   
@@ -24,15 +25,19 @@ return(
              Nutripro
         </div>
     <ul className='navbar-nav'>
-      <li><Link to="/Home">Home</Link></li>
+      <li><Link to={`/Home?data=${dataToSend}`}>
+      Go to Login Success
+    </Link></li>
+      
       <li><Link to="/Login">Login</Link></li>
       <li
         onMouseEnter = {handleMouseEnter}
         onMouseLeave={handleMouseLeave}>
-        <Link to="/Create_Recipe" className= "noDecoration" >Create Recipe</Link>
+        <Link to={`/Create_Recipe?data=${dataToSend}`} className= "noDecoration" >Create Recipe</Link>
         {dropVisible && <NavDropDown></NavDropDown>}
         </li>
     </ul>
+
     
     
   </div>

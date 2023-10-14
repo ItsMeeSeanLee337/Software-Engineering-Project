@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import '../styles/IngredientListForm.css'
-const IngredientList = ({updateIngredients}) => { //({updateIngredients}) is the prop inherited from the parent
+import '../styles/create_recipe.css'
+const IngredientList = ({updateIngredients}) => {
   const [ingredients, setIngredients] = useState(['']);
 
-
-  //Any time something is typed, this function will run and update the var state
   const handleIngredientChange = (index, value) => {
     const updatedIngredients = [...ingredients];
     updatedIngredients[index] = value;
     setIngredients(updatedIngredients);
-    //Basically passing the variable to the parent/calling the function in the parent with this child's state
     updateIngredients(updatedIngredients);  // Update parent's state with the updated ingredients
   };
   
@@ -27,7 +24,6 @@ const IngredientList = ({updateIngredients}) => { //({updateIngredients}) is the
   };
 
 
-  
   return (
     <div>
       <h2 className='alignCenter'>Ingredients</h2>

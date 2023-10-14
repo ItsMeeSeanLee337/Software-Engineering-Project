@@ -50,8 +50,10 @@ app.get('/Nutripro', async (req, res) => {
 });
 
 /*Used for Create Recipe Section */
-app.post('/createRecipe', async (req, res) => {
-
+app.post('/createRecipe/:username', async (req, res) => {
+  try{
+  const username = req.params.username;
+  console.log(username);
   //Getting the parameters from the form
   const { title } = req.body;
   const { steps } = req.body;
@@ -91,7 +93,6 @@ app.post('/createRecipe', async (req, res) => {
   
     
 
-
   //Converting the ingredient array from the form into JSON
   const ingredientsJSONString = JSON.stringify({ingredients});
   console.log('JSON: ', ingredientsJSONString);
@@ -109,13 +110,105 @@ app.post('/createRecipe', async (req, res) => {
 
   queryDatabase(query_CR, values_CR);
 
+  //Now add it to the userrecipe table to link it to them
+
+  var userID = await getUserID(username);
+
+  const query_UR = 'Insert into UserRecipes(userID, crID) Values(?, ?);';
+  const values_UR = [userID, ilID];
+
+  queryDatabase(query_UR, values_UR);
+
   res.status(200).send(`Title received: ${title}, Steps received ${steps}, Ingredients received: ${ingredients}`);
+} catch (error) {
+  console.error('An error occurred with username:', error);
+  return; // Stop further execution
+}
 });
 
 /* ----------------------------------------------- */
 
+async function getUserID(Username) {
+  var query = `SELECT UserID FROM User WHERE username = '${Username}';`;
+  const result = await db.pool.query(query);
+  console.log(result[0].UserID);
+  return (result[0].UserID);
+ 
+}
 
 
+app.get('/CustomRecipe/Display/:username', async(req,res) =>{
+  
+  try {
+    const username = req.params.username;
+    console.log(username);
+  
+  var finalUserID = await getUserID(username);
+
+
+
+  query = `
+  SELECT CustomRecipe.Title, CustomRecipe.Description, IngredientList.list
+  FROM CustomRecipe
+  JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
+  JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
+  WHERE UserRecipes.userID = ${finalUserID};
+  `;
+  try {
+    const result = await db.pool.query(query);
+    console.log(result);
+    console.log(query);
+    res.send(result);
+    
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+} catch (error) {
+  console.error('An error occurred with username:', error);
+  return; // Stop further execution
+}
+})
+
+app.post('/deleteCustomRecipe' , async(req,res)=>{
+  console.log("here in deleteCustom");
+  const {username} = req.body;
+  const { title } = req.body;
+  const { steps } = req.body;
+  console.log('Title:', title)
+  console.log('steps:', steps)
+  console.log(username);
+
+  const userID = await getUserID(username);
+
+
+  const query = `
+  DELETE cr, ur
+  FROM CustomRecipe cr
+  JOIN UserRecipes ur ON ur.crID = cr.crID
+  JOIN User u ON u.UserID = ur.userID
+  WHERE u.Username = '${username}'
+  AND cr.Title = '${title}'
+  AND cr.Description = '${steps}';`
+
+
+  try {
+    const result = await db.pool.query(query);
+    console.log(result);
+    console.log(query);
+    res.send("Recipe Deleted");
+    
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+
+
+  
+
+})
 
 
 
@@ -137,7 +230,35 @@ app.get('/get', async (req, res) => {
 
 
 
+app.post('/login', async (req, res) => {
+    const { username } = req.body;
+    const { password } = req.body;
+    console.log('This is the username:', username);
+    console.log('This is the password:', password);
+    //res.json({ message: 'Recieved Data'});
+    //const query = 'SELECT Username FROM User WHERE Username = ? AND Password = ?';
+    //const values = [username, password];
+    try {
+        const connection = await db.pool.getConnection();
+        const result = await connection.query('SELECT * FROM User WHERE username = ? AND password = ?', [username, password]);
+        connection.release();
+        console.log("This is the result: ", result);
 
+        if (result.length >= 1) {
+            // Valid login
+            res.status(200).json({ message: JSON.stringify(result)});
+            //res.send(JSON.stringify({ username, password }));
+        } else {
+            // Invalid login
+            console.log("Invalid Login");
+            res.status(401).json({ message: 'Invalid login credentials' });
+        }
+    } catch (error) {
+      console.error('Database error:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+   
+});
 
 
 // Post: Used for api/postman testing
@@ -154,11 +275,13 @@ app.post('/postLogin', async (req, res) => {
 
 });
 
+
+
 app.get('/getCustomRecipe', async (req, res) => {
 
   //Data from the post request
   try {
-      const result = await db.pool.query("Select crID, Title, Description, il.ilID, list from CustomRecipe as cs JOIN IngredientList as il on cs.crID = il.ilID WHERE il.ilID = 5888");
+      const result = await db.pool.query("Select crID, Title, Description, il.ilID, list from CustomRecipe as cs JOIN IngredientList as il on cs.crID = il.ilID WHERE il.ilID = 5090");
       res.send(result);
   } catch (err) {
       throw err;

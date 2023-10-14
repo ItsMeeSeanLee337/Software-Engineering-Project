@@ -1,14 +1,21 @@
 import React from 'react';
+
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
+<<<<<<< Updated upstream
 import Navbar from './Pages/Navbar';
+=======
+>>>>>>> Stashed changes
 import Display_Custom_Recipes from './Pages/Display_Custom_Recipes';
 import Create_Recipe from './Pages/Create_Recipe';
+import Navbar from './Pages/Navbar';
 import Home2 from './Pages/Home2';
+import Login_Success from './Pages/Login_Success';
+
 
 import {
   createBrowserRouter,
@@ -35,6 +42,10 @@ const router = createBrowserRouter([
   {
     path: "display-custom-recipes",
     element: <Display_Custom_Recipes/>,
+  },
+  {
+    path: "Login_Success",
+    element: <Login_Success/>,
   },
   {
     path: "home2",

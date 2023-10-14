@@ -4,3 +4,8 @@
     justify-content: center;
     flex-direction: column;
 }
+.centerButtonCR {
+    /* Center the button */
+    align-self: right; /* Vertically center the button */
+    margin-top: auto; /* Move the button to the middle of the flex box */
+  }
