@@ -1,0 +1,46 @@
+.container {
+    display:flex;
+    justify-content: center; 
+    align-items: center;
+    height: 100vh; 
+  }
+
+.up_label {
+    font-size: 25px;
+    font-weight: bold; 
+    color: #00BB44; 
+    padding-bottom: 20px;
+}
+
+h2 {
+    font-size: 35px; 
+    font-weight: bold; 
+    color: #028A0F; 
+  }
+
+.login_button {
+    font-size: 20px; 
+    font-weight: bold;
+    background-color: #008000;
+    width: fit-content;
+}
+
+
+.form_box {
+    border: 5px solid #008000; 
+    padding: 20px; 
+    border-radius: 8px; 
+    background-color: #B2D3C2;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+}
+
+
+
+  
+
+  
+ 
+  
+  
+  
+  

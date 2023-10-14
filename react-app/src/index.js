@@ -5,9 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Home from './Pages/Home';
 import Navbar from './Pages/Navbar';
-import Display_Custom_Recipes from './Pages/Display_Custom_Recipes';
 import Create_Recipe from './Pages/Create_Recipe';
-import Home2 from './Pages/Home2';
+import Login from './Pages/Login';
+import Login_Success from './Pages/Login_Success';
 
 import {
   createBrowserRouter,
@@ -28,12 +28,13 @@ const router = createBrowserRouter([
     element: <Create_Recipe/>,
   },
   {
-    path: "display-custom-recipes",
-    element: <Display_Custom_Recipes/>,
+    path: "login",
+    element: <Login/>,
+
   },
   {
-    path: "home2",
-    element: <Home2/>,
+    path: "login_success",
+    element: <Login_Success/>,
   }
 ]);
 
