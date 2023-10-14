@@ -28,7 +28,7 @@ function Login() {
     console.log("username", username);
     console.log("password", password);
 
-    const apiUrl = 'http://172.16.122.26:8080/login';; 
+    const apiUrl = 'http://172.16.122.26:8080/login';
     axios.post(apiUrl, { username, password })
       .then(response => {
         if (response.status === 200) {
