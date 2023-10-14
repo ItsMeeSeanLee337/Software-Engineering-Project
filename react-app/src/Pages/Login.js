@@ -27,9 +27,27 @@ function Login() {
     console.log("Submitted!");
     console.log("username", username);
     console.log("password", password);
-    setUsername('');
-    setPassword ('');
-  
+
+    const apiUrl = 'http://172.16.122.26:8080/login';; 
+    axios.post(apiUrl, { username, password })
+      .then(response => {
+        if (response.status === 200) {
+          console.log('Response:', response.data);
+          const encodedData = encodeURIComponent(username)
+          setUsername('');
+          setPassword ('');
+          window.location.href = `/Login_Success?data=${encodedData}`;
+        } 
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        setUsername('');
+        setPassword ('');
+        alert('Invalid username or password! Try again.');
+      });
+
+    //this part was to test locally- not with db
+      /*
     try {
       //sending username and password values to the server
       const response = await axios.post('http://localhost:8083/login', {username, password});
@@ -37,6 +55,8 @@ function Login() {
     } catch (error) {
       console.error('Error submitting form:', error);
     }
+    */
+
 
   };
 

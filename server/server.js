@@ -1,26 +1,82 @@
-const express = require('express');
-const cors = require('cors');
+const express = require('express')
+const db = require('./db')
+const app = express()
+const cors = require('cors')
+const port = 8080
+const bodyParser = require("body-parser");
+ 
+app.use(cors())
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+ 
 
-const app = express();
-const PORT = 8083;
+app.get('/Nutripro', async (req, res) => {
+    try {
+        const result = await db.pool.query("select * from User");
+        res.send(result);
+    } catch (err) {
+        throw err;
+    }
+});
+ 
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Section for postman testing
 
-app.get('/home', (req, res) => {
-  res.json({ message: 'Hello FROM the server!' });
+
+// GET: Used for api/postman testing
+app.get('/get', async (req, res) => {
+    try {
+        const result = await db.pool.query("SELECT * FROM User WHERE Username = 'testuser'");
+        res.send(result);
+    } catch (err) {
+        throw err;
+    }
 });
 
-app.post('/login', (req, res) => {
-  const { username } = req.body;
-  const { password } = req.body;
-  console.log('This is the username:', username)
-  console.log('This is the password:', password)
-  res.json({ message: 'Recieved Data'});
+app.post('/login', async (req, res) => {
+    const { username } = req.body;
+    const { password } = req.body;
+    console.log('This is the username:', username);
+    console.log('This is the password:', password);
+    //res.json({ message: 'Recieved Data'});
+    //const query = 'SELECT Username FROM User WHERE Username = ? AND Password = ?';
+    //const values = [username, password];
+    try {
+        const connection = await db.pool.getConnection();
+        const result = await connection.query('SELECT * FROM User WHERE username = ? AND password = ?', [username, password]);
+        connection.release();
+        console.log("This is the result: ", result);
+
+        if (result.length >= 1) {
+            // Valid login
+            res.status(200).json({ message: JSON.stringify(result)});
+            //res.send(JSON.stringify({ username, password }));
+        } else {
+            // Invalid login
+            console.log("We are here");
+            res.status(401).json({ message: 'Invalid login credentials' });
+        }
+    } catch (error) {
+      console.error('Database error:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+   
 });
 
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+
+app.get('/getCustomRecipe', async (req, res) => {
+
+    //Data from the post request
+    try {
+        const result = await db.pool.query("Select crID, Title, Description, il.ilID, list from CustomRecipe as cs JOIN IngredientList as il on cs.crID = il.ilID WHERE il.ilID = 123");
+        res.send(result);
+    } catch (err) {
+        throw err;
+    }
+
 });
+    
+
+
+app.listen(port, () => console.log(`Listening on port ${port}`));
