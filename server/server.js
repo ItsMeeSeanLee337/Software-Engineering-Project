@@ -1,3 +1,4 @@
+//This is the server.js file I have on the VM 
 const express = require('express')
 const db = require('./db')
 const app = express()
@@ -53,7 +54,7 @@ app.post('/login', async (req, res) => {
             //res.send(JSON.stringify({ username, password }));
         } else {
             // Invalid login
-            console.log("We are here");
+            console.log("Invalid Login");
             res.status(401).json({ message: 'Invalid login credentials' });
         }
     } catch (error) {

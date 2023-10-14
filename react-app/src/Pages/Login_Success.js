@@ -10,16 +10,16 @@ function Login_Success(){
     //from here we can query db and add their custom info to the page
 
     //handler for logout
-    function handleSubmit (event) {
+    function handleLogout (event) {
         event.preventDefault();
-        window.location.href = '/Login_Success';
+        window.location.href = '/Home';
     }
 
     return(
         <div>
         <Navbar></Navbar>
         <p>Welcome to your page {username}!</p> 
-        <button className = "logout_button" type="submit" onSubmit={handleLogout}>Logout</button>
+        <button className = "logout_button" type="submit" onClick={handleLogout}>Logout</button>
     </div>
         
     )

@@ -1,4 +1,3 @@
-/* MyComponent.css */
 .container {
     display:flex;
     justify-content: center; 
@@ -28,11 +27,11 @@ h2 {
 
 
 .form_box {
-    border: 5px solid #008000; /* Add a border to the container */
-    padding: 20px; /* Add padding around the form */
-    border-radius: 8px; /* Add rounded corners */
+    border: 5px solid #008000; 
+    padding: 20px; 
+    border-radius: 8px; 
     background-color: #B2D3C2;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a box shadow for a visual effect */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
 }
 
 
