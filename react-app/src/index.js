@@ -10,6 +10,7 @@ import Create_Recipe from './Pages/Create_Recipe';
 import Navbar from './Pages/Navbar';
 import Home2 from './Pages/Home2';
 import Login_Success from './Pages/Login_Success';
+import Registration from './Pages/Registration';
 
 import {
   createBrowserRouter,
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: "home2",
     element: <Home2/>,
+  },
+  {
+    path: "registration",
+    element: <Registration/>,
   }
 ]);
 

@@ -226,10 +226,6 @@ app.get('/get', async (req, res) => {
 });
 
 
-
-
-
-
 app.post('/login', async (req, res) => {
     const { username } = req.body;
     const { password } = req.body;
@@ -273,6 +269,85 @@ app.post('/postLogin', async (req, res) => {
 
   res.send('Received login data: ' + JSON.stringify({ username, password }));
 
+});
+
+app.post('/registration', async (req, res) => {
+  const { firstname } = req.body;
+  const { lastname } = req.body;
+  const { username } = req.body;
+  const { password } = req.body;
+  const { email } = req.body;
+  console.log('This is the firstname:', firstname);
+  console.log('This is the lastname:', lastname);
+  console.log('This is the username:', username);
+  console.log('This is the password:', password);
+  console.log('This is the email:', email);
+ 
+  try {
+      const connection = await db.pool.getConnection();
+      const result = await connection.query('SELECT * FROM User WHERE username = ?', [username]);
+      connection.release();
+      console.log("This is the result: ", result);
+
+      if (result.length >= 1) {
+          // Username already exists so must choose another one
+          console.log("Username already exists");
+          res.status(401).json({ message: 'Username already exists' });
+      } else {
+          // Valid registration
+          //INSERT INTO QUERY ***
+          //Creating a unique UserID for database
+        var userID = 0;
+
+        //Have to make sure the primary key is unique
+        //Checking the ingredientList table to ensure generated id is unique
+        var isUnique = false;
+        while(!isUnique)
+        {
+          while (!isUnique) {
+            userID = Math.floor(Math.random() * 10000) + 1;
+            console.log('Random integer for User ID:', userID);
+        
+            try {
+              const rows = await db.pool.query(`SELECT UserID FROM User WHERE userID = ${userID}`);
+              
+              if (rows.length === 0) {
+                isUnique = true;
+                console.log('No rows found for userID:', userID);
+              } else {
+                isUnique = false;
+                console.log('Rows found for userID:', userID);
+              }
+            } catch (error) {
+              console.error('Query error:', error);
+            }
+          }
+        }
+
+          //const query = `INSERT INTO User (UserID, Firstname, Lastname, Username, Password, Email)
+          //VALUES (${userID}, ${firstname}, ${lastname}, ${username}, ${password}, ${email}); `
+          const query_CR = 'INSERT INTO User (UserID, Firstname, Lastname, Username, Password, Email ) VALUES (?, ?, ?, ?, ?, ?)';
+          const values_CR = [userID, firstname, lastname, username, password, email];
+          queryDatabase(query_CR, values_CR);
+
+          /*try {
+            const result = await db.pool.query(query);
+            console.log(result);
+            console.log(query);
+            res.send("Account added");
+        
+        
+          } catch (error) {
+            console.error('Error executing query:', error);
+            res.status(500).send('Internal Server Error');
+          }*/
+
+      }
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+ 
 });
 
 
