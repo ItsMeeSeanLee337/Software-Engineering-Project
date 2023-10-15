@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Home from './Pages/Home';
+import Landing_page from './Pages/Landing_page';
 import Navbar from './Pages/Navbar';
 import Create_Recipe from './Pages/Create_Recipe';
 import Home2 from './Pages/Home2';
@@ -16,11 +16,11 @@ import {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home/>,
+    element: <Landing_page/>,
   },
   {
-    path: "home",
-    element: <Home/>,
+    path: "Landing_page",
+    element: <Landing_page/>,
   },
   {
     path: "create_recipe",
