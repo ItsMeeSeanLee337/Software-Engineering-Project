@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Home from './Pages/Home';
+import Landing_page from './Pages/Landing_page';
 import Login from './Pages/Login';
 import Display_Custom_Recipes from './Pages/Display_Custom_Recipes';
 import Create_Recipe from './Pages/Create_Recipe';
 import Navbar from './Pages/Navbar';
-import Home2 from './Pages/Home2';
+import Home from './Pages/Home';
 import Login_Success from './Pages/Login_Success';
 
 import {
@@ -19,7 +19,7 @@ import {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home/>,
+    element: <Landing_page/>,
   },
   {
     path: "home",
@@ -41,10 +41,6 @@ const router = createBrowserRouter([
     path: "Login_Success",
     element: <Login_Success/>,
   },
-  {
-    path: "home2",
-    element: <Home2/>,
-  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
