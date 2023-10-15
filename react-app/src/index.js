@@ -10,6 +10,7 @@ import Create_Recipe from './Pages/Create_Recipe';
 import Navbar from './Pages/Navbar';
 import Home from './Pages/Home';
 import Login_Success from './Pages/Login_Success';
+import Registration from './Pages/Registration';
 
 import {
   createBrowserRouter,
@@ -41,6 +42,14 @@ const router = createBrowserRouter([
     path: "Login_Success",
     element: <Login_Success/>,
   },
+  {
+    path: "home2",
+    element: <Home2/>,
+  },
+  {
+    path: "registration",
+    element: <Registration/>,
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
