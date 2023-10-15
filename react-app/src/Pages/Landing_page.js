@@ -34,7 +34,7 @@ function Home() {
                 <section className="centered-content cta">
                     <h2>Start Your Health Journey Today</h2>
                     <p>Join us and take the first step towards a healthier lifestyle.</p>
-                    <a href="/register" className="cta-button">Sign Up Now</a> 
+                    <a href="/registration" className="cta-button">Sign Up Now</a> 
                 </section>
                 <section className="centered-content cta">
                     <h1>Already have an account?</h1>

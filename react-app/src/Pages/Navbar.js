@@ -26,7 +26,7 @@ return(
         </div>
     <ul className='navbar-nav'>
       <li><Link to={`/Home?data=${dataToSend}`}>
-      Go to Login Success
+      Home
     </Link></li>
       
       <li><Link to="/Login">Login</Link></li>
