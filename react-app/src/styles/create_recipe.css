@@ -7,6 +7,7 @@
 .flex-container {
   display: flex;
   justify-content: space-between;
+  flex-direction: row;
 }
 
 .center-container {
@@ -144,4 +145,7 @@ margin-top: 20px;
 
 .iLMargin{
     margin-bottom: 10px;
+}
+.buttonMargin{
+    margin-top :40px;
 }

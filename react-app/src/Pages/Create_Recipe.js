@@ -6,10 +6,12 @@ import '../styles/create_recipe.css'
 import '../Modules/IngredientListForm'
 import IngredientList from '../Modules/IngredientListForm';
 function Create_Recipe() {
-const [title, setNewTitle] = useState("")
-const [steps, setNewStep] = useState("")
-const [ingredients, setNewIngredient] = useState("")
-
+const [title, setNewTitle] = useState("");
+const [steps, setNewStep] = useState("");
+const [ingredients, setNewIngredient] = useState("");
+const [showPopup, setShowPopup] = useState(false);
+const urlParams = new URLSearchParams(window.location.search);
+const dataToSend = urlParams.get('data');
 const maxLineLength = 30; // Set max line length
 
 function handleTitle(e){
@@ -27,17 +29,30 @@ const updateIngredients = (updatedIngredients) => {
 
 const handleSubmit = (event) => {
   event.preventDefault();
-  console.log('Ingredients:', ingredients);  // Log ingredients to console
+  if (title === '' || title === null || steps === '' || steps === null || ingredients === '' || ingredients === null) {
+    console.log('Field is empty');
+  } else {
+    console.log('Field is not empty');
+    console.log('Ingredients:', ingredients);  // Log ingredients to console
   //const apiUrl = 'http://localhost:8080/createRecipe';  // Replace with your server endpoint
-  const apiUrl = 'http://172.16.122.26:8080/createRecipe';  // Replace with your server endpoint
-
+  //const apiUrl = 'http://172.16.122.26:8080/createRecipe';  // Replace with your server endpoint
+  const apiUrl = `http://172.16.122.26:8080/createRecipe/${dataToSend}`;
+  console.log(apiUrl);
   axios.post(apiUrl, { title, steps, ingredients })
     .then(response => {
       console.log('Response:', response.data);
+      setShowPopup(true);
+
+    // Hide the pop-up after 3 seconds
+    setTimeout(() => {
+      setShowPopup(false);
+    }, 3000);
     })
     .catch(error => {
       console.error('Error:', error);
     });
+  }
+  
 };
 
 // Function to split the steps into lines
@@ -109,12 +124,17 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
         however you want to format the steps
       </h5>
       <IngredientList updateIngredients={updateIngredients} />
-      <button onClick={handleSubmit}>Create Recipe</button>
+      <button className= "buttonMargin" onClick={handleSubmit}>Create Recipe</button>
+      {showPopup && (
+        <div className="popup">
+          <p>Recipe added!</p>
+        </div>
+      )}
     </div>
     <div className="displayRecipe">
       <div>
         <h3 className='alignCenter'>Title</h3>
-        <ul>
+        <ul className='alignCenter'>
           {titleLines.map((line, index) => (
             <li key={index}>{line}</li>
           ))}

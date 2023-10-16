@@ -1,0 +1,62 @@
+/* landing_page.css */
+
+/* Centered container */
+.centered-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  
+  /* Centered content within sections */
+  .centered-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  /* Style for the hero section */
+  .hero {
+    background-color: #f4f4f4; /* Example background color */
+    padding: 2rem;
+    color: #333;
+  }
+  
+  /* Style for features section */
+  .features {
+    background-color: #fff; /* Example background color */
+    padding: 2rem;
+    color: #333;
+  }
+  
+  /* Style for the CTA section */
+  .cta {
+    background-color: #f4f4f4; /* Example background color */
+    padding: 2rem;
+    color: #333;
+  }
+  
+  /* Additional styling for buttons, icons, etc. */
+  .cta-button {
+    background-color: #007BFF; /* Example button color */
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 15px;
+  }
+  
+  .feature {
+    margin: 15px;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    margin: 10px; /* Adjust margin as needed */
+  }
+  /* Add specific styles for other elements as needed */
+  
+  

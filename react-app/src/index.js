@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Home from './Pages/Home';
-import Navbar from './Pages/Navbar';
-import Create_Recipe from './Pages/Create_Recipe';
+import Landing_page from './Pages/Landing_page';
 import Login from './Pages/Login';
+import Display_Custom_Recipes from './Pages/Display_Custom_Recipes';
+import Create_Recipe from './Pages/Create_Recipe';
+import Navbar from './Pages/Navbar';
+import Home from './Pages/Home';
 import Login_Success from './Pages/Login_Success';
+import Registration from './Pages/Registration';
 
 import {
   createBrowserRouter,
@@ -17,11 +20,15 @@ import {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home/>,
+    element: <Landing_page/>,
   },
   {
     path: "home",
     element: <Home/>,
+  },
+  {
+    path: "login",
+    element: <Login/>,
   },
   {
     path: "create_recipe",
@@ -33,8 +40,12 @@ const router = createBrowserRouter([
 
   },
   {
-    path: "login_success",
+    path: "Login_Success",
     element: <Login_Success/>,
+  },
+  {
+    path: "registration",
+    element: <Registration/>,
   }
 ]);
 

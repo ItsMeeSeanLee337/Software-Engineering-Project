@@ -1,6 +1,6 @@
 import Navbar from './Navbar'
 import React from 'react';
-
+import Login from './Login';
 function Login_Success(){
     //getting username data fro succesful login 
     const urlParams = new URLSearchParams(window.location.search);
@@ -12,14 +12,14 @@ function Login_Success(){
     //handler for logout
     function handleLogout (event) {
         event.preventDefault();
-        window.location.href = '/Home';
+        window.location.href = '/login';
     }
 
     return(
         <div>
         <Navbar></Navbar>
         <p>Welcome to your page {username}!</p> 
-        <button className = "logout_button" type="submit" onClick={handleLogout}>Logout</button>
+        <a href="/">Logout</a> 
     </div>
         
     )

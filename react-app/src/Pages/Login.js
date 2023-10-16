@@ -7,7 +7,7 @@ function Login() {
   //sets the username and password variables
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const [userID, setUserID] = useState([]);
 
   //handler every time we enter info in the username field, for now just indicates the changes to console
   function handleUsername (event) {
@@ -28,7 +28,7 @@ function Login() {
     console.log("username", username);
     console.log("password", password);
 
-    const apiUrl = 'http://172.16.122.26:8080/login';
+    const apiUrl = 'http://172.16.122.26:8080/login';; 
     axios.post(apiUrl, { username, password })
       .then(response => {
         if (response.status === 200) {
@@ -36,6 +36,15 @@ function Login() {
           const dataToSend = encodeURIComponent(username)
           setUsername('');
           setPassword ('');
+          
+
+
+         
+          
+          setUserID(response);
+
+
+          console.log("Stuff", response.data);
           window.location.href = `/Login_Success?data=${dataToSend}`;
         } 
       })

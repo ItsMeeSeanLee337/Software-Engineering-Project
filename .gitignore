@@ -1,3 +1,6 @@
-react-app/node_modules/
-server/node_modules/
-package-lock.json
+react-app/node_modules
+react-app/package-lock.json
+react-app/node_modules/.cache/.eslintcache
+react-app/node_modules/.cache/.eslintcache
+*.pack
+node_modules/
