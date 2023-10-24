@@ -148,7 +148,7 @@ app.get('/CustomRecipe/Display/:username', async(req,res) =>{
 
 
   query = `
-  SELECT CustomRecipe.Title, CustomRecipe.Description, IngredientList.list
+  SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list
   FROM CustomRecipe
   JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
   JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
@@ -210,6 +210,58 @@ app.post('/deleteCustomRecipe' , async(req,res)=>{
 
 })
 
+
+app.post('/saveRecipeNotes/:username', async (req, res) => {
+  try{
+  const username = req.params.username;
+  console.log(username);
+  var finalUserID = await getUserID(username);
+  
+  const {notes} = req.body;
+  const {thiscrID} = req.body;
+  console.log(notes);
+  console.log(thiscrID);
+
+
+  //Query for adding notes based on the userID to custom recipe table
+
+    const query = `
+    Update CustomRecipe
+    Set notes = '${notes}'
+    where crID = ${thiscrID};
+    `;
+
+    try {
+      const result = await db.pool.query(query);
+      console.log(result);
+      console.log(query);
+      res.send("Notes Updated");
+      
+  
+    } catch (error) {
+      console.error('Error executing query:', error);
+      res.status(500).send('Internal Server Error');
+    }
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+
+});
+
+
+app.get('/getRecipeNotes/:crID', async (req, res) => {
+  try {
+      const crID = req.params.crID;
+      //const {crID} = req.body;
+      console.log(crID)
+      const result = await db.pool.query(`SELECT notes FROM CustomRecipe WHERE crID = ${crID}`);
+      res.send(result);
+  } catch (err) {
+      throw err;
+  }
+});
 
 
 // Section for postman testing
