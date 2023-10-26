@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f3f3;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    background-color: #00ff62;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  .nutritional-info {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  h2 {
+    color: #333;
+    margin-top: 0;
+  }
+  
+  .nutrient-label {
+    font-weight: bold;
+  }
+  
+  .nutrient-value {
+    margin-left: 10px;
+  }
+  
+  #banana-image {
+    display: block;
+    margin: 0 auto;
+    max-width: 200px;
+  }
+  
