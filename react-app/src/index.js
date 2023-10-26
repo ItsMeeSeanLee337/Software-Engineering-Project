@@ -35,6 +35,10 @@ const router = createBrowserRouter([
     element: <Create_Recipe/>,
   },
   {
+    path: "display-custom-recipes",
+    element: <Display_Custom_Recipes/>,
+  },
+  {
     path: "login",
     element: <Login/>,
 
