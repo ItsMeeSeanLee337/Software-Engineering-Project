@@ -31,6 +31,8 @@ function Login_Success(){
         <br />
         <br />
         <button type="button" onClick={handleGoToBio}>Go to Bio</button>
+        <br />
+        <br />
         <a href="/">Logout</a> 
 
     </div>

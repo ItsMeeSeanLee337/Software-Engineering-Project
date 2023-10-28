@@ -262,12 +262,86 @@ app.post('/createEditBio', async(req,res) => {
   const { favoriteFood } = req.body;
   const { favoriteRecipe } = req.body;
   const {selectedImage} = req.body;
+  //need to check if only image is updated and nothing else
   console.log('This is the values:', username, bio, favoriteFood, favoriteRecipe, selectedImage);
   try {
     const connection = await db.pool.getConnection();
-
-    if (bio != '' && favoriteRecipe == '' && favoriteFood == '') {
+    //just bio
+    if (bio != '' && favoriteRecipe == '' && favoriteFood == '' && (selectedImage == '' || selectedImage == null)) {
       console.log("1");
+      const result = await connection.query(`
+      INSERT INTO Bio (Username, bio)
+      VALUES (?, ?)
+      ON DUPLICATE KEY UPDATE bio = ?;
+    `, [username, bio, bio]);
+
+    console.log("This is the result: ", result);
+    res.send("Added to db");
+
+    //just favorite food
+    } else if(favoriteFood != '' && bio == '' && favoriteRecipe == '' && (selectedImage == '' || selectedImage == null)) {
+      console.log("2");
+
+      const result = await connection.query(`
+      INSERT INTO Bio (Username, favoriteFood)
+      VALUES (?, ?)
+      ON DUPLICATE KEY UPDATE favoriteFood = ?;
+    `, [username, favoriteFood, favoriteFood]);
+
+    console.log("This is the result: ", result);
+    res.send("Added to db");
+
+    //just recipe
+    } else if(favoriteRecipe != '' && bio == '' && favoriteFood == '' && (selectedImage == '' || selectedImage == null)) {
+      console.log("3");
+      const result = await connection.query(`
+      INSERT INTO Bio (Username, favoriteRecipe)
+      VALUES (?, ?)
+      ON DUPLICATE KEY UPDATE favoriteRecipe = ?;
+    `, [username, favoriteRecipe, favoriteRecipe]);
+
+    console.log("This is the result: ", result);
+    res.send("Added to db");
+
+    //just img
+    } else if(selectedImage != '' && bio == '' && favoriteFood == '' && favoriteRecipe == '') {
+      console.log("4");
+      const result = await connection.query(`
+      INSERT INTO Bio (Username, imgUrl)
+      VALUES (?, ?)
+      ON DUPLICATE KEY UPDATE imgUrl = ?;
+    `, [username, selectedImage, selectedImage]);
+
+    console.log("This is the result: ", result);
+    res.send("Added to db");
+
+    //just bio and recipe
+    } else if(bio != '' && favoriteRecipe != '' && favoriteFood == '' && (selectedImage == '' || selectedImage == null)) {
+      console.log("5");
+      const result = await connection.query(`
+      INSERT INTO Bio (Username, bio, favoriteRecipe)
+      VALUES (?, ?, ?)
+      ON DUPLICATE KEY UPDATE bio = ?, favoriteRecipe = ?;
+    `, [username, bio, favoriteRecipe, bio, favoriteRecipe]);
+
+    console.log("This is the result: ", result);
+    res.send("Added to db");
+
+    //just bio and food
+    } else if(bio != '' && favoriteFood != '' && favoriteRecipe == '' && (selectedImage == '' || selectedImage == null)) {
+      console.log("6");
+      const result = await connection.query(`
+      INSERT INTO Bio (Username, bio, favoriteFood)
+      VALUES (?, ?, ?)
+      ON DUPLICATE KEY UPDATE bio = ?, favoriteFood = ?;
+    `, [username, bio, favoriteFood, bio, favoriteFood]);
+
+    console.log("This is the result: ", result);
+    res.send("Added to db");
+
+    //just bio and img
+    }else if(bio != '' && selectedImage != '' && favoriteRecipe == '' && favoriteFood == ''){
+      console.log("7");
       const result = await connection.query(`
       INSERT INTO Bio (Username, bio, imgUrl)
       VALUES (?, ?, ?)
@@ -277,9 +351,21 @@ app.post('/createEditBio', async(req,res) => {
     console.log("This is the result: ", result);
     res.send("Added to db");
 
-    } else if(favoriteFood != '' && bio == '' && favoriteRecipe == '') {
-      console.log("2");
+    //just recipe and food
+    } else if(favoriteRecipe != '' && favoriteFood != '' && bio == '' && (selectedImage == '' || selectedImage == null)) {
+      console.log("8");
+      const result = await connection.query(`
+      INSERT INTO Bio (Username, favoriteFood, favoriteRecipe)
+      VALUES (?, ?, ?)
+      ON DUPLICATE KEY UPDATE favoriteFood = ?, favoriteRecipe = ?;
+    `, [username, favoriteFood, favoriteRecipe, favoriteFood, favoriteRecipe]);
 
+    console.log("This is the result: ", result);
+    res.send("Added to db");
+
+    //just food and img
+    } else if(favoriteFood != '' && selectedImage != '' && bio == '' && favoriteRecipe == '') {
+      console.log("9");
       const result = await connection.query(`
       INSERT INTO Bio (Username, favoriteFood, imgUrl)
       VALUES (?, ?, ?)
@@ -289,9 +375,9 @@ app.post('/createEditBio', async(req,res) => {
     console.log("This is the result: ", result);
     res.send("Added to db");
 
-    } else if(favoriteRecipe != '' && bio == '' && favoriteFood == '') {
-
-      console.log("3");
+    //just recipe and img
+    } else if (favoriteRecipe != '' && selectedImage != '' && bio == '' && favoriteFood == '') {
+      console.log("10");
       const result = await connection.query(`
       INSERT INTO Bio (Username, favoriteRecipe, imgUrl)
       VALUES (?, ?, ?)
@@ -301,21 +387,21 @@ app.post('/createEditBio', async(req,res) => {
     console.log("This is the result: ", result);
     res.send("Added to db");
 
-    } else if(bio != '' && favoriteRecipe != '' && favoriteFood == '') {
-
-      console.log("4");
+    //just bio food and recipe
+    } else if(bio != '' && favoriteFood != '' && favoriteRecipe != '' && (selectedImage == '' || selectedImage == null) ) {
+      console.log("11");
       const result = await connection.query(`
-      INSERT INTO Bio (Username, bio, favoriteRecipe, imgUrl)
+      INSERT INTO Bio (Username, bio, favoriteFood, favoriteRecipe)
       VALUES (?, ?, ?, ?)
-      ON DUPLICATE KEY UPDATE bio = ?, favoriteRecipe = ?, imgUrl = ?;
-    `, [username, bio, favoriteRecipe, selectedImage, bio, favoriteRecipe, selectedImage]);
+      ON DUPLICATE KEY UPDATE bio = ?, favoriteFood = ?, favoriteRecipe = ?;
+    `, [username, bio, favoriteFood, favoriteRecipe, bio, favoriteFood, favoriteRecipe]);
 
     console.log("This is the result: ", result);
     res.send("Added to db");
 
-    } else if(bio != '' && favoriteFood != '' && favoriteRecipe == '') {
-
-      console.log("5");
+    //just bio, food and img
+    } else if(bio != '' && favoriteFood != '' && selectedImage != '' && favoriteRecipe == '' ) {
+      console.log("12");
       const result = await connection.query(`
       INSERT INTO Bio (Username, bio, favoriteFood, imgUrl)
       VALUES (?, ?, ?, ?)
@@ -325,9 +411,21 @@ app.post('/createEditBio', async(req,res) => {
     console.log("This is the result: ", result);
     res.send("Added to db");
 
-    } else if(favoriteRecipe != '' && favoriteFood != '' && bio == '') {
+    //just bio recipe and img
+    } else if(bio != '' && favoriteRecipe != '' && selectedImage != '' && favoriteFood == '' ) {
+      console.log("13");
+      const result = await connection.query(`
+      INSERT INTO Bio (Username, bio, favoriteRecipe, imgUrl)
+      VALUES (?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE bio = ?, favoriteRecipe = ?, imgUrl = ?;
+    `, [username, bio, favoriteRecipe, selectedImage, bio, favoriteRecipe, selectedImage]);
 
-      console.log("6");
+    console.log("This is the result: ", result);
+    res.send("Added to db");
+
+    //just food recipe and img
+    } else if (favoriteFood != '' && favoriteRecipe != '' && selectedImage != '' && bio == '') {
+      console.log("14");
       const result = await connection.query(`
       INSERT INTO Bio (Username, favoriteFood, favoriteRecipe, imgUrl)
       VALUES (?, ?, ?, ?)
@@ -337,8 +435,9 @@ app.post('/createEditBio', async(req,res) => {
     console.log("This is the result: ", result);
     res.send("Added to db");
 
+    //bio food recipe img
     } else {
-      console.log("7");
+      console.log("15");
         const result = await connection.query(`
         INSERT INTO Bio (Username, bio, favoriteFood, favoriteRecipe, imgUrl)
         VALUES (?, ?, ?, ?, ?)

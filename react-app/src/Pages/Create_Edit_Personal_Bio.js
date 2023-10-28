@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Navbar';
-//import '../styles/bio.css'
+import '../styles/bio.css'
 import Login_Success from './Login_Success';
 
 function Create_Edit_Personal_Bio() {
@@ -31,6 +31,13 @@ function Create_Edit_Personal_Bio() {
         console.log("changed recipe");
     };
 
+    const handleBack = async (event) => {
+        console.log("moved to home page");
+        event.preventDefault();
+        const dataToSend = encodeURIComponent(username)
+        window.location.href = `/Login_Success?data=${dataToSend}`;
+    }
+
     useEffect(() => {
         console.log("selected image", selectedImage);
       }, [selectedImage]);
@@ -55,9 +62,6 @@ function Create_Edit_Personal_Bio() {
               setfavoriteFood('');
               setfavoriteRecipe('');
               console.log("SUCCESS!");
-              //testing this now
-              //change query in server to updating based on what is filled out so if statemenyts with diff queries
-              //after i figure this out, i wanna figure out how to include this part and the display part in one
               window.location.href = `/Display_Personal_Bio?data=${username}`;
             } 
           })
@@ -69,52 +73,62 @@ function Create_Edit_Personal_Bio() {
     
     return (
         <div>
-        <p>Welcome to your profile, {username}!</p>
+        <button type="button" onClick={handleBack}>Go Back to Home</button>
+        <h1 className='text'>Welcome to your profile, {username}!</h1>
         <p>Once you are finished creating your profile, hit the update button to see your changes!</p>
         <br />
         <br />
-        <h1>Choose a profile photo: </h1>
         <div>
-          <img src={require('../images/img1.png')} alt="Image 1" />
+        <h1 className='text'>Choose a profile photo: </h1>
+        <div style={{ display: 'flex' }}>
+        <div>
+          <img 
+          src={require('../images/img1.png')} 
+          alt="Image 1" 
+          style={{ width: '100px', height: '100px' }}
+          />
           <button onClick={() => handleImageSelect(('img1'))}>Select Image 1</button>
         </div>
         <div>
-          <img src={require('../images/img2.png')} alt="Image 2" />
+          <img 
+          src={require('../images/img2.png')} 
+          alt="Image 2" 
+          style={{ width: '100px', height: '100px' }}
+          />
           <button onClick={() => handleImageSelect(('img2'))}>Select Image 2</button>
         </div>
         <div>
         <button onClick={() => handleImageSelect("")}>No image</button>
         </div>
-        <h1>About Me:</h1>
+        </div>
+        </div>
+        <h1 className='text'>About Me:</h1>
         <textarea
           rows="5"
           cols="30"
           value={bio}
           onChange={handleBio}
           placeholder="Type something about yourself!"
-          style={{ resize: 'both' }}
         />
         <br />
         <br />
-        <h1>Favorite Food:</h1>
+        <h1 className='text'>Favorite Food:</h1>
         <textarea
           rows="5"
           cols="30"
           value={favoriteFood}
           onChange={handlefavoriteFood}
           placeholder="What's your favorite food?"
-          style={{ resize: 'both' }}
         />
         <br />
         <br />
-        <h1>Favorite Recipe:</h1>
+        <h1 className='text'>Favorite Recipe:</h1>
         <textarea
           rows="5"
           cols="30"
           value={favoriteRecipe}
           onChange={handlefavoriteRecipe}
           placeholder="What's your favorite recipe?"
-          style={{ resize: 'both' }}
         />
         <div>
           <button onClick={handleSubmit}>Update</button>
