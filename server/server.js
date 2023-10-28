@@ -1,15 +1,46 @@
-//This is the server.js file I have on the VM 
-const express = require('express')
+const express = require('express');
 const db = require('./db')
-const app = express()
+const app = express();
 const cors = require('cors')
-const port = 8080
 const bodyParser = require("body-parser");
- 
+const { createConnection } = require('mariadb');
+const e = require('express');
+const PORT = 8080;
+
 app.use(cors())
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
- 
+app.use(express.json());
+
+app.get('/home', (req, res) => {
+  res.json({ message: 'Hello from the server!' });
+});
+
+
+//This function can be used to query the data base to post things into it.
+//Params: Query - the sql query you want to run "INSERT INTO CustomRecipe (crID, Title, Description, ilID) VALUES (?, ?, ?, ?)"
+// The ?'s are not placeholders and they should be actually in your query variable
+//Values - the values like sql which correspond to the ?'s
+//Return - Doesn't really return anything, but you will be notified if the query was successful for not
+function queryDatabase(query, values) {
+  db.pool.getConnection()
+    .then(conn => {
+      conn.query(query, values)
+        .then(rows => {
+          console.log('Recipe inserted successfully:', rows.insertId);
+          conn.end();  // Release the connection
+        })
+        .catch(error => {
+          throw error;
+        });
+    })
+    .catch(error => {
+      console.log('Error connecting to MariaDB:', error);
+    });
+
+}
+
 
 app.get('/Nutripro', async (req, res) => {
   try {
@@ -188,42 +219,141 @@ app.post('/deleteCustomRecipe' , async(req,res)=>{
 
 // GET: Used for api/postman testing
 app.get('/get', async (req, res) => {
-    try {
-        const result = await db.pool.query("SELECT * FROM User WHERE Username = 'testuser'");
-        res.send(result);
-    } catch (err) {
-        throw err;
-    }
+  try {
+      const result = await db.pool.query("SELECT * FROM User WHERE Username = 'testuser'");
+      res.send(result);
+  } catch (err) {
+      throw err;
+  }
 });
 
-app.post('/login', async (req, res) => {
-    const { username } = req.body;
-    const { password } = req.body;
-    console.log('This is the username:', username);
-    console.log('This is the password:', password);
-    //res.json({ message: 'Recieved Data'});
-    //const query = 'SELECT Username FROM User WHERE Username = ? AND Password = ?';
-    //const values = [username, password];
-    try {
-        const connection = await db.pool.getConnection();
-        const result = await connection.query('SELECT * FROM User WHERE username = ? AND password = ?', [username, password]);
-        connection.release();
-        console.log("This is the result: ", result);
+//This is for display bio
+app.post('/getBio', async(req,res) => {
+  const {username} = req.body;
+  console.log("This is the username: ", username);
+  try {
+    const connection = await db.pool.getConnection();
+    const result = await connection.query('SELECT * FROM Bio WHERE username = ?', [username]);
+    connection.release();
+    console.log("This is the result: ", result);
 
-        if (result.length >= 1) {
-            // Valid login
-            res.status(200).json({ message: JSON.stringify(result)});
-            //res.send(JSON.stringify({ username, password }));
-        } else {
-            // Invalid login
-            console.log("Invalid Login");
-            res.status(401).json({ message: 'Invalid login credentials' });
-        }
-    } catch (error) {
-      console.error('Database error:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
+    if (result.length >= 1) {
+        // Valid login
+        res.json(result);
+        //res.send(JSON.stringify({ username, password }));
+    } else {
+        // Invalid login
+        console.log("Invalid");
+        res.status(401).json({ message: 'Invalid credentials' });
     }
-   
+
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+
+
+});
+
+//This is for create/edit bio
+app.post('/createEditBio', async(req,res) => {
+  const { username } = req.body;
+  const { bio } = req.body;
+  const { favoriteFood } = req.body;
+  const { favoriteRecipe } = req.body;
+  const {selectedImage} = req.body;
+  console.log('This is the values:', username, bio, favoriteFood, favoriteRecipe, selectedImage);
+  try {
+    const connection = await db.pool.getConnection();
+
+    if (bio != '' && favoriteRecipe == '' && favoriteFood == '') {
+      console.log("1");
+      const result = await connection.query(`
+      INSERT INTO Bio (Username, bio, imgUrl)
+      VALUES (?, ?, ?)
+      ON DUPLICATE KEY UPDATE bio = ?, imgUrl = ?;
+    `, [username, bio, selectedImage, bio, selectedImage]);
+
+    console.log("This is the result: ", result);
+    res.send("Added to db");
+
+    } else if(favoriteFood != '' && bio == '' && favoriteRecipe == '') {
+      console.log("2");
+
+      const result = await connection.query(`
+      INSERT INTO Bio (Username, favoriteFood, imgUrl)
+      VALUES (?, ?, ?)
+      ON DUPLICATE KEY UPDATE favoriteFood = ?, imgUrl = ?;
+    `, [username, favoriteFood, selectedImage, favoriteFood, selectedImage]);
+
+    console.log("This is the result: ", result);
+    res.send("Added to db");
+
+    } else if(favoriteRecipe != '' && bio == '' && favoriteFood == '') {
+
+      console.log("3");
+      const result = await connection.query(`
+      INSERT INTO Bio (Username, favoriteRecipe, imgUrl)
+      VALUES (?, ?, ?)
+      ON DUPLICATE KEY UPDATE favoriteRecipe = ?, imgUrl = ?;
+    `, [username, favoriteRecipe, selectedImage, favoriteRecipe, selectedImage]);
+
+    console.log("This is the result: ", result);
+    res.send("Added to db");
+
+    } else if(bio != '' && favoriteRecipe != '' && favoriteFood == '') {
+
+      console.log("4");
+      const result = await connection.query(`
+      INSERT INTO Bio (Username, bio, favoriteRecipe, imgUrl)
+      VALUES (?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE bio = ?, favoriteRecipe = ?, imgUrl = ?;
+    `, [username, bio, favoriteRecipe, selectedImage, bio, favoriteRecipe, selectedImage]);
+
+    console.log("This is the result: ", result);
+    res.send("Added to db");
+
+    } else if(bio != '' && favoriteFood != '' && favoriteRecipe == '') {
+
+      console.log("5");
+      const result = await connection.query(`
+      INSERT INTO Bio (Username, bio, favoriteFood, imgUrl)
+      VALUES (?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE bio = ?, favoriteFood = ?, imgUrl = ?;
+    `, [username, bio, favoriteFood, selectedImage, bio, favoriteFood, selectedImage]);
+
+    console.log("This is the result: ", result);
+    res.send("Added to db");
+
+    } else if(favoriteRecipe != '' && favoriteFood != '' && bio == '') {
+
+      console.log("6");
+      const result = await connection.query(`
+      INSERT INTO Bio (Username, favoriteFood, favoriteRecipe, imgUrl)
+      VALUES (?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE favoriteFood = ?, favoriteRecipe = ?, imgUrl = ?;
+    `, [username, favoriteFood, favoriteRecipe, selectedImage, favoriteFood, favoriteRecipe, selectedImage]);
+
+    console.log("This is the result: ", result);
+    res.send("Added to db");
+
+    } else {
+      console.log("7");
+        const result = await connection.query(`
+        INSERT INTO Bio (Username, bio, favoriteFood, favoriteRecipe, imgUrl)
+        VALUES (?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE bio = ?, favoriteFood = ?, favoriteRecipe = ?, imgUrl = ?;
+      `, [username, bio, favoriteFood, favoriteRecipe, selectedImage, bio, favoriteFood, favoriteRecipe, selectedImage]);
+
+      console.log("This is the result: ", result);
+      res.send("Added to db");
+      }
+
+    } catch (error) {
+    console.error('Error performing upsert operation:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+
 });
 
 
@@ -364,7 +494,7 @@ app.get('/getCustomRecipe', async (req, res) => {
   }
 
 });
-    
 
-
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
