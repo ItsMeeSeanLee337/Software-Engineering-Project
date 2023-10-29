@@ -1,44 +1,38 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f3f3f3;
-    margin: 0;
-    padding: 0;
-  }
-  
-  header {
-    background-color: #00ff62;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  h1 {
-    color: #333;
-  }
-  
-  .nutritional-info {
-    background-color: #fff;
-    padding: 20px;
-    margin: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  h2 {
-    color: #333;
-    margin-top: 0;
-  }
-  
-  .nutrient-label {
-    font-weight: bold;
-  }
-  
-  .nutrient-value {
-    margin-left: 10px;
-  }
-  
-  #banana-image {
-    display: block;
-    margin: 0 auto;
-    max-width: 200px;
-  }
+/* MyComponent.css */
+.container {
+  display:flex;
+  justify-content: center; 
+  align-items: center;
+  height: 100vh; 
+}
+
+.up_label {
+  font-size: 25px;
+  font-weight: bold; 
+  color: #00BB44; 
+  padding-bottom: 20px;
+}
+
+h2 {
+  font-size: 35px; 
+  font-weight: bold; 
+  color: #028A0F; 
+}
+
+.search_button {
+  font-size: 20px; 
+  font-weight: bold;
+  background-color: #008000;
+  width: fit-content;
+}
+
+
+.form_box {
+  border: 5px solid #008000; /* Add a border to the container */
+  padding: 20px; /* Add padding around the form */
+  border-radius: 8px; /* Add rounded corners */
+  background-color: #B2D3C2;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a box shadow for a visual effect */
+}
+
   
