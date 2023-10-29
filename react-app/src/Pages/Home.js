@@ -11,6 +11,7 @@ function Home(){
         <div>
             <Navbar></Navbar>
             {dataToSend}
+            This is the home page
         </div>
         
     )

@@ -30,6 +30,7 @@ return(
     </Link></li>
       
       <li><Link to="/Login">Login</Link></li>
+      <li><Link to="/NutritionalInformation">NutritionalInformation</Link></li>
       <li
         onMouseEnter = {handleMouseEnter}
         onMouseLeave={handleMouseLeave}>
