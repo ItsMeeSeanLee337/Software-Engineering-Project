@@ -12,6 +12,8 @@ import Home from './Pages/Home';
 import Login_Success from './Pages/Login_Success';
 import Registration from './Pages/Registration';
 import NutritionalInformation from './Pages/nutritional_info';
+import Display_Personal_Bio from './Pages/Display_Personal_Bio';
+import Create_Edit_Personal_Bio from './Pages/Create_Edit_Personal_Bio';
 
 import {
   createBrowserRouter,
@@ -55,7 +57,19 @@ const router = createBrowserRouter([
   {
     path: "NutritionalInformation",
     element: <NutritionalInformation/>,
+    path: "display-custom-recipes",
+    element: <Display_Custom_Recipes/>,
+  },
+  {
+    path: "Display_Personal_Bio",
+    element: <Display_Personal_Bio/>,
+  },
+  {
+    path: "Create_Edit_Personal_Bio",
+    element: <Create_Edit_Personal_Bio/>,
+
   }
+
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

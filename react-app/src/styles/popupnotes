@@ -1,46 +1,3 @@
-.flex-container-CR{
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    
-}
-.centerButtonCR {
-    /* Center the button */
-    align-self: center; /* Vertically center the button */
-    margin-top: auto; /* Move the button to the middle of the flex box */
-    text-align: center;
-    margin: 5px;
-  }
-
-.recipeItem{
-    border: 2px solid #000;
-    margin: 15px; 
-}
-
-.recipeTitle{
-    text-align: center;
-}
-
-button {
-    padding: 8px 16px;
-    font-size: 14px;
-    background-color: #008000;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-
-  }
-.recipeSteps{
-    text-align: center;
-}
-
-.recipeIngredients{
-    text-align: center;
-}
-
 .flexNotes{
     flex:center;
     align-items: center;
@@ -58,27 +15,24 @@ button {
     width: 70%; /* Adjust this to the desired width for the pop-up content */
     max-height: 100%; /* Adjust this to the desired maximum height for the pop-up content */
     overflow-y: auto; /* Add vertical scroll when content exceeds the maximum height */
-    background-color: #dcf5da; /* Background color for the pop-up */
+    background-color: #fff; /* Background color for the pop-up */
     padding: 20px;
-    border: 5px solid #ccc;
+    border: 1px solid #ccc;
     z-index: 100; /* Set a high z-index to ensure it's on top of everything else */
   }
   
 
   .showNotesPopUpContext {
     position: relative;
-    background-color: #dcf5da; /* Background color for the pop-up */
+    background-color: #fff; /* Background color for the pop-up */
     padding: 20px;
+    border: 1px solid #ccc;
     z-index: 101; /* Higher z-index to ensure it's above the overlay */
     margin:10px;
   }
 
 .notesTextArea{
     border: 1px solid #752f2f;
-}
-
-.notesButtons{
-    margin:10px;
 }
 
 textarea{
@@ -88,6 +42,6 @@ textarea{
   font-size: 14px; /* Font size (you can change this) */
   resize: none; /* Disable resizing of the textarea */
   outline: none; /* Remove the default focus outline (you may want to add a custom focus style) */
-  margin:10px;
   /* Add other styles as needed */
 }
+
