@@ -1,96 +1,103 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
-import axios from 'axios';
 
 function NutritionalInformation() {
   const [foodItem, setFoodItem] = useState('');
-  const [nutritionalInfo, setNutritionalInfo] = useState({
-    calories: null,
-    fats: null,
-    protein: null,
-    carbohydrates: null,
-  });
+  const [ingredientID, setingredientID] = useState(null);
+  const [calories, setCalories] = useState(null);
+  
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-
-    // Replace 'YOUR_SPOONACULAR_API_KEY' with your actual API key
-    const apiKey = '248402bf586449c59ffe2b9624ff978a';
+  const fetchIngredientID = async () => {
+    // Replace 'YOUR_API_KEY' with your actual Spoonacular API key
+    const apiKey = '00298f1246234721b20874aa5f8c7c0f';
 
     try {
-      const response = await axios.get(
+      const response = await fetch(
         `https://api.spoonacular.com/food/ingredients/search?query=${foodItem}&apiKey=${apiKey}`
       );
 
-      if (response.data.results && response.data.results.length > 0) {
-        // Assuming the first result contains the desired information
-        const firstResult = response.data.results[0];
+      if (response.ok) {
+        const data = await response.json();
+        if (data.results.length > 0) {
+          // Extract the ID of the first result
+          const firstResult = data.results[0];
+          const id = firstResult.id;
 
-        // Extract nutritional information from firstResult
-        const { nutrition } = firstResult;
-        if (nutrition) {
-          const { nutrients } = nutrition;
-          const calories = nutrients.find((nutrient) => nutrient.name === 'Calories');
-          const fats = nutrients.find((nutrient) => nutrient.name === 'Fat');
-          const protein = nutrients.find((nutrient) => nutrient.name === 'Protein');
-          const carbohydrates = nutrients.find((nutrient) => nutrient.name === 'Carbohydrates');
+          // Now you have the ID of the top result
+          console.log('ID of the top result:', id);
 
-          setNutritionalInfo({
-            calories: calories ? calories.amount : null,
-            fats: fats ? fats.amount : null,
-            protein: protein ? protein.amount : null,
-            carbohydrates: carbohydrates ? carbohydrates.amount : null,
-          });
+          // Update the state with the ID
+          setingredientID(id);
+
+          // Call the function to fetch nutritional information
+          fetchNutritionalInformation(id);
         } else {
-          // Handle the case where there is no nutritional information
-          setNutritionalInfo({
-            calories: null,
-            fats: null,
-            protein: null,
-            carbohydrates: null,
-          });
+          setingredientID(null); // Food item not found
         }
       } else {
-        // Handle no results found
-        setNutritionalInfo({
-          calories: null,
-          fats: null,
-          protein: null,
-          carbohydrates: null,
-        });
+        // Handle API request error
+        console.error('API request error');
+      }
+    } catch (error) {
+      console.error('API request error:', error);
+    }
+  };
+
+  const fetchNutritionalInformation = async (ingredientId) => {
+    // Replace 'YOUR_API_KEY' with your actual Spoonacular API key
+    const apiKey = '00298f1246234721b20874aa5f8c7c0f';
+
+    try {
+      const response = await fetch(
+        `https://api.spoonacular.com/food/ingredients/${ingredientId}/information?apiKey=${apiKey}`
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        const parsedData = JSON.parse(data); // Parse the JSON string
+        console.log(data)
+        console.log(parsedData)
+
+        setCalories(data.nutrition.nutrients[0].amount)
+        
       }
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
 
+  const handleSearch = async (event) => {  event.preventDefault();
+  }
+
   return (
     <div>
-      <Navbar />
+      <Navbar></Navbar>
       <form onSubmit={handleSearch}>
         <input
-          type="text"
-          placeholder="Enter a food item"
-          value={foodItem}
-          onChange={(e) => setFoodItem(e.target.value)}
-        />
-        <button type="submit">Search</button>
-      </form>
-
-      {nutritionalInfo ? (
+            type="text"
+            placeholder="Enter a food item"
+            value={foodItem}
+            onChange={(e) => setFoodItem(e.target.value)}
+          />
+          <button className="search_button" type="submit">Search</button>
+        </form>
+      {ingredientID ? (
+        <p>ID of the top result: {ingredientID}</p>
+      ) : (
+        <p>No ID found for {foodItem}</p>
+      )}
+      {calories ? (
         <div>
-          <h2>Nutritional Information for {nutritionalInfo.name}</h2>
+          <h2>Nutritional Information for {foodItem}</h2>
           <ul>
-            <li>Calories: {nutritionalInfo.calories}</li>
-            <li>Fats: {nutritionalInfo.fats}</li>
-            <li>Protein: {nutritionalInfo.protein}</li>
-            <li>Carbohydrates: {nutritionalInfo.carbohydrates}</li>
+            <li>Calories: {calories}</li>
           </ul>
         </div>
       ) : (
-        <p>No nutritional information found for the entered food item.</p>
+        <p>something went wrong</p>
       )}
     </div>
+    
   );
 }
 

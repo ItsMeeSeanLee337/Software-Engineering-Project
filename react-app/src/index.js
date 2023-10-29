@@ -11,6 +11,7 @@ import Navbar from './Pages/Navbar';
 import Home from './Pages/Home';
 import Login_Success from './Pages/Login_Success';
 import Registration from './Pages/Registration';
+import NutritionalInformation from './Pages/nutritional_info';
 
 import {
   createBrowserRouter,
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
   {
     path: "registration",
     element: <Registration/>,
+  },
+  {
+    path: "NutritionalInformation",
+    element: <NutritionalInformation/>,
   }
 ]);
 
