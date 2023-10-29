@@ -66,21 +66,18 @@ function NutritionalInformation() {
     }
   };
 
-  const handleSearch = async (event) => {  event.preventDefault();
-  }
-
   return (
     <div>
       <Navbar></Navbar>
-      <form onSubmit={handleSearch}>
+      <div>
         <input
-            type="text"
-            placeholder="Enter a food item"
-            value={foodItem}
-            onChange={(e) => setFoodItem(e.target.value)}
-          />
-          <button className="search_button" type="submit">Search</button>
-        </form>
+          type="text"
+          placeholder="Search for a food item"
+          value={foodItem}
+          onChange={(e) => setFoodItem(e.target.value)}
+        />
+        <button onClick={fetchIngredientID}>Search</button>
+      </div>
       {ingredientID ? (
         <p>ID of the top result: {ingredientID}</p>
       ) : (
