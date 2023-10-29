@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 function NutritionalInformation() {
   const [foodItem, setFoodItem] = useState('');
   const [ingredientID, setingredientID] = useState(null);
-  const [calories, setCalories] = useState(null);
+  const [nutritionalInfo, setNutritionalInfo] = useState(null);
   
 
   const fetchIngredientID = async () => {
@@ -58,7 +58,12 @@ function NutritionalInformation() {
         console.log(data)
         console.log(parsedData)
 
-        
+        const nutritionalData = {
+          calories: nutrients.find((nutrient) => nutrient.name === 'Calories').amount,
+          fat: nutrients.find((nutrient) => nutrient.name === 'Fat').amount,
+          protein: nutrients.find((nutrient) => nutrient.name === 'Protein').amount,
+          carbs: nutrients.find((nutrient) => nutrient.name === 'Carbohydrates').amount,
+        };
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -82,12 +87,15 @@ function NutritionalInformation() {
       ) : (
         <p>No ID found for {foodItem}</p>
       )}
-      {calories ? (
+      {nutritionalInfo ? (
         <div>
-          <h2>Nutritional Information for {foodItem}</h2>
-          <ul>
-            <li>Calories: {calories}</li>
-          </ul>
+          <div>
+          <h2>Nutritional Information for {foodName}:</h2>
+          <p>Calories: {nutritionalInfo.calories}</p>
+          <p>Fat: {nutritionalInfo.fat}</p>
+          <p>Protein: {nutritionalInfo.protein}</p>
+          <p>Carbohydrates: {nutritionalInfo.carbs}</p>
+        </div>
         </div>
       ) : (
         <p>something went wrong</p>
