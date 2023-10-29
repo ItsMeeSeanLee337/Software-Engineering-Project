@@ -57,6 +57,8 @@ const router = createBrowserRouter([
   {
     path: "NutritionalInformation",
     element: <NutritionalInformation/>,
+  },
+  {
     path: "display-custom-recipes",
     element: <Display_Custom_Recipes/>,
   },

@@ -11,7 +11,7 @@ function NutritionalInformation() {
 
   const fetchIngredientID = async () => {
     // Replace 'YOUR_API_KEY' with your actual Spoonacular API key
-    const apiKey = '00298f1246234721b20874aa5f8c7c0f';
+    const apiKey = 'YOURAPIKEY';
 
     try {
       const response = await fetch(
@@ -47,7 +47,7 @@ function NutritionalInformation() {
 
   const fetchNutritionalInformation = async (ingredientId) => {
     // Replace 'YOUR_API_KEY' with your actual Spoonacular API key
-    const apiKey = '00298f1246234721b20874aa5f8c7c0f';
+    const apiKey = 'YOURAPIKEY';
 
     try {
       const response = await fetch(
