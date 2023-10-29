@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
+import '../styles/registration.css'
 
 const Registration = () => {
     const [firstname, setFirstname] = useState('');
@@ -81,37 +82,52 @@ const Registration = () => {
   return (
     <div>
       <Navbar></Navbar>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Firstname:
-          <input type="text" value={firstname} onChange={handleFirstnameChange} />
-        </label>
-        <br />
-        <label>
-          Lastname:
-          <input type="text" value={lastname} onChange={handleLastnameChange} />
-        </label>
-        <br />
-        <label>
-          Username:
-          <input type="text" value={username} onChange={handleUsernameChange} />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input type="password" value={password} onChange={handlePasswordChange} />
-        </label>
-        <br />
-        <label>
-          Email:
-          <input type="text" value={email} onChange={handleEmailChange} />
-        </label>
-        <br />
-        <button type="submit">Sign up</button>
-      </form>
+      <div className="container">
+        <h2>Register</h2>
+        <div className="form_box">
+          <form onSubmit={handleSubmit}>
+            <div className="up_label">
+              <label>
+                Firstname:
+                <input type="text" value={firstname} onChange={handleFirstnameChange} />
+              </label>
+            </div>
+            <br />
+            <div className="up_label">
+              <label>
+                Lastname:
+                <input type="text" value={lastname} onChange={handleLastnameChange} />
+              </label>
+            </div>
+            <br />
+            <div className="up_label">
+              <label>
+                Username:
+                <input type="text" value={username} onChange={handleUsernameChange} />
+              </label>
+            </div>
+            <br />
+            <div className="up_label">
+              <label>
+                Password:
+                <input type="password" value={password} onChange={handlePasswordChange} />
+              </label>
+            </div>
+            <br />
+            <div className="up_label">
+              <label>
+                Email:
+                <input type="text" value={email} onChange={handleEmailChange} />
+              </label>
+            </div>
+            <br />
+            <button className = "submit_button" type="submit">Sign up</button>
+          </form>
+        </div>
+      </div>
     </div>
   );
-};
+}
+  
 
 export default Registration;
