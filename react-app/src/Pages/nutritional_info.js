@@ -4,8 +4,10 @@ import Navbar from './Navbar';
 function NutritionalInformation() {
   const [foodItem, setFoodItem] = useState('');
   const [ingredientID, setingredientID] = useState(null);
-  const [nutritionalInfo, setNutritionalInfo] = useState(null);
-  
+  const [calories, setCalories] = useState(null);
+  const [fat, setFat] = useState(null);
+  const [protein, setProtein] = useState(null);
+  const [carbs, setCarbs] = useState(null);
 
   const fetchIngredientID = async () => {
     // Replace 'YOUR_API_KEY' with your actual Spoonacular API key
@@ -49,24 +51,36 @@ function NutritionalInformation() {
 
     try {
       const response = await fetch(
-        `https://api.spoonacular.com/food/ingredients/${ingredientId}/information?apiKey=${apiKey}`
+        `https://api.spoonacular.com/food/ingredients/${ingredientID}/information?amount=1&apiKey=${apiKey}`
       );
-
       if (response.ok) {
         const data = await response.json();
-        const parsedData = JSON.parse(data); // Parse the JSON string
-        console.log(data)
-        console.log(parsedData)
+        //const parsedData = JSON.parse(data);
+        
+        // Extract specific nutrient values
+        const calorieData = data.nutrition.nutrients.find((nutrient) => nutrient.name === 'Calories').amount;
+        const fatData = data.nutrition.nutrients.find((nutrient) => nutrient.name === 'Fat').amount;
+        const proteinData = data.nutrition.nutrients.find((nutrient) => nutrient.name === 'Protein').amount;
+        const carbData = data.nutrition.nutrients.find((nutrient) => nutrient.name === 'Carbohydrates').amount;
 
-        const nutritionalData = {
-          calories: nutrients.find((nutrient) => nutrient.name === 'Calories').amount,
-          fat: nutrients.find((nutrient) => nutrient.name === 'Fat').amount,
-          protein: nutrients.find((nutrient) => nutrient.name === 'Protein').amount,
-          carbs: nutrients.find((nutrient) => nutrient.name === 'Carbohydrates').amount,
-        };
+        setCalories(calorieData);
+        setFat(fatData);
+        setProtein(proteinData);
+        setCarbs(carbData);
+        console.log(calories)
+        console.log(fat)
+        console.log(protein)
+        console.log(carbs)
+      } else {
+        // Handle the case where the food item is not found
+        setCalories(null);
+        setFat(null);
+        setProtein(null);
+        setCarbs(null);  
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      // Handle any API request errors here
+      console.error('Error:', error);
     }
   };
 
@@ -87,18 +101,18 @@ function NutritionalInformation() {
       ) : (
         <p>No ID found for {foodItem}</p>
       )}
-      {nutritionalInfo ? (
+      {calories ? (
         <div>
           <div>
-          <h2>Nutritional Information for {foodName}:</h2>
-          <p>Calories: {nutritionalInfo.calories}</p>
-          <p>Fat: {nutritionalInfo.fat}</p>
-          <p>Protein: {nutritionalInfo.protein}</p>
-          <p>Carbohydrates: {nutritionalInfo.carbs}</p>
+          <h2>Nutritional Information for {foodItem}:</h2>
+          <p>Calories: {calories} kcal</p>
+          <p>Protein: {protein} g</p>
+          <p>Carbohydrates: {carbs} g</p>
+          <p>Fat: {fat} g</p>
         </div>
         </div>
       ) : (
-        <p>something went wrong</p>
+        <p>something went wrong for {foodItem}</p>
       )}
     </div>
     
