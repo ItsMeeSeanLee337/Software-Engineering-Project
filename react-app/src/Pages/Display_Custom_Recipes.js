@@ -4,13 +4,18 @@ import Navbar from './Navbar'
 import axios from 'axios';
 import '../styles/displayCustomRecipe.css'
 import { useHistory } from 'react-router-dom';
+import RecipeNotes from '../Modules/RecipeNotes';
 function Display_Custom_Recipes() {
 const [recipes, setRecipes] = useState([]);
 const [title, setNewTitle] = useState("")
 const [steps, setNewStep] = useState("")
 const [username, setNewUsername] = useState("");
+const [notesVisible, setNotesVisible] = useState(false);
+const [fillNotes, setfillNotes] = useState("");
+const [crid, setcrid] = useState('');
 var urlParams 
 var dataToSend = null
+var passID = '';
 try{
     urlParams = new URLSearchParams(window.location.search);
     dataToSend = urlParams.get('data');
@@ -25,10 +30,16 @@ try{
   
 
 
+useEffect(() => {
+    console.log("useeffect crid", crid)
+    getNotes(crid);
+}, [crid]);
+
+
 var response;
 useEffect(() => {
     const fetchData = async () => {
-    
+      
       try {
         //const apiUrl = 'http://localhost:8080/createRecipe';  
         const apiUrl = `http://172.16.122.26:8080/CustomRecipe/Display/${dataToSend}`;
@@ -55,6 +66,42 @@ useEffect(() => {
     await deleteRecipe(Title, Description, dataToSend);
   }
 
+
+const showNotes = (id) =>{
+  console.log("This is id", id);
+    passID = id;
+    setcrid(passID);
+    //getNotes(id);
+}
+
+const getNotes = async (id) =>{
+
+  try {
+    //const apiUrl = 'http://localhost:8080/createRecipe';  
+    const apiUrl = `http://172.16.122.26:8080/getRecipeNotes/${id}`;
+    console.log(id)
+    var response = await axios.get(apiUrl, id);
+    console.log('Response:', response.data);
+    var newNotes = response.data[0].notes;
+    setfillNotes(response.data[0].notes);
+    console.log(fillNotes);
+    console.log("This is new notes" ,newNotes);
+    setNotesVisible(!notesVisible);
+  } catch (error) {
+    console.error('Error:', error); 
+  }
+
+}
+
+useEffect(() => {
+  // This code inside the useEffect will run after setfillNotes is updated.
+  // You can perform actions that depend on the updated state here.
+  //console.log('fillNotes has been updated:', fillNotes);
+}, [fillNotes]);
+
+
+
+
 const deleteRecipe = async (title, steps, username) => {
   const apiUrl = 'http://172.16.122.26:8080/deleteCustomRecipe';
 
@@ -69,9 +116,7 @@ const deleteRecipe = async (title, steps, username) => {
   }
 }
 
-console.log("This is response:")
-console.log(response)
-console.log()
+
 
 
   return (
@@ -81,11 +126,13 @@ console.log()
         <h3>Your Saved Custom Recipes</h3>
         <div>
             {recipes.map(recipe => (
-          <div key={recipe.crID}>
-            <p>Title: {recipe.Title}</p>
-            <p>Steps: {recipe.Description}</p>
-            <p>Ingredients:</p>
-            <ul>
+          <div className = 'recipeItem' id='map' key={recipe.crID}>
+            <h4 className='recipeTitle'>Title</h4>
+            <p className='recipeTitle'>{recipe.Title}</p>
+            <h4 className='recipeTitle'>Steps</h4>
+            <p className='recipeSteps'>{recipe.Description}</p>
+            <h4 className='recipeTitle'>Ingredients</h4>
+            <ul className= 'recipeIngredients'>
               {Array.isArray(recipe.list) ? (
                 // For the first type of ingredient structure
                 recipe.list.map((ingredient, index) => (
@@ -97,12 +144,26 @@ console.log()
                   <li key={index}>{ingredient}</li>
                 ))
               )}
-            </ul>
-            <button className='centerButtonCR'
-            onClick={() => handleDelete (recipe)}
-            >Delete
-            </button>
-            <hr />
+              {notesVisible && <RecipeNotes 
+              visible = {notesVisible} 
+              className= 'showNotesPopUp'
+              setVisible = {setNotesVisible}
+              crID = {crid}
+              fillNotes = {fillNotes}
+              setfillNotes={setfillNotes}
+              setcrid={setcrid}
+              ></RecipeNotes>}
+                  <button className='centerButtonCR'
+                    onClick={() => handleDelete(recipe)}
+                  >Delete
+                  </button>
+                  <button className='centerButtonCR'
+                    onClick={() => showNotes(recipe.crID)}
+                  >Notes
+                  </button>
+                </ul>
+            
+            
             
           </div>
         ))}</div>
@@ -110,7 +171,7 @@ console.log()
     
     
     </div>
-
+      
     </>
   )
 }
