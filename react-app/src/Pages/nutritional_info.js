@@ -58,7 +58,6 @@ function NutritionalInformation() {
         console.log(data)
         console.log(parsedData)
 
-        setCalories(data.nutrition.nutrients[0].amount)
         
       }
     } catch (error) {
