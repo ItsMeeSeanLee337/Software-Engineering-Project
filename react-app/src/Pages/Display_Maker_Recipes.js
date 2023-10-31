@@ -11,19 +11,16 @@ const [recipes, setRecipes] = useState([]);
 const [title, setNewTitle] = useState("")
 const [steps, setNewStep] = useState("")
 const [username, setNewUsername] = useState("");
+const [recipeIngredients, setRecipeIngredients] = useState([]);
+const [userType, setUserType] = useState('');
 const [notesVisible, setNotesVisible] = useState(false);
 const [fillNotes, setfillNotes] = useState("");
 const [crid, setcrid] = useState('');
 const navigate = useNavigate(); //used to navigate to another page
 const urlParams = new URLSearchParams(window.location.search);
 const dataToSend = urlParams.get('data');
-const [userType, setUserType] = useState('');
-
-
-
-
 var passID = '';
-
+//If no one is loggin in, they go to the landing page
 useEffect(()=>{
   console.log("This is user param:",dataToSend)
   if(dataToSend === 'null' || dataToSend === null)
@@ -36,7 +33,7 @@ useEffect(()=>{
 //Check user type on page loading
 useEffect(() => {
   const checkUser = async () => {
-    if(dataToSend !== "null" || dataToSend !== null){
+    if(dataToSend !== "null"){
     try {
       //const apiUrl = 'http://localhost:8080/createRecipe';  
       
@@ -59,13 +56,12 @@ useEffect(() => {
 //When the user type is checked, will redirect makers to the landing page
 useEffect(()=>{
   console.log("This is user param:",dataToSend)
-  if(userType === -1)
+  if(userType === 1 || userType === -1)
   {
     console.log('navigating');
     navigate(`/`);
   }
 }, [userType])
-  
 
 
 useEffect(() => {
@@ -80,7 +76,7 @@ useEffect(() => {
       
       try {
         //const apiUrl = 'http://localhost:8080/createRecipe';  
-        const apiUrl = `http://172.16.122.26:8080/CustomRecipe/Display/${dataToSend}`;
+        const apiUrl = `http://172.16.122.26:8080/MakerRecipes/Display`;
 
         response = await axios.get(apiUrl);
         console.log('Response:', response.data);
@@ -94,14 +90,17 @@ useEffect(() => {
   }, []); // Empty dependency array ensures this effect runs once on mount
 
   
+
   
-  const handleDelete = async (recipeID) =>  {
+  const handleSave = async (recipeID) =>  {
     const { Title, Description } = recipeID; // Assuming these are the correct properties
+    var ri = recipeID.list.ingredients;
+    console.log("Recipe ing in maker: " ,ri);
     console.log('Title:', Title);
     console.log('Description:', Description);
   
     // Call deleteRecipe and pass the necessary values
-    await deleteRecipe(Title, Description, dataToSend);
+    await saveRecipe(Title, Description, ri, dataToSend);
   }
 
 
@@ -139,15 +138,12 @@ useEffect(() => {
 
 
 
-
-const deleteRecipe = async (title, steps, username) => {
-  const apiUrl = 'http://172.16.122.26:8080/deleteCustomRecipe';
-
+//Copy this recipe and put it into the user's own custom recipes
+const saveRecipe = async (title, steps, ingredients, username) => {
+  const apiUrl = `http://172.16.122.26:8080/createRecipe/${username}`;
+  console.log(ingredients);
   try {
-    const response = await axios.post(apiUrl, { title, steps, username });
-    
-    console.log('Response:', response);
-    window.location.reload();
+    const response = await axios.post(apiUrl, { title, steps, ingredients});
     
   } catch (error) {
     console.error('Error:', error);
@@ -161,7 +157,7 @@ const deleteRecipe = async (title, steps, username) => {
     <>
     <Navbar></Navbar>
     <div className='flex-container-CR'>
-        <h3>Your Saved Custom Recipes</h3>
+        <h3>Recipes from Recipe Makers</h3>
         <div>
             {recipes.map(recipe => (
           <div className = 'recipeItem' id='map' key={recipe.crID}>
@@ -192,12 +188,8 @@ const deleteRecipe = async (title, steps, username) => {
               setcrid={setcrid}
               ></RecipeNotes>}
                   <button className='centerButtonCR'
-                    onClick={() => handleDelete(recipe)}
-                  >Delete
-                  </button>
-                  <button className='centerButtonCR'
-                    onClick={() => showNotes(recipe.crID)}
-                  >Notes
+                    onClick={() => handleSave(recipe)}
+                  >Save
                   </button>
                 </ul>
             

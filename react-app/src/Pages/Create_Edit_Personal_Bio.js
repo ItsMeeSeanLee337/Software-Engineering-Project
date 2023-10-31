@@ -4,8 +4,56 @@ import axios from 'axios';
 import Navbar from './Navbar';
 import '../styles/bio.css'
 import Login_Success from './Login_Success';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 function Create_Edit_Personal_Bio() {
+  var response;
+  const navigate = useNavigate(); //used to navigate to another page
+  const [userType, setUserType] = useState('');
+  useEffect(()=>{
+    console.log("This is user param:",data)
+    if(data === 'null' || data === null)
+    {
+      console.log('navigating');
+      navigate(`/`);
+    }
+  },[])
+  
+//Check user type on page loading
+useEffect(() => {
+  const checkUser = async () => {
+    if(data !== "null" || data !== null){
+    try {
+      //const apiUrl = 'http://localhost:8080/createRecipe';  
+      
+      const apiUrl = `http://172.16.122.26:8080/checkMaker/${data}`;
+
+      response = await axios.get(apiUrl);
+      console.log('Response:', response.data);
+      setUserType(response.data[0].isMaker);
+    } catch (error) {
+      //This means an invalid user tried to access the system
+      setUserType(-1);
+      console.error('Error:', error);
+    }
+  };
+  }
+  checkUser();
+}, []); // Empty dependency array ensures this effect runs once on mount
+
+
+//When the user type is checked, will redirect makers to the landing page
+useEffect(()=>{
+  console.log("This is user param:",data)
+  if(userType === 1 || userType === -1)
+  {
+    console.log('navigating');
+    navigate(`/`);
+  }
+}, [userType])
+
+
+
     const [selectedImage, setSelectedImage] = useState(null);
     const [bio, setBio] = useState("");
     const [favoriteFood, setfavoriteFood] = useState("");

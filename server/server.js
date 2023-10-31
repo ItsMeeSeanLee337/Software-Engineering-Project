@@ -56,6 +56,7 @@ app.post('/createRecipe/:username', async (req, res) => {
   try{
   const username = req.params.username;
   console.log(username);
+  var userID = await getUserID(username, res);
   //Getting the parameters from the form
   const { title } = req.body;
   const { steps } = req.body;
@@ -106,16 +107,18 @@ app.post('/createRecipe/:username', async (req, res) => {
   //Preforming the query with the function
   queryDatabase(query_IL, values_IL);
 
+  //Have to see if they are a recipe maker account type and mark that on the CR
+
+  var isMaker = await db.pool.query(`Select isMaker from User where userID = ${userID}`)
+  const makerFinal = isMaker[0].isMaker
+  console.log("In custom recipe isMake value: ", makerFinal)
   //Constructing query to insert the custom recipe into the table on DB with ilID
-  const query_CR = 'INSERT INTO CustomRecipe (crID, Title, Description, ilID) VALUES (?, ?, ?, ?)';
-  const values_CR = [ilID, title, steps, ilID];
+  const query_CR = 'INSERT INTO CustomRecipe (crID, Title, Description, ilID, isMakerRecipe) VALUES (?, ?, ?, ?, ?)';
+  const values_CR = [ilID, title, steps, ilID, makerFinal];
 
   queryDatabase(query_CR, values_CR);
 
   //Now add it to the userrecipe table to link it to them
-
-  var userID = await getUserID(username);
-
   const query_UR = 'Insert into UserRecipes(userID, crID) Values(?, ?);';
   const values_UR = [userID, ilID];
 
@@ -130,11 +133,17 @@ app.post('/createRecipe/:username', async (req, res) => {
 
 /* ----------------------------------------------- */
 
-async function getUserID(Username) {
-  var query = `SELECT UserID FROM User WHERE username = '${Username}';`;
-  const result = await db.pool.query(query);
-  console.log(result[0].UserID);
-  return (result[0].UserID);
+async function getUserID(Username, res) {
+  try{
+    var query = `SELECT UserID FROM User WHERE username = '${Username}';`;
+    const result = await db.pool.query(query);
+    console.log(result[0].UserID);
+    return (result[0].UserID);
+  }catch{
+    res.status(400).send({ error: "Not a user" });
+    throw new Error("Not a user");
+  }
+  
  
 }
 
@@ -144,8 +153,10 @@ app.get('/CustomRecipe/Display/:username', async(req,res) =>{
   try {
     const username = req.params.username;
     console.log(username);
+    var finalUserID = await getUserID(username, res);
   
-  var finalUserID = await getUserID(username);
+  
+  
 
 
 
@@ -173,6 +184,33 @@ app.get('/CustomRecipe/Display/:username', async(req,res) =>{
 }
 })
 
+app.get('/MakerRecipes/Display', async(req,res) =>{
+  
+  try {
+  query = `
+  SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list
+  FROM CustomRecipe
+  JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
+  WHERE CustomRecipe.isMakerRecipe = 1;
+  `;
+  try {
+    const result = await db.pool.query(query);
+    console.log(result);
+    console.log(query);
+    res.send(result);
+    
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+} catch (error) {
+  console.error('An error occurred with username:', error);
+  res.status(400).send({ error: "invalid user" });
+  return; // Stop further execution
+}
+})
+
 app.post('/deleteCustomRecipe' , async(req,res)=>{
   console.log("here in deleteCustom");
   const {username} = req.body;
@@ -182,7 +220,7 @@ app.post('/deleteCustomRecipe' , async(req,res)=>{
   console.log('steps:', steps)
   console.log(username);
 
-  const userID = await getUserID(username);
+  const userID = await getUserID(username, res);
 
 
   const query = `
@@ -217,7 +255,7 @@ app.post('/saveRecipeNotes/:username', async (req, res) => {
   try{
   const username = req.params.username;
   console.log(username);
-  var finalUserID = await getUserID(username);
+  var finalUserID = await getUserID(username, res);
   
   const {notes} = req.body;
   const {thiscrID} = req.body;
@@ -559,11 +597,13 @@ app.post('/registration', async (req, res) => {
   const { username } = req.body;
   const { password } = req.body;
   const { email } = req.body;
+  const { isMaker } = req.body;
   console.log('This is the firstname:', firstname);
   console.log('This is the lastname:', lastname);
   console.log('This is the username:', username);
   console.log('This is the password:', password);
   console.log('This is the email:', email);
+  console.log("This is ismaker: ", isMaker)
  
   try {
       const connection = await db.pool.getConnection();
@@ -608,8 +648,8 @@ app.post('/registration', async (req, res) => {
 
           //const query = `INSERT INTO User (UserID, Firstname, Lastname, Username, Password, Email)
           //VALUES (${userID}, ${firstname}, ${lastname}, ${username}, ${password}, ${email}); `
-          const query_CR = 'INSERT INTO User (UserID, Firstname, Lastname, Username, Password, Email ) VALUES (?, ?, ?, ?, ?, ?)';
-          const values_CR = [userID, firstname, lastname, username, password, email];
+          const query_CR = 'INSERT INTO User (UserID, Firstname, Lastname, Username, Password, Email, isMaker ) VALUES (?, ?, ?, ?, ?, ?, ?)';
+          const values_CR = [userID, firstname, lastname, username, password, email, isMaker];
           queryDatabase(query_CR, values_CR);
 
           /*try {
@@ -632,6 +672,43 @@ app.post('/registration', async (req, res) => {
  
 });
 
+//Returns the JSON of [ { isMaker: 1 } ]
+
+
+app.get('/checkMaker/:username', async (req,res)=>{
+  try{
+
+ 
+  const username = req.params.username;
+  console.log(username);
+  var finalUserID = await getUserID(username,res);
+
+  //Query the database for the isMaker param
+  const result = await db.pool.query(`Select isMaker from User where userID = ${finalUserID}`)
+  console.log("here")
+  if(result != null)
+  {
+    console.log("here", result[0].isMaker)
+    if(result[0].isMaker != 1 && result[0].isMaker != 0)
+    {
+      res.status(400).send({ error: "Invalid isMaker value" });
+    }
+    else
+    {
+      console.log("sending maker result");
+      res.send(result);
+      
+    }
+  }
+  else
+  {
+    res.status(400).send({ error: "Invalid isMaker was null" });
+  }
+}
+catch{
+    console.log("User was invalid")
+}
+})
 
 
 app.get('/getCustomRecipe', async (req, res) => {
