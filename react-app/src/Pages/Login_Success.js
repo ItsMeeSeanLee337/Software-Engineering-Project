@@ -12,7 +12,56 @@ function Login_Success(){
     const username = decodeURIComponent(data);
     const [maker, setMaker] = useState('');
     const navigate = useNavigate(); //used to navigate to another page
+    const [userType, setUserType] = useState('');
+    var response;
     console.log("DATA: ", username);
+
+    useEffect(()=>{
+        console.log("This is user param:",data)
+        if(data === 'null' || data === null)
+        {
+          console.log('navigating');
+          navigate(`/`);
+        }
+      },[])
+      
+      //Check user type on page loading
+      useEffect(() => {
+        const checkUser = async () => {
+          if(data !== "null" || data !== null){
+          try {
+            //const apiUrl = 'http://localhost:8080/createRecipe';  
+            
+            const apiUrl = `http://172.16.122.26:8080/checkMaker/${data}`;
+      
+            response = await axios.get(apiUrl);
+            console.log('Response:', response.data);
+            setUserType(response.data[0].isMaker);
+          } catch (error) {
+            //This means an invalid user tried to access the system
+            setUserType(-1);
+            console.error('Error:', error);
+          }
+        };
+        }
+        checkUser();
+      }, []); // Empty dependency array ensures this effect runs once on mount
+      
+      
+      //When the user type is checked, will redirect makers to the landing page
+      useEffect(()=>{
+        console.log("This is user param:",data)
+        if(userType === 1 || userType === -1)
+        {
+          console.log('navigating');
+          navigate(`/`);
+        }
+      }, [userType])
+
+
+
+
+
 
     //Checking to see if the user is a recipe maker
     //Will send them to create custom recipe if they are
@@ -36,6 +85,7 @@ function Login_Success(){
 
       //When maker is updated, this will run and redirect them if they are a maker
       useEffect(() => {
+        console.log("Make number = ", maker)
         if (maker === 1) {
           console.log('navigating');
           navigate(`/create_recipe?data=${username}`);

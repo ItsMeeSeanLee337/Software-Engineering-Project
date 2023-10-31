@@ -56,6 +56,7 @@ app.post('/createRecipe/:username', async (req, res) => {
   try{
   const username = req.params.username;
   console.log(username);
+  var userID = await getUserID(username, res);
   //Getting the parameters from the form
   const { title } = req.body;
   const { steps } = req.body;
@@ -107,7 +108,7 @@ app.post('/createRecipe/:username', async (req, res) => {
   queryDatabase(query_IL, values_IL);
 
   //Have to see if they are a recipe maker account type and mark that on the CR
-  var userID = await getUserID(username);
+
   var isMaker = await db.pool.query(`Select isMaker from User where userID = ${userID}`)
   const makerFinal = isMaker[0].isMaker
   console.log("In custom recipe isMake value: ", makerFinal)
@@ -132,11 +133,17 @@ app.post('/createRecipe/:username', async (req, res) => {
 
 /* ----------------------------------------------- */
 
-async function getUserID(Username) {
-  var query = `SELECT UserID FROM User WHERE username = '${Username}';`;
-  const result = await db.pool.query(query);
-  console.log(result[0].UserID);
-  return (result[0].UserID);
+async function getUserID(Username, res) {
+  try{
+    var query = `SELECT UserID FROM User WHERE username = '${Username}';`;
+    const result = await db.pool.query(query);
+    console.log(result[0].UserID);
+    return (result[0].UserID);
+  }catch{
+    res.status(400).send({ error: "Not a user" });
+    throw new Error("Not a user");
+  }
+  
  
 }
 
@@ -146,8 +153,10 @@ app.get('/CustomRecipe/Display/:username', async(req,res) =>{
   try {
     const username = req.params.username;
     console.log(username);
+    var finalUserID = await getUserID(username, res);
   
-  var finalUserID = await getUserID(username);
+  
+  
 
 
 
@@ -197,6 +206,7 @@ app.get('/MakerRecipes/Display', async(req,res) =>{
   }
 } catch (error) {
   console.error('An error occurred with username:', error);
+  res.status(400).send({ error: "invalid user" });
   return; // Stop further execution
 }
 })
@@ -210,7 +220,7 @@ app.post('/deleteCustomRecipe' , async(req,res)=>{
   console.log('steps:', steps)
   console.log(username);
 
-  const userID = await getUserID(username);
+  const userID = await getUserID(username, res);
 
 
   const query = `
@@ -245,7 +255,7 @@ app.post('/saveRecipeNotes/:username', async (req, res) => {
   try{
   const username = req.params.username;
   console.log(username);
-  var finalUserID = await getUserID(username);
+  var finalUserID = await getUserID(username, res);
   
   const {notes} = req.body;
   const {thiscrID} = req.body;
@@ -666,15 +676,38 @@ app.post('/registration', async (req, res) => {
 
 
 app.get('/checkMaker/:username', async (req,res)=>{
+  try{
+
+ 
   const username = req.params.username;
   console.log(username);
-  var finalUserID = await getUserID(username);
+  var finalUserID = await getUserID(username,res);
 
   //Query the database for the isMaker param
   const result = await db.pool.query(`Select isMaker from User where userID = ${finalUserID}`)
-  res.send(result);
-  console.log(result);
-
+  console.log("here")
+  if(result != null)
+  {
+    console.log("here", result[0].isMaker)
+    if(result[0].isMaker != 1 && result[0].isMaker != 0)
+    {
+      res.status(400).send({ error: "Invalid isMaker value" });
+    }
+    else
+    {
+      console.log("sending maker result");
+      res.send(result);
+      
+    }
+  }
+  else
+  {
+    res.status(400).send({ error: "Invalid isMaker was null" });
+  }
+}
+catch{
+    console.log("User was invalid")
+}
 })
 
 
