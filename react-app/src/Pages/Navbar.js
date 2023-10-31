@@ -31,7 +31,7 @@ return(
       
       <li><Link to="/Login">Login</Link></li>
       <li><Link to="/NutritionalInformation">NutritionalInformation</Link></li>
-      <li><Link to="/NutritionalInformation">Maker Recipes</Link></li>
+      <Link to={`/display-maker-recipes?data=${dataToSend}`} className= "noDecoration" >Maker Recipes</Link>
       <li
         onMouseEnter = {handleMouseEnter}
         onMouseLeave={handleMouseLeave}>

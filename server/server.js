@@ -175,6 +175,32 @@ app.get('/CustomRecipe/Display/:username', async(req,res) =>{
 }
 })
 
+app.get('/MakerRecipes/Display', async(req,res) =>{
+  
+  try {
+  query = `
+  SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list
+  FROM CustomRecipe
+  JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
+  WHERE CustomRecipe.isMakerRecipe = 1;
+  `;
+  try {
+    const result = await db.pool.query(query);
+    console.log(result);
+    console.log(query);
+    res.send(result);
+    
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+} catch (error) {
+  console.error('An error occurred with username:', error);
+  return; // Stop further execution
+}
+})
+
 app.post('/deleteCustomRecipe' , async(req,res)=>{
   console.log("here in deleteCustom");
   const {username} = req.body;
