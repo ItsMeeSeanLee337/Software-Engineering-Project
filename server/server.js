@@ -106,16 +106,18 @@ app.post('/createRecipe/:username', async (req, res) => {
   //Preforming the query with the function
   queryDatabase(query_IL, values_IL);
 
+  //Have to see if they are a recipe maker account type and mark that on the CR
+  var userID = await getUserID(username);
+  var isMaker = await db.pool.query(`Select isMaker from User where userID = ${userID}`)
+  const makerFinal = isMaker[0].isMaker
+  console.log("In custom recipe isMake value: ", makerFinal)
   //Constructing query to insert the custom recipe into the table on DB with ilID
-  const query_CR = 'INSERT INTO CustomRecipe (crID, Title, Description, ilID) VALUES (?, ?, ?, ?)';
-  const values_CR = [ilID, title, steps, ilID];
+  const query_CR = 'INSERT INTO CustomRecipe (crID, Title, Description, ilID, isMakerRecipe) VALUES (?, ?, ?, ?, ?)';
+  const values_CR = [ilID, title, steps, ilID, makerFinal];
 
   queryDatabase(query_CR, values_CR);
 
   //Now add it to the userrecipe table to link it to them
-
-  var userID = await getUserID(username);
-
   const query_UR = 'Insert into UserRecipes(userID, crID) Values(?, ?);';
   const values_UR = [userID, ilID];
 
@@ -559,11 +561,13 @@ app.post('/registration', async (req, res) => {
   const { username } = req.body;
   const { password } = req.body;
   const { email } = req.body;
+  const { isMaker } = req.body;
   console.log('This is the firstname:', firstname);
   console.log('This is the lastname:', lastname);
   console.log('This is the username:', username);
   console.log('This is the password:', password);
   console.log('This is the email:', email);
+  console.log("This is ismaker: ", isMaker)
  
   try {
       const connection = await db.pool.getConnection();
@@ -608,8 +612,8 @@ app.post('/registration', async (req, res) => {
 
           //const query = `INSERT INTO User (UserID, Firstname, Lastname, Username, Password, Email)
           //VALUES (${userID}, ${firstname}, ${lastname}, ${username}, ${password}, ${email}); `
-          const query_CR = 'INSERT INTO User (UserID, Firstname, Lastname, Username, Password, Email ) VALUES (?, ?, ?, ?, ?, ?)';
-          const values_CR = [userID, firstname, lastname, username, password, email];
+          const query_CR = 'INSERT INTO User (UserID, Firstname, Lastname, Username, Password, Email, isMaker ) VALUES (?, ?, ?, ?, ?, ?, ?)';
+          const values_CR = [userID, firstname, lastname, username, password, email, isMaker];
           queryDatabase(query_CR, values_CR);
 
           /*try {
@@ -632,6 +636,20 @@ app.post('/registration', async (req, res) => {
  
 });
 
+//Returns the JSON of [ { isMaker: 1 } ]
+
+
+app.get('/checkMaker/:username', async (req,res)=>{
+  const username = req.params.username;
+  console.log(username);
+  var finalUserID = await getUserID(username);
+
+  //Query the database for the isMaker param
+  const result = await db.pool.query(`Select isMaker from User where userID = ${finalUserID}`)
+  res.send(result);
+  console.log(result);
+
+})
 
 
 app.get('/getCustomRecipe', async (req, res) => {
