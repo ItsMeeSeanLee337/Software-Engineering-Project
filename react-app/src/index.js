@@ -19,6 +19,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import HomePage from './Pages/HomePage';
 
 const router = createBrowserRouter([
   {
@@ -67,7 +68,10 @@ const router = createBrowserRouter([
   {
     path: "Create_Edit_Personal_Bio",
     element: <Create_Edit_Personal_Bio/>,
-
+  },
+  {
+    path: "HomePage",
+    element: <HomePage/>,
   }
 
 ]);

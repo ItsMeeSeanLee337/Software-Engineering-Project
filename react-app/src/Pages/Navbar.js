@@ -30,7 +30,9 @@ return(
     </Link></li>
       
       <li><Link to="/Login">Login</Link></li>
-      <li><Link to="/NutritionalInformation">NutritionalInformation</Link></li>
+      <li><Link to="/HomePage">HomePage</Link></li>
+      <li><Link to={`/NutritionalInformation?data=${dataToSend}`} className= "noDecoration" >Nutritional Info</Link></li>
+      <li><Link to={`/display-maker-recipes?data=${dataToSend}`} className= "noDecoration" >Maker Recipes</Link></li>
       <li
         onMouseEnter = {handleMouseEnter}
         onMouseLeave={handleMouseLeave}>

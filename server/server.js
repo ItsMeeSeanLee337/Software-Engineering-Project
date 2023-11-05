@@ -265,6 +265,18 @@ app.get('/getRecipeNotes/:crID', async (req, res) => {
   }
 });
 
+app.get('/getRandomRecipes', async (req, res) => {
+  try {
+      const result = await db.pool.query(`SELECT title, description FROM CustomRecipe
+        ORDER BY RAND()
+        LIMIT 3`);
+      res.send(result);
+  } catch (err) {
+      throw err;
+  }
+});
+
+
 
 // Section for postman testing
 

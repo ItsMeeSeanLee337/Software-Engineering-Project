@@ -51,36 +51,19 @@ function NutritionalInformation() {
 
     try {
       const response = await fetch(
-        `https://api.spoonacular.com/food/ingredients/${ingredientID}/information?amount=1&apiKey=${apiKey}`
+        `https://api.spoonacular.com/food/ingredients/${ingredientId}/information?apiKey=${apiKey}`
       );
+
       if (response.ok) {
         const data = await response.json();
-        //const parsedData = JSON.parse(data);
-        
-        // Extract specific nutrient values
-        const calorieData = data.nutrition.nutrients.find((nutrient) => nutrient.name === 'Calories').amount;
-        const fatData = data.nutrition.nutrients.find((nutrient) => nutrient.name === 'Fat').amount;
-        const proteinData = data.nutrition.nutrients.find((nutrient) => nutrient.name === 'Protein').amount;
-        const carbData = data.nutrition.nutrients.find((nutrient) => nutrient.name === 'Carbohydrates').amount;
+        const parsedData = JSON.parse(data); // Parse the JSON string
+        console.log(data)
+        console.log(parsedData)
 
-        setCalories(calorieData);
-        setFat(fatData);
-        setProtein(proteinData);
-        setCarbs(carbData);
-        console.log(calories)
-        console.log(fat)
-        console.log(protein)
-        console.log(carbs)
-      } else {
-        // Handle the case where the food item is not found
-        setCalories(null);
-        setFat(null);
-        setProtein(null);
-        setCarbs(null);  
+        
       }
     } catch (error) {
-      // Handle any API request errors here
-      console.error('Error:', error);
+      console.error('Error fetching data:', error);
     }
   };
 
@@ -103,16 +86,13 @@ function NutritionalInformation() {
       )}
       {calories ? (
         <div>
-          <div>
-          <h2>Nutritional Information for {foodItem}:</h2>
-          <p>Calories: {calories} kcal</p>
-          <p>Protein: {protein} g</p>
-          <p>Carbohydrates: {carbs} g</p>
-          <p>Fat: {fat} g</p>
-        </div>
+          <h2>Nutritional Information for {foodItem}</h2>
+          <ul>
+            <li>Calories: {calories}</li>
+          </ul>
         </div>
       ) : (
-        <p>something went wrong for {foodItem}</p>
+        <p>something went wrong</p>
       )}
     </div>
     
