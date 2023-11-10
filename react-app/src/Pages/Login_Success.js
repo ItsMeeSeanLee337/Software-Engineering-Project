@@ -48,10 +48,10 @@ function Login_Success(){
       }, []); // Empty dependency array ensures this effect runs once on mount
       
       
-      //When the user type is checked, will redirect makers to the landing page
+      //When the user type is checked, will redirect non users to the landing page
       useEffect(()=>{
         console.log("This is user param:",data)
-        if(userType === 1 || userType === -1)
+        if(userType === -1)
         {
           console.log('navigating');
           navigate(`/`);
@@ -88,7 +88,7 @@ function Login_Success(){
         console.log("Make number = ", maker)
         if (maker === 1) {
           console.log('navigating');
-          navigate(`/create_recipe?data=${username}`);
+          navigate(`/Create_Recipe?data=${username}`);
         }
       }, [maker]);
 
@@ -113,7 +113,7 @@ function Login_Success(){
         <button type="button" onClick={handleCreateEditBio}>Create/Edit Bio</button>
         <br />
         <br />
-        <button type="button" onClick={handleGoToBio}>Go to Bio</button>
+        <button id ="goToBio" type="button" onClick={handleGoToBio}>Go to Bio</button>
         <br />
         <br />
         <a href="/">Logout</a> 

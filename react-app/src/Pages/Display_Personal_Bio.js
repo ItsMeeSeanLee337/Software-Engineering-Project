@@ -89,7 +89,7 @@ function Display_Personal_Bio() {
 
       return (
         <div>
-        <button type="button" onClick={handleBackEdit}>Go Back to Edit</button>
+        <button type="button" id='goToEditBio' onClick={handleBackEdit}>Go Back to Edit</button>
         <br />
         <br />
         <button type="button" onClick={handleBackHome}>Go Back to Home</button>

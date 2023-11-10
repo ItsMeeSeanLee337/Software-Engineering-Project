@@ -25,7 +25,7 @@ return(
              Nutripro
         </div>
     <ul className='navbar-nav'>
-      <li><Link to={`/Home?data=${dataToSend}`}>
+      <li><Link to={`/Home?data=${dataToSend}`} id='homeLink'>
       Home
     </Link></li>
       
@@ -35,7 +35,7 @@ return(
       <li
         onMouseEnter = {handleMouseEnter}
         onMouseLeave={handleMouseLeave}>
-        <Link to={`/Create_Recipe?data=${dataToSend}`} className= "noDecoration" >Create Recipe</Link>
+        <Link to={`/Create_Recipe?data=${dataToSend}`} id = 'goToCreateRecipe' className= "noDecoration" >Create Recipe</Link>
         {dropVisible && <NavDropDown></NavDropDown>}
         </li>
     </ul>
