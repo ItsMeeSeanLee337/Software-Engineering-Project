@@ -317,89 +317,6 @@ app.get('/get', async (req, res) => {
   }
 });
 
-app.get('/getTaggedRecipes/:username', async(req,res) =>{
-  console.log("Inside get tagged recipes");
-  try {
-    const username = req.params.username;
-    console.log("Username: ", username);
-    var finalUserID = await getUserID(username, res);
-    console.log("UserID: ", finalUserID);
-  //select * so we can also get notes and display that
-  query = `
-  SELECT CustomRecipe.crID, CustomRecipe.Tag, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list, CustomRecipe.notes
-  FROM CustomRecipe
-  JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
-  JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
-  WHERE UserRecipes.userID = ${finalUserID} AND CustomRecipe.Tag IS NOT NULL;
-  `;
-  try {
-    const result = await db.pool.query(query);
-    console.log(result);
-    console.log(query);
-    res.send(result);
-    
-
-  } catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).send('Internal Server Error');
-  }
-} catch (error) {
-  console.error('An error occurred with username:', error);
-  return; 
-}
-});
-
-app.post('/untagRecipes/:crID' , async(req, res) => {
-  const crID = req.params.crID;
-  try {
-    const query = `
-    Update CustomRecipe
-    Set Tag = NULL
-    where crID = ${crID};
-    `;
-    const result = await db.pool.query(query);
-    console.log(result);
-    console.log(query);
-    res.send("Tag removed");
-
-  } catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).send('Internal Server Error');
-  }
-
-});
-
-app.post('/setTaggedRecipes/:crID', async(req, res) => {
-  const crID = req.params.crID;
-  console.log("This is the crID for taggedRecipes: ", crID);
-  const {username} = req.body;
-  const {tagText} = req.body;
-  console.log("This is the crid: ", crID, "This is the text: ", tagText);
-  //var finalUserID = await getUserID(username, res);
-  if(tagText == '' || tagText == null) {
-    res.send("Tag empty, db not updated")
-    return;
-  }
-
-    try {
-      const query = `
-      Update CustomRecipe
-      Set Tag = '${tagText}'
-      where crID = ${crID}
-      `;
-      const result = await db.pool.query(query);
-      console.log(result);
-      console.log(query);
-      res.send("Tags Updated");
-  
-    } catch (error) {
-      console.error('Error executing query:', error);
-      res.status(500).send('Internal Server Error');
-    }
-
-
-});
-
 //This is for display bio
 app.post('/getBio', async(req,res) => {
   const {username} = req.body;
@@ -627,6 +544,90 @@ app.post('/createEditBio', async(req,res) => {
   }
 
 });
+
+app.get('/getTaggedRecipes/:username', async(req,res) =>{
+  console.log("Inside get tagged recipes");
+  try {
+    const username = req.params.username;
+    console.log("Username: ", username);
+    var finalUserID = await getUserID(username, res);
+    console.log("UserID: ", finalUserID);
+  //select * so we can also get notes and display that
+  query = `
+  SELECT CustomRecipe.crID, CustomRecipe.Tag, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list, CustomRecipe.notes
+  FROM CustomRecipe
+  JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
+  JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
+  WHERE UserRecipes.userID = ${finalUserID} AND CustomRecipe.Tag IS NOT NULL;
+  `;
+  try {
+    const result = await db.pool.query(query);
+    console.log(result);
+    console.log(query);
+    res.send(result);
+    
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+} catch (error) {
+  console.error('An error occurred with username:', error);
+  return; 
+}
+});
+
+app.post('/untagRecipes/:crID' , async(req, res) => {
+  const crID = req.params.crID;
+  try {
+    const query = `
+    Update CustomRecipe
+    Set Tag = NULL
+    where crID = ${crID};
+    `;
+    const result = await db.pool.query(query);
+    console.log(result);
+    console.log(query);
+    res.send("Tag removed");
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+
+});
+
+app.post('/setTaggedRecipes/:crID', async(req, res) => {
+  const crID = req.params.crID;
+  console.log("This is the crID for taggedRecipes: ", crID);
+  const {username} = req.body;
+  const {tagText} = req.body;
+  console.log("This is the crid: ", crID, "This is the text: ", tagText);
+  //var finalUserID = await getUserID(username, res);
+  if(tagText == '' || tagText == null) {
+    res.send("Tag empty, db not updated")
+    return;
+  }
+
+    try {
+      const query = `
+      Update CustomRecipe
+      Set Tag = '${tagText}'
+      where crID = ${crID}
+      `;
+      const result = await db.pool.query(query);
+      console.log(result);
+      console.log(query);
+      res.send("Tags Updated");
+  
+    } catch (error) {
+      console.error('Error executing query:', error);
+      res.status(500).send('Internal Server Error');
+    }
+
+
+});
+
 
 
 app.post('/login', async (req, res) => {

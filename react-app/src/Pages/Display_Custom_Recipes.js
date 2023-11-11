@@ -178,13 +178,11 @@ const handleSaveText= (id) => {
     ...prevVisibility,
     [id]: !prevVisibility[id],
   }));
-  //settagText = '';
 
   //insert into db for that crid
 try{
   
   const apiUrl = `http://172.16.122.26:8080/setTaggedRecipes/${id}`;
-  //we dont really care about response, just inserting data, when user clicks show tagged recipies then we care about response, this will be handled in a diff page though
     axios.post(apiUrl, {username, tagText})
       .then(response_tag => {
         if (response_tag.status === 200) {
@@ -260,7 +258,6 @@ const handleTag = (id) => {
                 ))
               )}
 
-
               <div>
                <button className = 'centerButtonCR'
                 onClick={() => handleTag(recipe.crID)}
@@ -269,9 +266,9 @@ const handleTag = (id) => {
                 <div>
                   <textarea
                     value={tagText}
-                    onChange={(e) => settagText(e.target.value)}
-                    rows="4"
-                    cols="50"
+                    onChange={(event) => settagText(event.target.value)}
+                    rows="2"
+                    cols="40"
                   ></textarea>
                   <button onClick={() => handleSaveText(recipe.crID)}>Save</button>
                 </div>
