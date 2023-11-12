@@ -6,12 +6,17 @@ body {
   }
   
   /* Styling the header */
-  .header {
+  /*.homepage > h1 {
     background-color: #333;
-    color: white;
+    color: rgb(11, 11, 11);
     padding: 1rem;
     text-align: center;
-  }
+  }*/
+
+  .homepage > h1 {
+    color: rgb(0, 128, 62);
+    margin-left: 20px; /* Adjust the margin as needed */
+}
   
   /* Styling the links container */
   .links-container {
@@ -30,7 +35,7 @@ body {
     border-radius: 5px;
     padding: 20px;
     max-width: 200px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(14, 14, 14, 0.1);
     transition: transform 0.2s ease-in-out;
   }
   
@@ -49,23 +54,24 @@ body {
   /* Styling link titles */
   .link-box h3 {
     font-size: 1.2rem;
-    color: #333;
+    color: #070707;
   }
   
   /* Styling the custom recipe box */
   .custom-recipe-box {
+    color: rgb(0, 128, 62);
     margin: 2rem;
     padding: 1rem;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(11, 149, 52, 0.1);
   }
   
   /* Styling the recipe items within the custom recipe box */
   .recipe-item {
     margin: 1rem;
     padding: 1rem;
-    border: 1px solid #ddd;
+    border: 1px solid #0a0808;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
