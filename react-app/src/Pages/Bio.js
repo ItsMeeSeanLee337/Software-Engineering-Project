@@ -5,7 +5,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Login from './Login';
 import { Link } from 'react-router-dom';
-function Login_Success(){
+function Bio(){
     //getting username data fro succesful login 
     const urlParams = new URLSearchParams(window.location.search);
     const data = urlParams.get('data');
@@ -48,10 +48,10 @@ function Login_Success(){
       }, []); // Empty dependency array ensures this effect runs once on mount
       
       
-      //When the user type is checked, will redirect non users to the landing page
+      //When the user type is checked, will redirect makers to the landing page
       useEffect(()=>{
         console.log("This is user param:",data)
-        if(userType === -1)
+        if(userType === 1 || userType === -1)
         {
           console.log('navigating');
           navigate(`/`);
@@ -88,11 +88,11 @@ function Login_Success(){
         console.log("Make number = ", maker)
         if (maker === 1) {
           console.log('navigating');
-          navigate(`/Create_Recipe?data=${username}`);
+          navigate(`/create_recipe?data=${username}`);
         }
       }, [maker]);
 
-   /*
+   
     const handleGoToBio = async (event) => {
         console.log("moved to biopage");
         event.preventDefault();
@@ -105,13 +105,17 @@ function Login_Success(){
         const dataToSend = encodeURIComponent(username)
         window.location.href = `/Create_Edit_Personal_Bio?data=${dataToSend}`;
     }
-    */
 
     return(
     <div>
         <Navbar></Navbar>
-        <p>Welcome to your page {username}!</p> 
-        <a href="/">Logout</a> 
+        <p>Welcome to your Bio page! Click on Create/Edit Bio to edit your bio and Go to Bio to view your bio!</p>
+        <button type="button" onClick={handleCreateEditBio}>Create/Edit Bio</button>
+        <br />
+        <br />
+        <button type="button" onClick={handleGoToBio}>Go to Bio</button>
+        <br />
+        <br />
 
     </div>
         
@@ -119,4 +123,4 @@ function Login_Success(){
 
 }
 
-export default Login_Success;
+export default Bio;

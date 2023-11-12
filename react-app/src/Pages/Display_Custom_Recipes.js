@@ -6,7 +6,10 @@ import '../styles/displayCustomRecipe.css'
 import { useHistory } from 'react-router-dom';
 import RecipeNotes from '../Modules/RecipeNotes';
 import { Navigate, useNavigate } from 'react-router-dom';
+
+
 function Display_Custom_Recipes() {
+
 const [recipes, setRecipes] = useState([]);
 const [title, setNewTitle] = useState("")
 const [steps, setNewStep] = useState("")
@@ -14,12 +17,16 @@ const [username, setNewUsername] = useState("");
 const [notesVisible, setNotesVisible] = useState(false);
 const [fillNotes, setfillNotes] = useState("");
 const [crid, setcrid] = useState('');
+//for the tags 
+const [showTextArea, setShowTextArea] = useState(false);
+const [tagText, settagText] = useState('');
+const [recipeTagVisibility, setRecipeTagVisibility] = useState({});
+
 const navigate = useNavigate(); //used to navigate to another page
+
 const urlParams = new URLSearchParams(window.location.search);
 const dataToSend = urlParams.get('data');
 const [userType, setUserType] = useState('');
-
-
 
 
 var passID = '';
@@ -109,8 +116,10 @@ const showNotes = (id) =>{
   console.log("This is id", id);
     passID = id;
     setcrid(passID);
+
     //getNotes(id);
 }
+
 
 const getNotes = async (id) =>{
 
@@ -157,9 +166,75 @@ const deleteRecipe = async (title, steps, username) => {
 
 
 
+
+
+
+const handleSaveText= (id) => {
+  // You can save the text to a server or perform any other desired action here
+  console.log("ID handle save text:", id);
+  console.log('Text to save:', tagText);
+  setShowTextArea(false); 
+  setRecipeTagVisibility((prevVisibility) => ({
+    ...prevVisibility,
+    [id]: !prevVisibility[id],
+  }));
+
+  //insert into db for that crid
+try{
+  
+  const apiUrl = `http://172.16.122.26:8080/setTaggedRecipes/${id}`;
+    axios.post(apiUrl, {username, tagText})
+      .then(response_tag => {
+        if (response_tag.status === 200) {
+          console.log('Response:', response_tag.data);
+
+        } 
+      })
+      .catch(error => {
+        console.error('Tag Error:', error);
+      });
+
+    } catch {
+      console.error('Tag Error:');
+    }
+
+};
+
+
+
+
+
+//view all tagged recipies
+const handleViewTags = async (event) => {
+  event.preventDefault();
+  console.log("And the username: ", dataToSend);
+  window.location.href = `/TaggedRecipes?data=${dataToSend}`;
+
+}
+
+
+//handler for when add tag is clicked
+const handleTag = (id) => {
+  //show text box
+  setShowTextArea(true);
+  console.log("ID:", id);
+  //set the text box visible for only that specific recipe
+  setRecipeTagVisibility((prevVisibility) => ({
+    ...prevVisibility,
+    [id]: !prevVisibility[id],
+  }));
+
+};
+
+
+
+
   return (
     <>
     <Navbar></Navbar>
+    <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
+        <button className='centerButtonCR' type="button" onClick={handleViewTags}>View Tagged Recipes</button>
+    </div>
     <div className='flex-container-CR'>
         <h3>Your Saved Custom Recipes</h3>
         <div>
@@ -187,6 +262,24 @@ const deleteRecipe = async (title, steps, username) => {
                   <li key={index}>{ingredient}</li>
                 ))
               )}
+
+              <div>
+               <button className = 'centerButtonCR'
+                onClick={() => handleTag(recipe.crID)}
+                >Add Tag</button>
+                {recipeTagVisibility[recipe.crID] && (
+                <div>
+                  <textarea
+                    value={tagText}
+                    onChange={(event) => settagText(event.target.value)}
+                    rows="2"
+                    cols="40"
+                  ></textarea>
+                  <button onClick={() => handleSaveText(recipe.crID)}>Save</button>
+                </div>
+                )}
+              </div>
+
               {notesVisible && <RecipeNotes 
               visible = {notesVisible} 
               className= 'showNotesPopUp'
@@ -206,10 +299,11 @@ const deleteRecipe = async (title, steps, username) => {
                   </button>
                 </ul>
             
-            
-            
           </div>
+
         ))}</div>
+
+        
         
     
     
