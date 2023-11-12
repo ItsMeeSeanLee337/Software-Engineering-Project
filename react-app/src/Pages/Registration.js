@@ -10,7 +10,7 @@ const Registration = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [isMaker, setIsMaker] = useState('');
+    const [isMaker, setIsMaker] = useState('0');
     const [toolTipVisible, setToolTipVisible] = useState(false);
 
 
