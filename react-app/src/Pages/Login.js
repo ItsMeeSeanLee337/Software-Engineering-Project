@@ -80,6 +80,7 @@ return (
       <label>
           Username:
           <input
+            id='username'
             type="text"
             value={username}
             onChange={handleUsername}
@@ -92,6 +93,7 @@ return (
         <label>
           Password:
           <input
+            id='password'
             type="password"
             value={password}
             onChange={handlePassword}
@@ -100,7 +102,7 @@ return (
         </label>
         </div>
         <br />
-      <button className = "login_button" type="submit">Login</button>
+      <button id = "loginButton" className = "login_button" type="submit">Login</button>
     </form>
     </div>
     </div>

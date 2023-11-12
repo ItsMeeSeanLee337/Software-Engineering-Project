@@ -14,6 +14,10 @@ import Registration from './Pages/Registration';
 import NutritionalInformation from './Pages/nutritional_info';
 import Display_Personal_Bio from './Pages/Display_Personal_Bio';
 import Create_Edit_Personal_Bio from './Pages/Create_Edit_Personal_Bio';
+import Display_Maker_Recipes from './Pages/Display_Maker_Recipes'
+import TaggedRecipes from './Pages/TaggedRecipes'
+import Bio from './Pages/Bio'
+import RecipeSearch from './Pages/recipe_search'
 
 import {
   createBrowserRouter,
@@ -52,15 +56,32 @@ const router = createBrowserRouter([
     element: <Login_Success/>,
   },
   {
+    path: "Bio",
+    element: <Bio/>,
+  },
+  {
     path: "registration",
     element: <Registration/>,
   },
   {
     path: "NutritionalInformation",
-    element: <NutritionalInformation/>},
+    element: <NutritionalInformation/>,
+  },
+  {
+    path: "RecipeSearch",
+    element: <RecipeSearch/>,
+  },
   {
     path: "display-custom-recipes",
     element: <Display_Custom_Recipes/>,
+  },
+  {
+    path: "display-maker-recipes",
+    element: <Display_Maker_Recipes/>,
+  },
+  {
+    path: "TaggedRecipes",
+    element: <TaggedRecipes/>,
   },
   {
     path: "Display_Personal_Bio",
@@ -74,6 +95,7 @@ const router = createBrowserRouter([
     path: "HomePage",
     element: <HomePage/>,
   }
+  
 
 ]);
 

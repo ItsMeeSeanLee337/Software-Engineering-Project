@@ -8,6 +8,7 @@ const [recipeNotes, setRecipeNotes] = useState("No Notes");
 const urlParams = new URLSearchParams(window.location.search);
 const dataToSend = urlParams.get('data');
 const [thiscrID, setThiscrID] = useState(crID);
+const [showPopup, setShowPopup] = useState(false);
 const closeNotes = () =>
 {
     setVisible(false);
@@ -44,12 +45,12 @@ function handleSaveNotes() {
     .then(response => {
       console.log('Response:', response.data);
       setcrid("");
-      //setShowPopup(true);
+      setShowPopup(true);
 
-    // Hide the pop-up after 3 seconds
-    //setTimeout(() => {
-    //  setShowPopup(false);
-  //  }, 3000);
+    //Hide the pop-up after 3 seconds
+    setTimeout(() => {
+      setShowPopup(false);
+    }, 1000);
     })
     .catch(error => {
       console.error('Error:', error);
@@ -69,6 +70,11 @@ function handleSaveNotes() {
     <button className = 'notesButtons' onClick={closeNotes}>Close Notes</button>
     <p></p>
     <button onClick={handleSaveNotes}>Save Notes</button>
+    {showPopup && (
+        <div className="popup">
+          <p>Notes Saved!</p>
+        </div>
+      )}
     </div>
    </div>
     

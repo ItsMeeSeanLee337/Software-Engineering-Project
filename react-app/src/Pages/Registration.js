@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
 import '../styles/registration.css'
+import RecipeMakerToolTip from '../Modules/RecipeMakerToolTip';
 
 const Registration = () => {
     const [firstname, setFirstname] = useState('');
@@ -9,6 +10,8 @@ const Registration = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+    const [isMaker, setIsMaker] = useState('0');
+    const [toolTipVisible, setToolTipVisible] = useState(false);
 
 
     const handleFirstnameChange = (event) => {
@@ -30,6 +33,9 @@ const Registration = () => {
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
+  const handleIsMakerChange = (e) =>{
+    setIsMaker(e.target.checked);
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,9 +45,10 @@ const Registration = () => {
     console.log("username", username);
     console.log("password", password);
     console.log("email", email);
+    console.log("isMaker ", isMaker);
 
     const apiUrl = 'http://172.16.122.26:8080/registration';
-    axios.post(apiUrl, {firstname, lastname, username, password, email})
+    axios.post(apiUrl, {firstname, lastname, username, password, email, isMaker})
       .then(response => {
         if (response.status === 200) {
           console.log('Response:', response.data);
@@ -50,6 +57,7 @@ const Registration = () => {
           setUsername('');
           setPassword ('');
           setEmail('');
+          setIsMaker(false)
           window.location.href = `/Login`;
         } 
       })
@@ -61,6 +69,13 @@ const Registration = () => {
   });
 };
   
+const showToolTip = async(e)=>{
+    setToolTipVisible(true);
+}
+const hideToolTip = async(e)=>{
+  setToolTipVisible(false);
+}
+
   /*const handlesSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -121,6 +136,22 @@ const Registration = () => {
               </label>
             </div>
             <br />
+            <div
+            onMouseEnter={showToolTip}
+            onMouseLeave={hideToolTip}>
+            <label className='up_label'>
+              <input
+                type="checkbox"
+                value={isMaker}
+                onChange={handleIsMakerChange}
+              />
+            Recipe Maker
+            </label>
+            {toolTipVisible && <RecipeMakerToolTip>
+              </RecipeMakerToolTip>}
+              
+              </div>
+              <br></br>
             <button className = "submit_button" type="submit">Sign up</button>
           </form>
         </div>

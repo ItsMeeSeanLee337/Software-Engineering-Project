@@ -6,31 +6,22 @@ import '../styles/displayCustomRecipe.css'
 import { useHistory } from 'react-router-dom';
 import RecipeNotes from '../Modules/RecipeNotes';
 import { Navigate, useNavigate } from 'react-router-dom';
-
-
 function Display_Custom_Recipes() {
-
 const [recipes, setRecipes] = useState([]);
 const [title, setNewTitle] = useState("")
 const [steps, setNewStep] = useState("")
 const [username, setNewUsername] = useState("");
+const [recipeIngredients, setRecipeIngredients] = useState([]);
+const [userType, setUserType] = useState('');
 const [notesVisible, setNotesVisible] = useState(false);
 const [fillNotes, setfillNotes] = useState("");
 const [crid, setcrid] = useState('');
-//for the tags 
-const [showTextArea, setShowTextArea] = useState(false);
-const [tagText, settagText] = useState('');
-const [recipeTagVisibility, setRecipeTagVisibility] = useState({});
-
 const navigate = useNavigate(); //used to navigate to another page
-
 const urlParams = new URLSearchParams(window.location.search);
 const dataToSend = urlParams.get('data');
-const [userType, setUserType] = useState('');
-
-
+const [showPopup, setShowPopup] = useState(false);
 var passID = '';
-
+//If no one is loggin in, they go to the landing page
 useEffect(()=>{
   console.log("This is user param:",dataToSend)
   if(dataToSend === 'null' || dataToSend === null)
@@ -43,7 +34,7 @@ useEffect(()=>{
 //Check user type on page loading
 useEffect(() => {
   const checkUser = async () => {
-    if(dataToSend !== "null" || dataToSend !== null){
+    if(dataToSend !== "null"){
     try {
       //const apiUrl = 'http://localhost:8080/createRecipe';  
       
@@ -66,13 +57,12 @@ useEffect(() => {
 //When the user type is checked, will redirect makers to the landing page
 useEffect(()=>{
   console.log("This is user param:",dataToSend)
-  if(userType === -1)
+  if(userType === 1 || userType === -1)
   {
     console.log('navigating');
     navigate(`/`);
   }
 }, [userType])
-  
 
 
 useEffect(() => {
@@ -87,7 +77,7 @@ useEffect(() => {
       
       try {
         //const apiUrl = 'http://localhost:8080/createRecipe';  
-        const apiUrl = `http://172.16.122.26:8080/CustomRecipe/Display/${dataToSend}`;
+        const apiUrl = `http://172.16.122.26:8080/MakerRecipes/Display`;
 
         response = await axios.get(apiUrl);
         console.log('Response:', response.data);
@@ -101,24 +91,19 @@ useEffect(() => {
   }, []); // Empty dependency array ensures this effect runs once on mount
 
   
+
   
-  const handleDelete = async (recipeID) =>  {
+  const handleSave = async (recipeID) =>  {
     const { Title, Description } = recipeID; // Assuming these are the correct properties
+    var ri = recipeID.list.ingredients;
+    console.log("Recipe ing in maker: " ,ri);
     console.log('Title:', Title);
     console.log('Description:', Description);
   
     // Call deleteRecipe and pass the necessary values
-    await deleteRecipe(Title, Description, dataToSend);
+    await saveRecipe(Title, Description, ri, dataToSend);
   }
 
-
-const showNotes = (id) =>{
-  console.log("This is id", id);
-    passID = id;
-    setcrid(passID);
-
-    //getNotes(id);
-}
 
 
 const getNotes = async (id) =>{
@@ -148,16 +133,18 @@ useEffect(() => {
 
 
 
-
-const deleteRecipe = async (title, steps, username) => {
-  const apiUrl = 'http://172.16.122.26:8080/deleteCustomRecipe';
-
+//Copy this recipe and put it into the user's own custom recipes
+const saveRecipe = async (title, steps, ingredients, username) => {
+  const apiUrl = `http://172.16.122.26:8080/createRecipe/${username}`;
+  console.log(ingredients);
   try {
-    const response = await axios.post(apiUrl, { title, steps, username });
-    
-    console.log('Response:', response);
-    window.location.reload();
-    
+    const response = await axios.post(apiUrl, { title, steps, ingredients});
+    setShowPopup(true);
+
+    // Hide the pop-up after 3 seconds
+    setTimeout(() => {
+      setShowPopup(false);
+    }, 1000);
   } catch (error) {
     console.error('Error:', error);
   }
@@ -166,77 +153,11 @@ const deleteRecipe = async (title, steps, username) => {
 
 
 
-
-
-
-const handleSaveText= (id) => {
-  // You can save the text to a server or perform any other desired action here
-  console.log("ID handle save text:", id);
-  console.log('Text to save:', tagText);
-  setShowTextArea(false); 
-  setRecipeTagVisibility((prevVisibility) => ({
-    ...prevVisibility,
-    [id]: !prevVisibility[id],
-  }));
-
-  //insert into db for that crid
-try{
-  
-  const apiUrl = `http://172.16.122.26:8080/setTaggedRecipes/${id}`;
-    axios.post(apiUrl, {username, tagText})
-      .then(response_tag => {
-        if (response_tag.status === 200) {
-          console.log('Response:', response_tag.data);
-
-        } 
-      })
-      .catch(error => {
-        console.error('Tag Error:', error);
-      });
-
-    } catch {
-      console.error('Tag Error:');
-    }
-
-};
-
-
-
-
-
-//view all tagged recipies
-const handleViewTags = async (event) => {
-  event.preventDefault();
-  console.log("And the username: ", dataToSend);
-  window.location.href = `/TaggedRecipes?data=${dataToSend}`;
-
-}
-
-
-//handler for when add tag is clicked
-const handleTag = (id) => {
-  //show text box
-  setShowTextArea(true);
-  console.log("ID:", id);
-  //set the text box visible for only that specific recipe
-  setRecipeTagVisibility((prevVisibility) => ({
-    ...prevVisibility,
-    [id]: !prevVisibility[id],
-  }));
-
-};
-
-
-
-
   return (
     <>
     <Navbar></Navbar>
-    <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
-        <button className='centerButtonCR' type="button" onClick={handleViewTags}>View Tagged Recipes</button>
-    </div>
     <div className='flex-container-CR'>
-        <h3>Your Saved Custom Recipes</h3>
+        <h3>Recipes from Recipe Makers</h3>
         <div>
             {recipes.map(recipe => (
           <div className = 'recipeItem' id='map' key={recipe.crID}>
@@ -262,24 +183,6 @@ const handleTag = (id) => {
                   <li key={index}>{ingredient}</li>
                 ))
               )}
-
-              <div>
-               <button className = 'centerButtonCR'
-                onClick={() => handleTag(recipe.crID)}
-                >Add Tag</button>
-                {recipeTagVisibility[recipe.crID] && (
-                <div>
-                  <textarea
-                    value={tagText}
-                    onChange={(event) => settagText(event.target.value)}
-                    rows="2"
-                    cols="40"
-                  ></textarea>
-                  <button onClick={() => handleSaveText(recipe.crID)}>Save</button>
-                </div>
-                )}
-              </div>
-
               {notesVisible && <RecipeNotes 
               visible = {notesVisible} 
               className= 'showNotesPopUp'
@@ -290,20 +193,20 @@ const handleTag = (id) => {
               setcrid={setcrid}
               ></RecipeNotes>}
                   <button className='centerButtonCR'
-                    onClick={() => handleDelete(recipe)}
-                  >Delete
+                    onClick={() => handleSave(recipe)}
+                  >Save
                   </button>
-                  <button className='centerButtonCR'
-                    onClick={() => showNotes(recipe.crID)}
-                  >Notes
-                  </button>
+                  {showPopup && (
+                  <div className="popup">
+                    <p>Recipe Saved!</p>
+                  </div>
+                )}
                 </ul>
             
+            
+            
           </div>
-
         ))}</div>
-
-        
         
     
     
