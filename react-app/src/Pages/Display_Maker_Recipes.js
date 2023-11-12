@@ -19,6 +19,7 @@ const [crid, setcrid] = useState('');
 const navigate = useNavigate(); //used to navigate to another page
 const urlParams = new URLSearchParams(window.location.search);
 const dataToSend = urlParams.get('data');
+const [showPopup, setShowPopup] = useState(false);
 var passID = '';
 //If no one is loggin in, they go to the landing page
 useEffect(()=>{
@@ -104,12 +105,6 @@ useEffect(() => {
   }
 
 
-const showNotes = (id) =>{
-  console.log("This is id", id);
-    passID = id;
-    setcrid(passID);
-    //getNotes(id);
-}
 
 const getNotes = async (id) =>{
 
@@ -144,7 +139,12 @@ const saveRecipe = async (title, steps, ingredients, username) => {
   console.log(ingredients);
   try {
     const response = await axios.post(apiUrl, { title, steps, ingredients});
-    
+    setShowPopup(true);
+
+    // Hide the pop-up after 3 seconds
+    setTimeout(() => {
+      setShowPopup(false);
+    }, 1000);
   } catch (error) {
     console.error('Error:', error);
   }
@@ -164,7 +164,12 @@ const saveRecipe = async (title, steps, ingredients, username) => {
             <h4 className='recipeTitle'>Title</h4>
             <p className='recipeTitle'>{recipe.Title}</p>
             <h4 className='recipeTitle'>Steps</h4>
-            <p className='recipeSteps'>{recipe.Description}</p>
+            <textarea
+            rows={6}
+             className='recipeSteps textareaSteps'
+             maxLength={100}
+             >
+              {recipe.Description}</textarea>
             <h4 className='recipeTitle'>Ingredients</h4>
             <ul className= 'recipeIngredients'>
               {Array.isArray(recipe.list) ? (
@@ -191,6 +196,11 @@ const saveRecipe = async (title, steps, ingredients, username) => {
                     onClick={() => handleSave(recipe)}
                   >Save
                   </button>
+                  {showPopup && (
+                  <div className="popup">
+                    <p>Recipe Saved!</p>
+                  </div>
+                )}
                 </ul>
             
             

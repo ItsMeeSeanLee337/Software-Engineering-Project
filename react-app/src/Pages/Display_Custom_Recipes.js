@@ -243,7 +243,12 @@ const handleTag = (id) => {
             <h4 className='recipeTitle'>Title</h4>
             <p className='recipeTitle'>{recipe.Title}</p>
             <h4 className='recipeTitle'>Steps</h4>
-            <p className='recipeSteps'>{recipe.Description}</p>
+            <textarea
+            rows={6}
+             className='recipeSteps textareaSteps'
+             maxLength={100}
+             >
+              {recipe.Description}</textarea>
             <h4 className='recipeTitle'>Ingredients</h4>
             <ul className= 'recipeIngredients'>
               {Array.isArray(recipe.list) ? (

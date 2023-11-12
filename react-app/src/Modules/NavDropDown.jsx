@@ -8,7 +8,7 @@ function NavDropDown() {
       <div style={{marginTop: '10px'}} className="noDecoration">
         <ul className="noDecoration">
           <li className="noDecoration">
-              <Link to={`/display-custom-recipes?data=${dataToSend}`}>Custom Recipes</Link>
+              <Link id = 'goToDisplayRecipe' to={`/display-custom-recipes?data=${dataToSend}`}>Custom Recipes</Link>
           </li>
         </ul>
       </div>

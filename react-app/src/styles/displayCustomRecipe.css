@@ -6,6 +6,11 @@
     text-align: center;
     
 }
+
+.flex-container-CR > div{
+  min-width: 50%;
+  
+}
 .centerButtonCR {
     /* Center the button */
     align-self: center; /* Vertically center the button */
@@ -35,6 +40,7 @@ button {
   }
 .recipeSteps{
     text-align: center;
+    align-items: center;
 }
 
 .recipeIngredients{
@@ -91,3 +97,23 @@ textarea{
   margin:10px;
   /* Add other styles as needed */
 }
+
+.divDisplay{
+  width: 50%;
+}
+
+.textareaSteps{
+  user-select: none;
+  color: #000;
+  min-width: 70%;
+  min-height: 70%;
+  border: none; /* Remove the border */
+padding: 10px; /* Add padding for spacing within the textarea */
+background-color: white; /* Background color (you can change this) */
+font-size: 14px; /* Font size (you can change this) */
+resize: none; /* Disable resizing of the textarea */
+outline: none; /* Remove the default focus outline (you may want to add a custom focus style) */
+/* Add other styles as needed */
+}
+  
+
