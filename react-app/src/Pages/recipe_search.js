@@ -1,115 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
+import axios from 'axios';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 function RecipeSearch() {
-  const [nameOfRecipe, setnameOfRecipe] = useState('');
+  var [query, setQuery] = useState('');
+  const [diet, setDiet] = useState('');
   const [recipes, setRecipes] = useState([]);
-  const testJson = {
-    "results": [
-        {
-            "readyInMinutes": 45,
-            "sourceUrl": "http://www.foodista.com/recipe/TNLH8XSQ/apple-pie-pancakes",
-            "image": "Apple-Pie-Pancakes-632577.jpg",
-            "servings": 4,
-            "id": 632577,
-            "title": "Apple Pie Pancakes"
-        },
-        {
-            "readyInMinutes": 45,
-            "sourceUrl": "http://www.foodista.com/recipe/PPR5SMZ3/autumn-apple-pie",
-            "image": "autumn-apple-pie-633089.jpg",
-            "servings": 10,
-            "id": 633089,
-            "title": "Autumn Apple Pie"
-        },
-        {
-            "readyInMinutes": 45,
-            "sourceUrl": "https://www.foodista.com/recipe/PK4W7MF2/bon-apple-tite-cinnamon-rolls",
-            "image": "Bon-Apple-Tite-Cinnamon-Rolls-635649.jpg",
-            "servings": 5,
-            "id": 635649,
-            "title": "Bon “Apple” Tite Cinnamon Rolls"
-        },
-        {
-            "readyInMinutes": 45,
-            "sourceUrl": "http://www.foodista.com/recipe/8D2Y2FP4/brandy-apple-mini-pies-with-cornmeal-crust",
-            "image": "Brandy-Apple-Mini-Pies-With-Cornmeal-Crust-635907.jpg",
-            "servings": 16,
-            "id": 635907,
-            "title": "Brandy-Apple Mini Pies With Cornmeal Crust"
-        },
-        {
-            "readyInMinutes": 45,
-            "sourceUrl": "http://www.foodista.com/recipe/P5XGZL3X/wildwood-ovens-bourbon-apple-glazed-cedar-plank-salmon",
-            "image": "Wildwood-Ovens-Bourbon-Apple-Glazed-Cedar-Plank-Salmon-665352.jpg",
-            "servings": 6,
-            "id": 665352,
-            "title": "Wildwood Ovens Bourbon Apple Glazed Cedar Plank Salmon"
-        },
-        {
-            "readyInMinutes": 45,
-            "sourceUrl": "https://www.foodista.com/recipe/BVKG5VJM/apple-roasted-pork-loin",
-            "image": "Apple-Roasted-Pork-Loin-632590.jpg",
-            "servings": 6,
-            "id": 632590,
-            "title": "Apple Roasted Pork Loin"
-        },
-        {
-            "readyInMinutes": 45,
-            "sourceUrl": "http://www.foodista.com/recipe/HVWXW5F2/apple-sausage-galette",
-            "image": "Apple-Sausage-Galette-632594.png",
-            "servings": 4,
-            "id": 632594,
-            "title": "Apple Sausage Galette"
-        },
-        {
-            "readyInMinutes": 105,
-            "sourceUrl": "https://maplewoodroad.com/moms-jewish-apple-cake-recipe/",
-            "image": "moms-jewish-apple-cake-1697555.jpg",
-            "servings": 12,
-            "author": "maplewoodroad",
-            "id": 1697555,
-            "title": "Mom's Jewish Apple Cake"
-        },
-        {
-            "readyInMinutes": 45,
-            "sourceUrl": "http://www.foodista.com/recipe/VLR7HJQN/apple-spinach-soup",
-            "image": "Apple-spinach-soup-632598.jpg",
-            "servings": 2,
-            "id": 632598,
-            "title": "Apple spinach soup"
-        },
-        {
-            "readyInMinutes": 35,
-            "sourceUrl": "https://maplewoodroad.com/pork-chops-with-apple/",
-            "image": "pork-chops-with-apple-a-taste-of-fall-in-30-minutes-1697559.jpg",
-            "servings": 2,
-            "author": "maplewoodroad",
-            "id": 1697559,
-            "title": "Pork Chops with Apple - a taste of fall in 30 minutes"
-        }
-    ],
-    "baseUri": "https://spoonacular.com/recipeImages/",
-    "offset": 0,
-    "number": 10,
-    "totalResults": 314,
-    "processingTimeMs": 75,
-    "expires": 1699915680391,
-    "isStale": false
-}
+  const navigate = useNavigate(); //used to navigate to another page
+  const [userType, setUserType] = useState('');
+  const urlParams = new URLSearchParams(window.location.search);
+  const dataToSend = urlParams.get('data');
+  var response;
+  useEffect(()=>{
+    console.log("This is user param:",dataToSend)
+    if(dataToSend === 'null' || dataToSend === null)
+    {
+      console.log('navigating');
+      navigate(`/`);
+    }
+  },[])
+  
+  //Check user type on page loading
+  useEffect(() => {
+    const checkUser = async () => {
+      if(dataToSend !== "null" || dataToSend !== null){
+      try {
+        //const apiUrl = 'http://localhost:8080/createRecipe';  
+        
+        const apiUrl = `http://172.16.122.26:8080/checkMaker/${dataToSend}`;
+  
+        response = await axios.get(apiUrl);
+        console.log('Response:', response.data);
+        setUserType(response.data[0].isMaker);
+      } catch (error) {
+        //This means an invalid user tried to access the system
+        setUserType(-1);
+        console.error('Error:', error);
+      }
+    };
+    }
+    checkUser();
+  }, []); // Empty dependency array ensures this effect runs once on mount
+  
+  
+  //When the user type is checked, will redirect makers to the landing page
+  useEffect(()=>{
+    console.log("This is user param:",dataToSend)
+    if(userType === 1 || userType === -1)
+    {
+      console.log('navigating');
+      navigate(`/`);
+    }
+  }, [userType])
 
-  const searchRecipes = async () => {
+  const searchRecipesByName = async () => {
     const apiKey = '00298f1246234721b20874aa5f8c7c0f';
 
     try {
-      const response = await fetch(
-        `https://api.spoonacular.com/recipes/search?query=${nameOfRecipe}&apiKey=${apiKey}`
-      );
+      const response = await fetch(`https://api.spoonacular.com/recipes/search?query=${query}&apiKey=${apiKey}`);
+
       if (response.ok) {
         const data = await response.json()
         setRecipes(data.results);
         console.log(data.results)
-        console.log(recipes)
       } else {
         // Handle API request error
         console.error('API request error');
@@ -119,22 +73,91 @@ function RecipeSearch() {
     }
   };
   
-  const testFunction = async () => {
-    setRecipes(JSON.parse(testJson))
-    console.log(setRecipes)
+  const searchRecipesByDiet = async () => {
+    const apiKey = '00298f1246234721b20874aa5f8c7c0f';
+
+    try {
+      const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&diet=${diet}&apiKey=${apiKey}`);
+
+      if (response.ok) {
+        const data = await response.json()
+        setRecipes(data.results);
+        console.log(data.results)
+      } else {
+        // Handle API request error
+        console.error('API request error');
+      }
+    } catch (error) {
+      console.error('API request error:', error);
+    }
+  };
+
+  const searchByIngredients = async () => {
+    const apiKey = '00298f1246234721b20874aa5f8c7c0f';
+
+    try {
+      const response = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&apiKey=${apiKey}`);
+
+      if (response.ok) {
+        const data = await response.json()
+        console.log(data)
+        setRecipes(data);
+        // I've got to be completely honest I have no idea why searching by ingredients wants "data" and not "data.results", I spent way too long figuring this out
+      } else {
+        // Handle API request error
+        console.error('API request error');
+      }
+    } catch (error) {
+      console.error('API request error:', error);
+    }
+  };
+
+  const handleChange = (e) => {
+    setQuery(e.target.value);
+  };
+
+  const handleDietChange = (e) => {
+    const optionValue = e.target.value;
+    setDiet((prevDiet) => {
+      const isSelected = prevDiet.includes(optionValue);
+
+      if (isSelected) {
+        // Remove the option if it's already selected
+        return prevDiet.filter((item) => item !== optionValue);
+      } else {
+        // Add the option if it's not selected
+        return [...prevDiet, optionValue];
+      }
+    });
   };
 
   return (
     <div>
       <Navbar></Navbar>
       <div>
+        <h1>Search for your recipes here.</h1> 
+        <p>If searching by ingredients list your ingredients like this: apple, sugar, flour, etc. Otherwise just type in the name of your recipe</p>
         <input
           type="text"
-          placeholder="Search for a recipe"
-          value={nameOfRecipe}
-          onChange={(e) => setnameOfRecipe(e.target.value)}
+          placeholder={`Search by name/ Ingredient`}
+          value={query}
+          onChange={handleChange}
         />
-        <button onClick={searchRecipes}>Search</button>
+        <br></br>
+        <select multiple value={diet} onChange={handleDietChange}>
+          <option value="gluten free">Gluten Free</option>
+          <option value="vegetarian">Vegetarian</option>
+          <option value="vegan">Vegan</option>
+          <option value="paleo">Paleo</option>
+          <option value="ketogenic">Ketogenic</option>
+          {/* Add more diet options as needed */}
+        </select>
+        <br></br>
+        <button onClick={searchRecipesByName}>Search by Name</button>
+        <br></br>
+        <button onClick={searchByIngredients}>Search by Ingredient</button>
+        <br></br>
+        <button onClick={searchRecipesByDiet}>Search by Name & Diet</button>
       </div>
 
       <ul>
