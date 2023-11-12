@@ -303,6 +303,28 @@ app.get('/getRecipeNotes/:crID', async (req, res) => {
   }
 });
 
+app.get('/getRandomRecipes/:username', async (req, res) => {
+  try {
+      const username = req.params.username;
+      var finalUserID = await getUserID(username,res);
+      //userID = getUserID(username)
+      const result = await db.pool.query(`SELECT CustomRecipe.Title, CustomRecipe.Description
+      FROM CustomRecipe
+      JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
+      JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
+      WHERE UserRecipes.userID = ${finalUserID} ORDER BY RAND() LIMIT 3`);
+      
+      /*const result = await db.pool.query(`SELECT title, description FROM CustomRecipe WHERE userID = ${finalUserID}
+        ORDER BY RAND()
+        LIMIT 3`);*/
+        console.log(result)
+      res.send(result);
+  } catch (err) {
+      throw err;
+  }
+});
+
+
 
 // Section for postman testing
 

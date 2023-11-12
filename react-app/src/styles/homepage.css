@@ -1,0 +1,86 @@
+/* Resetting some default styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+  }
+  
+  /* Styling the header */
+  /*.homepage > h1 {
+    background-color: #333;
+    color: rgb(11, 11, 11);
+    padding: 1rem;
+    text-align: center;
+  }*/
+
+  .homepage > h1 {
+    color: rgb(0, 128, 62);
+    margin-left: 20px; /* Adjust the margin as needed */
+}
+  
+  /* Styling the links container */
+  .links-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  /* Styling individual link boxes */
+  .link-box {
+    text-align: center;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 200px;
+    box-shadow: 0 2px 5px rgba(14, 14, 14, 0.1);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .link-box:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Styling link images */
+  .link-box img {
+    max-width: 100px;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
+  }
+  
+  /* Styling link titles */
+  .link-box h3 {
+    font-size: 1.2rem;
+    color: #070707;
+  }
+  
+  /* Styling the custom recipe box */
+  .custom-recipe-box {
+    color: rgb(0, 128, 62);
+    margin: 2rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(11, 149, 52, 0.1);
+  }
+  
+  /* Styling the recipe items within the custom recipe box */
+  .recipe-item {
+    margin: 1rem;
+    padding: 1rem;
+    border: 1px solid #0a0808;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .recipe-item h3 {
+    font-size: 1.5rem;
+  }
+  
+  .recipe-item p {
+    color: #333;
+  }
+  
