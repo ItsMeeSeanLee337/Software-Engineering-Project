@@ -15,6 +15,7 @@ import NutritionalInformation from './Pages/nutritional_info';
 import Display_Personal_Bio from './Pages/Display_Personal_Bio';
 import Create_Edit_Personal_Bio from './Pages/Create_Edit_Personal_Bio';
 import Display_Maker_Recipes from './Pages/Display_Maker_Recipes'
+import RecipeSearch from './Pages/recipe_search'
 
 import {
   createBrowserRouter,
@@ -60,6 +61,11 @@ const router = createBrowserRouter([
     element: <NutritionalInformation/>,
   },
   {
+    path: "RecipeSearch",
+    element: <RecipeSearch/>,
+
+  },
+  {
     path: "display-custom-recipes",
     element: <Display_Custom_Recipes/>,
   },
@@ -76,6 +82,7 @@ const router = createBrowserRouter([
     element: <Create_Edit_Personal_Bio/>,
 
   }
+  
 
 ]);
 
