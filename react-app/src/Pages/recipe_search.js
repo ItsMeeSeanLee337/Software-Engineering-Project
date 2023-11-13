@@ -55,7 +55,7 @@ function RecipeSearch() {
   }, [userType])
 
   const searchRecipesByName = async () => {
-    const apiKey = 'APIKEY';
+    const apiKey = '522c838fa8034d6f870c425c713cbf84 ';
 
     try {
       const response = await fetch(`https://api.spoonacular.com/recipes/search?query=${query}&apiKey=${apiKey}`);
@@ -74,7 +74,7 @@ function RecipeSearch() {
   };
   
   const searchRecipesByDiet = async () => {
-    const apiKey = 'APIKEY';
+    const apiKey = '522c838fa8034d6f870c425c713cbf84 ';
 
     try {
       const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&diet=${diet}&apiKey=${apiKey}`);
@@ -93,7 +93,7 @@ function RecipeSearch() {
   };
 
   const searchByIngredients = async () => {
-    const apiKey = 'APIKEY';
+    const apiKey = '522c838fa8034d6f870c425c713cbf84 ';
 
     try {
       const response = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&apiKey=${apiKey}`);

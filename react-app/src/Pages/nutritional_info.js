@@ -14,6 +14,7 @@ function NutritionalInformation() {
   const urlParams = new URLSearchParams(window.location.search);
   const dataToSend = urlParams.get('data');
   var response;
+  
   useEffect(()=>{
     console.log("This is user param:",dataToSend)
     if(dataToSend === 'null' || dataToSend === null)

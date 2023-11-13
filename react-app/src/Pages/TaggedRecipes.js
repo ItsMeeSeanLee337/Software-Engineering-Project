@@ -95,24 +95,29 @@ function TaggedRecipes() {
       const removeTag = (id) => {
         console.log("This is the crid for the tagged recipe: ", id);
         try{
-          const apiUrl = `http://172.16.122.26:8080/untagRecipes/${id}`;
+          var apiUrlUnTag = `http://172.16.122.26:8080/untagRecipes/${id}`;
           //we dont really care about response, just inserting data, when user clicks show tagged recipies then we care about response, this will be handled in a diff page though
-            axios.post(apiUrl)
+            axios.post(apiUrlUnTag)
               .then(response_tag => {
                 if (response_tag.status === 200) {
                   console.log('Response:', response_tag.data);
-        
+                  window.location.reload();
                 } 
               })
               .catch(error => {
                 console.error('Tag Error:', error);
+                window.location.reload();
               });
         
             } catch {
               console.error('Tag Error:');
-            }
+              window.location.reload();
+            } 
 
-            window.location.reload();
+            
+            console.log("This is the crid for the tagged recipe: ", id);
+
+            
 
       };
       

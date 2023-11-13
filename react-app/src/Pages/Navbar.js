@@ -30,6 +30,7 @@ return(
     </Link></li>
       
       <li><Link to="/Login">Login</Link></li>
+      <li><Link to={`/HomePage?data=${dataToSend}`} className= "noDecoration" >HomePage</Link></li>
       <li><Link to={`/Bio?data=${dataToSend}`} className= "noDecoration" >Bio</Link></li>
       <li><Link to={`/NutritionalInformation?data=${dataToSend}`} className= "noDecoration" >Nutritional Info</Link></li>
       <li><Link to={`/RecipeSearch?data=${dataToSend}`} className= "noDecoration" >Search Recipes</Link></li>
