@@ -113,7 +113,7 @@ function Bio(){
         <button type="button" onClick={handleCreateEditBio}>Create/Edit Bio</button>
         <br />
         <br />
-        <button type="button" onClick={handleGoToBio}>Go to Bio</button>
+        <button id='goToEditBio' type="button" onClick={handleGoToBio}>Go to Bio</button>
         <br />
         <br />
 

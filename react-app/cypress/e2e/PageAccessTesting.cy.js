@@ -125,7 +125,7 @@ describe('Editing Profile Bio: Only regular users', () => {
     cy.get('#goToBio').click()
     cy.get('#goToEditBio').click()
 
-    cy.url().should('include', '/Create_Edit_Personal_Bio')
+    cy.url().should('include', '/Display_Personal_Bio')
   })
 
   //Can't actually navigate as this user to that page, so using manual direction
