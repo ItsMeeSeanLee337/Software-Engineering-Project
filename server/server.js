@@ -214,30 +214,43 @@ app.get('/MakerRecipes/Display', async(req,res) =>{
 app.post('/deleteCustomRecipe' , async(req,res)=>{
   console.log("here in deleteCustom");
   const {username} = req.body;
-  const { title } = req.body;
-  const { steps } = req.body;
-  console.log('Title:', title)
-  console.log('steps:', steps)
+  const { crID } = req.body;
   console.log(username);
+  console.log(crID)
 
   const userID = await getUserID(username, res);
 
 
   const query = `
-  DELETE cr, ur
+  DELETE ur
   FROM CustomRecipe cr
   JOIN UserRecipes ur ON ur.crID = cr.crID
   JOIN User u ON u.UserID = ur.userID
   WHERE u.Username = '${username}'
-  AND cr.Title = '${title}'
-  AND cr.Description = '${steps}';`
+  AND cr.crID = '${crID}';`
 
 
   try {
     const result = await db.pool.query(query);
     console.log(result);
     console.log(query);
-    res.send("Recipe Deleted");
+
+    const query2 = `
+    Delete from CustomRecipe where crID = ${crID};`
+
+
+  try {
+    const result = await db.pool.query(query);
+    console.log(result);
+    console.log(query);
+    //res.send("Recipe Deleted");
+    
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+    
     
 
   } catch (error) {
@@ -247,6 +260,7 @@ app.post('/deleteCustomRecipe' , async(req,res)=>{
 
 
   
+  res.send("Recipe Deleted");
 
 })
 
@@ -828,6 +842,17 @@ app.get('/getCustomRecipe', async (req, res) => {
   }
 
 });
+
+
+app.post('/saveSearchedRecipe', async (req,res) =>{
+  const {summary} = req.body.summary;
+  const {title} = req.body.title;
+  const {ingredients} = req.body.ingredients;
+  console.log("This is title ", title);
+  console.log("This is summary", summary);
+  console.log("This is ingredients", ingredients);
+
+})
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
