@@ -854,6 +854,58 @@ app.post('/saveSearchedRecipe', async (req,res) =>{
 
 })
 
+app.get('/topIngredients/:username', async (req, res) =>{
+
+  try{
+  //Get the userID for the user
+  const username = req.params.username;
+  console.log(username);
+  var finalUserID = await getUserID(username,res);
+
+  //Query the database for all ingredients from every recipe
+  query = `
+  SELECT IngredientList.list
+  FROM CustomRecipe
+  JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
+  JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
+  WHERE UserRecipes.userID = ${finalUserID};
+  `;
+  const result = await db.pool.query(query);
+  console.log(result);
+
+  //Turn ingredients from JSON in to a list of every single item repeated, not unique like a set
+  var allIngredients = result.map(item => item.list.ingredients).flat();
+  console.log(allIngredients);
+
+  // Create an object to store the count of each ingredient
+  const ingredientCount = {};
+
+  // Count occurrences of each ingredient
+  allIngredients.forEach(ingredient => {
+    ingredientCount[ingredient] = (ingredientCount[ingredient] || 0) + 1;
+  });
+
+  // Convert the object into an array of { ingredient, count } pairs
+  const countArray = Object.entries(ingredientCount).map(([ingredient, count]) => ({ ingredient, count }));
+
+  // Sort the array in descending order based on count
+  countArray.sort((a, b) => b.count - a.count);
+
+  // Get the top 3 most common ingredients
+  const top3Ingredients = countArray.slice(0, 3);
+
+  console.log(top3Ingredients);
+  res.send(top3Ingredients);
+}
+catch{
+  res.status(404)
+}
+  
+
+
+})
+
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
