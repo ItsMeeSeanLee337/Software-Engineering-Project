@@ -10,9 +10,15 @@ function Personalized_Recipes() {
     const [isChecked1, setIsChecked1] = useState(false);
     const [isChecked2, setIsChecked2] = useState(false);
     const [isChecked3, setIsChecked3] = useState(false);
-
-  const handleCheckboxChange1 = () => {
+    const [selectedIngredients, setSelectedIngredients] = useState([]);
+    const [recipes, setRecipes] = useState([]);
+    const [saveRecipe, setSaveRecipe] = useState(false);
+    const [clickedIndex, setClickedIndex] = useState(null);
+  
+//Getting the change for the check boxes
+const handleCheckboxChange1 = () => {
     setIsChecked1(!isChecked1);
+    
   };
   const handleCheckboxChange2 = () => {
     setIsChecked2(!isChecked2);
@@ -22,6 +28,57 @@ function Personalized_Recipes() {
   };
 
     let response;
+
+//Debug to see the selected ingredients array
+useEffect(() =>{
+
+    console.log(selectedIngredients);
+},[selectedIngredients]);
+
+//When the check box for ingredient 1 is selected, this will run to finish the change
+useEffect(() =>{
+    if(isChecked1)
+    {
+        const addIng = top1Ingredient;
+        setSelectedIngredients(prev => [...prev, addIng])
+        
+    }
+    else{
+        const updatedItems = selectedIngredients.filter(item => item !== top1Ingredient);
+        setSelectedIngredients(updatedItems);
+    }
+    console.log(isChecked1);
+},[isChecked1]);
+
+//When the check box for ingredient 1 is selected, this will run to finish the change
+useEffect(() =>{
+    if(isChecked2)
+    {
+        const addIng = top2Ingredient;
+        setSelectedIngredients(prev => [...prev, addIng])
+        
+    }
+    else{
+        const updatedItems = selectedIngredients.filter(item => item !== top2Ingredient);
+        setSelectedIngredients(updatedItems);
+    }
+    console.log(isChecked2);
+},[isChecked2]);
+
+//When the check box for ingredient 1 is selected, this will run to finish the change
+useEffect(() =>{
+    if(isChecked3)
+    {
+        const addIng = top3Ingredient;
+        setSelectedIngredients(prev => [...prev, addIng])
+        
+    }
+    else{
+        const updatedItems = selectedIngredients.filter(item => item !== top3Ingredient);
+        setSelectedIngredients(updatedItems);
+    }
+    console.log(isChecked3);
+},[isChecked3]);
 
 //Get the ingredients on page loading
 useEffect(() => {
@@ -44,6 +101,41 @@ useEffect(() => {
     fetchTopIngredients();
   }, []); // Empty dependency array ensures this effect runs once on mount
 
+//On button press, search for the ingredients
+let IngResponse;
+  const handleIngredientSearch = async () => {
+      
+    try {
+    
+      const apiUrl = `http://172.16.122.26:8080/PersonalizedSearch`;
+      const ingredients = selectedIngredients;
+      console.log(ingredients)
+      //IngResponse = await axios.post(apiUrl, {ingredients});
+      //console.log('Response:', IngResponse.data);
+        //setRecipes(IngResponse.data)
+
+        setRecipes([
+            { "id": "633338", "title": "Bacon Wrapped Filet Mignon" },
+            { "id": "644387", "title": "Garlicky Kale" },
+            { "id": "660158", "title": "Simple Vinaigrette" },
+            { "id": "648729", "title": "Kale With Red Onion" },
+            { "id": "651238", "title": "Simple Mashed Yams" }
+          ])
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+
+  const handleSaveRecipe = async(index) =>
+  {
+    setSaveRecipe(true);
+    // Hide the pop-up after 3 seconds
+    setTimeout(() => {
+      setSaveRecipe(false);
+    }, 1000);
+    setClickedIndex(index);
+  }
 
   return (
     <>
@@ -130,9 +222,27 @@ useEffect(() => {
         {top3Ingredient}
       </li>
 
-      {/* Repeat similar code for other list items */}
+      
     </ul>
-            </div>
+        </div>
+        <div id='recipeButtons' style={{ display: "flex", justifyContent: "center", alignContent: "center", textAlign: "center", justifyItems: "row", padding: 0 }}>
+            <button style={{margin: "10px"}}
+            onClick={() => handleIngredientSearch()}
+            >Ingredient Search</button>
+            <button style={{margin: "10px"}}>Random Search</button>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", alignContent: "center", textAlign: "center", justifyItems: "column", flexDirection: 'column', padding: 0 }}>
+            {recipes.map((item, index) => (
+            <li style={{margin: "10px", color: clickedIndex === index ? "green" : "black", cursor: "pointer"}} 
+            key={item.id}
+            onClick={() => handleSaveRecipe(index)}
+            
+            >
+                {item.title}</li>
+            ))}
+            {saveRecipe && 
+            <div>Recipe Saved</div>}
+        </div>
     </div>
     </div>
     </>

@@ -2,11 +2,12 @@ const express = require('express');
 const db = require('./db')
 const app = express();
 const cors = require('cors')
+const axios = require('axios');
 const bodyParser = require("body-parser");
 const { createConnection } = require('mariadb');
 const e = require('express');
 const PORT = 8080;
-
+const apiKEY = '522c838fa8034d6f870c425c713cbf84'
 app.use(cors())
 
 app.use(bodyParser.json());
@@ -903,6 +904,60 @@ catch{
   
 
 
+})
+
+app.post("/PersonalizedSearch", async (req, res)=>{
+  
+  const {ingredients} = req.body;
+  console.log("Ingredients in personalized search",ingredients);
+
+  //Want to format ingredients like [ing1, ing2] -> "ing1,ing2"
+  let ingredientString = ingredients.join(',');
+  //Want to get rid of any whitespace
+  ingredientString = ingredientString.replace(/\s/g, '')
+  console.log(ingredientString)
+
+  //Now we just have to query the api for the recipes matching those ingredients
+  let apiQuery = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredientString}&number=5&apiKey=${apiKEY}`
+
+  let responseArray = [];
+  axios(apiQuery)
+  .then(result =>{
+      console.log(result)
+
+      //Get the title and id for each element
+      result.data.forEach(element => {
+        console.log(element.id)
+        console.log(element.title)
+        responseArray.push(element.id)
+        responseArray.push(element.title)
+      });
+      console.log(responseArray);
+
+      //Map each id to its title in a dictionary like way
+      const finalJSON = {};
+      for (let i = 0; i < responseArray.length; i += 2) {
+        const id = responseArray[i];
+        const title = responseArray[i + 1];
+        finalJSON[id] = title;
+      }
+
+      const finalArray = [];
+      //Give the keys a name of id and the titles a name of title
+      for (let i = 0; i < responseArray.length; i += 2) {
+        const id = responseArray[i];
+        const title = responseArray[i + 1];
+        finalArray.push({ id: id.toString(), title });
+      }
+
+      console.log(finalArray);
+      
+      res.send(finalArray);
+
+      
+  })
+  //Want to get the titles and Ids from each recipe in the JSON
+  
 })
 
 
