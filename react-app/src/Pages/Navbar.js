@@ -25,16 +25,14 @@ return(
              Nutripro
         </div>
     <ul className='navbar-nav'>
-      <li><Link to={`/Home?data=${dataToSend}`} id='homeLink'>
-      Home
-    </Link></li>
       
       <li><Link to="/Login">Login</Link></li>
-      <li><Link to={`/HomePage?data=${dataToSend}`} className= "noDecoration" >HomePage</Link></li>
+      <li><Link to={`/Home Page?data=${dataToSend}`} className= "noDecoration" >HomePage</Link></li>
       <li><Link id = "goToBio" to={`/Bio?data=${dataToSend}`} className= "noDecoration" >Bio</Link></li>
       <li><Link to={`/NutritionalInformation?data=${dataToSend}`} className= "noDecoration" >Nutritional Info</Link></li>
       <li><Link to={`/RecipeSearch?data=${dataToSend}`} className= "noDecoration" >Search Recipes</Link></li>
       <li><Link to={`/display-maker-recipes?data=${dataToSend}`} className= "noDecoration" >Maker Recipes</Link></li>
+      <li><Link to={`/Personalized_Recipes?data=${dataToSend}`} className= "noDecoration" >Personalized Search</Link></li>
       <li
         onMouseEnter = {handleMouseEnter}
         onMouseLeave={handleMouseLeave}>

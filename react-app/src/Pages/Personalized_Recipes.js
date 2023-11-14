@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Navbar from './Navbar';
+import { Navigate, useNavigate } from 'react-router-dom';
 function Personalized_Recipes() {
     const urlParams = new URLSearchParams(window.location.search);
     const dataToSend = urlParams.get('data');
@@ -14,7 +15,54 @@ function Personalized_Recipes() {
     const [recipes, setRecipes] = useState([]);
     const [saveRecipe, setSaveRecipe] = useState(false);
     const [clickedIndex, setClickedIndex] = useState(null);
+    const navigate = useNavigate(); //used to navigate to another page
+    const [userType, setUserType] = useState('');
+    const apiKEY = '522c838fa8034d6f870c425c713cbf84'
   
+//If no one is loggin in, they go to the landing page
+useEffect(()=>{
+    console.log("This is user param:",dataToSend)
+    if(dataToSend === 'null' || dataToSend === null)
+    {
+      console.log('navigating');
+      navigate(`/`);
+    }
+  },[])
+  
+  //Check user type on page loading
+  useEffect(() => {
+    const checkUser = async () => {
+      if(dataToSend !== "null"){
+      try {
+        //const apiUrl = 'http://localhost:8080/createRecipe';  
+        
+        const apiUrl = `http://172.16.122.26:8080/checkMaker/${dataToSend}`;
+  
+        response = await axios.get(apiUrl);
+        console.log('Response:', response.data);
+        setUserType(response.data[0].isMaker);
+      } catch (error) {
+        //This means an invalid user tried to access the system
+        setUserType(-1);
+        console.error('Error:', error);
+      }
+    };
+    }
+    checkUser();
+  }, []); // Empty dependency array ensures this effect runs once on mount
+  
+  
+  //When the user type is checked, will redirect makers to the landing page
+  useEffect(()=>{
+    console.log("This is user param:",dataToSend)
+    if(userType === 1 || userType === -1)
+    {
+      console.log('navigating');
+      navigate(`/`);
+    }
+  }, [userType])
+
+
 //Getting the change for the check boxes
 const handleCheckboxChange1 = () => {
     setIsChecked1(!isChecked1);
@@ -101,6 +149,23 @@ useEffect(() => {
     fetchTopIngredients();
   }, []); // Empty dependency array ensures this effect runs once on mount
 
+  const fetchTopIngredientsAgain = async () => {
+      
+    try {
+      const apiUrl = `http://172.16.122.26:8080/topIngredients/${dataToSend}`;
+
+      response = await axios.get(apiUrl);
+      console.log('Response:', response.data);
+      setTop1(response.data[0].ingredient)
+      setTop2(response.data[1].ingredient)
+      setTop3(response.data[2].ingredient)
+     // setRecipes(response.data)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+
 //On button press, search for the ingredients
 let IngResponse;
   const handleIngredientSearch = async () => {
@@ -110,31 +175,107 @@ let IngResponse;
       const apiUrl = `http://172.16.122.26:8080/PersonalizedSearch`;
       const ingredients = selectedIngredients;
       console.log(ingredients)
-      //IngResponse = await axios.post(apiUrl, {ingredients});
-      //console.log('Response:', IngResponse.data);
-        //setRecipes(IngResponse.data)
+      IngResponse = await axios.post(apiUrl, {ingredients});
+      console.log('Response:', IngResponse.data);
+        setRecipes(IngResponse.data)
 
-        setRecipes([
+        /* setRecipes([
             { "id": "633338", "title": "Bacon Wrapped Filet Mignon" },
             { "id": "644387", "title": "Garlicky Kale" },
             { "id": "660158", "title": "Simple Vinaigrette" },
             { "id": "648729", "title": "Kale With Red Onion" },
             { "id": "651238", "title": "Simple Mashed Yams" }
-          ])
+          ]) */
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handleRandomSearch = async () => {
+      
+    try {
+    let randomResponse
+      const apiUrl = `http://172.16.122.26:8080/PersonalizedRandomSearch`;
+      randomResponse = await axios.post(apiUrl);
+      console.log('Response:', randomResponse.data);
+        setRecipes(randomResponse.data)
+        /* setRecipes([
+            { "id": "633338", "title": "Bacon Wrapped Filet Mignon" },
+            { "id": "644387", "title": "Garlicky Kale" },
+            { "id": "660158", "title": "Simple Vinaigrette" },
+            { "id": "648729", "title": "Kale With Red Onion" },
+            { "id": "651238", "title": "Simple Mashed Yams" }
+          ]) */
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
 
-  const handleSaveRecipe = async(index) =>
+  const handleSaveRecipe = async(index, id) =>
   {
-    setSaveRecipe(true);
-    // Hide the pop-up after 3 seconds
-    setTimeout(() => {
-      setSaveRecipe(false);
-    }, 1000);
-    setClickedIndex(index);
+
+    var recipe;
+      console.log('ID for recipe', id)
+      try {
+        const response = await fetch(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${apiKEY}`);
+  
+        if (response.ok) {
+          const data = await response.json()
+          recipe = data;
+          console.log(recipe)
+          const { title } = recipe; 
+
+    const ingredients = recipe.analyzedInstructions[0].steps
+  .flatMap((step) => step.ingredients)
+  .map((ingredient) => ingredient.name);
+    // Use a Set to remove duplicates
+  const uniqueIngredients = [...new Set(ingredients)];
+
+    console.log('Title:', title);
+
+    console.log('Ingredients:', uniqueIngredients);
+    
+
+
+  const steps = recipe.analyzedInstructions[0].steps;
+
+  const concatenatedSteps = steps.map((step) => step.step).join('\n');
+
+  console.log(concatenatedSteps);
+    // Call saveRecipe and pass the necessary values
+    await saveRecipeFinal(title, concatenatedSteps, uniqueIngredients, dataToSend, index);
+
+
+        } else {
+          // Handle API request error
+          console.error('API request error');
+        }
+      } catch (error) {
+        console.error('API request error:', error);
+      }
+
+    
+
+
+   
+  }
+
+
+  const saveRecipeFinal = async (title, steps, ingredients, username, index) => {
+    const apiUrl = `http://172.16.122.26:8080/createRecipe/${username}`;
+    console.log(ingredients);
+    try {
+      const response = await axios.post(apiUrl, { title, steps, ingredients});
+      setSaveRecipe(true);
+      // Hide the pop-up after 3 seconds
+      setTimeout(() => {
+        setSaveRecipe(false);
+      }, 1000);
+      setClickedIndex(index);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
 
   return (
@@ -143,7 +284,7 @@ let IngResponse;
     <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", textAlign: "center"}}>
     <h1>Personalized Recipes</h1>
     <div>
-        <h2>Your Top 3 Ingredients</h2>
+        <h2>Ingredients From Saved Recipes</h2>
         <div style={{ display: "flex", justifyContent: "center", alignContent: "center", textAlign: "center" }}>
         <ul style={{ display: "flex", listStyle: "none", padding: 0 }}>
       <li
@@ -229,20 +370,27 @@ let IngResponse;
             <button style={{margin: "10px"}}
             onClick={() => handleIngredientSearch()}
             >Ingredient Search</button>
-            <button style={{margin: "10px"}}>Random Search</button>
+            <button style={{margin: "10px"}}
+            onClick={() => fetchTopIngredientsAgain()}
+            >Generate New</button>
+            <button style={{margin: "10px"}}
+            onClick={() => handleRandomSearch()}
+            >Random Search</button>
+            
         </div>
-        <div style={{ display: "flex", justifyContent: "center", alignContent: "center", textAlign: "center", justifyItems: "column", flexDirection: 'column', padding: 0 }}>
+        <div style={{ display: "flex", justifyContent: "center", alignContent: "center", textAlign: "center", justifyItems: "column", flexDirection: 'column', padding: 0,  border: "2px solid #008000",
+            boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)", maxWidth: "400px", margin: '10px auto'}}>
             {recipes.map((item, index) => (
-            <li style={{margin: "10px", color: clickedIndex === index ? "green" : "black", cursor: "pointer"}} 
+            <li style={{margin: "10px auto", color: clickedIndex === index ? "green" : "black", cursor: "pointer", listStyle: 'none'}} 
             key={item.id}
-            onClick={() => handleSaveRecipe(index)}
+            onClick={() => handleSaveRecipe(index, item.id)}
             
             >
                 {item.title}</li>
             ))}
-            {saveRecipe && 
-            <div>Recipe Saved</div>}
         </div>
+        {saveRecipe && 
+            <div>Recipe Saved</div>}
     </div>
     </div>
     </>

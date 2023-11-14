@@ -890,10 +890,13 @@ app.get('/topIngredients/:username', async (req, res) =>{
   const countArray = Object.entries(ingredientCount).map(([ingredient, count]) => ({ ingredient, count }));
 
   // Sort the array in descending order based on count
-  countArray.sort((a, b) => b.count - a.count);
+  for (let i = countArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [countArray[i], countArray[j]] = [countArray[j], countArray[i]];
+  }
 
   // Get the top 3 most common ingredients
-  const top3Ingredients = countArray.slice(0, 3);
+  const top3Ingredients = countArray.slice(0, 5);
 
   console.log(top3Ingredients);
   res.send(top3Ingredients);
@@ -959,6 +962,65 @@ app.post("/PersonalizedSearch", async (req, res)=>{
   //Want to get the titles and Ids from each recipe in the JSON
   
 })
+
+async function getRandomRecipes(numberOfRecipes) {
+  const responseArray = [];
+
+  // Make multiple calls to the "Random Recipe" endpoint
+  for (let i = 0; i < numberOfRecipes; i++) {
+    let apiQuery = `https://api.spoonacular.com/recipes/random?apiKey=${apiKEY}`
+    const result = await axios(apiQuery)
+
+      console.log(result.data.recipes)
+          
+      //Get the title and id for each element
+      result.data.recipes.forEach(element => {
+        console.log(element.id)
+        console.log(element.title)
+        responseArray.push(element.id)
+        responseArray.push(element.title)
+      });
+      console.log(responseArray);
+    
+  }
+  return responseArray;
+  
+}
+
+
+
+app.post("/PersonalizedRandomSearch", async (req, res)=>{
+
+getRandomRecipes(3)
+.then(result =>{
+    console.log(result)
+    let responseArray = result;
+     //Map each id to its title in a dictionary like way
+     const finalJSON = {};
+     for (let i = 0; i < responseArray.length; i += 2) {
+       const id = responseArray[i];
+       const title = responseArray[i + 1];
+       finalJSON[id] = title;
+     }
+
+     const finalArray = [];
+     //Give the keys a name of id and the titles a name of title
+     for (let i = 0; i < responseArray.length; i += 2) {
+       const id = responseArray[i];
+       const title = responseArray[i + 1];
+       finalArray.push({ id: id.toString(), title });
+     }
+
+     console.log(finalArray);
+     
+     res.send(finalArray);
+
+})
+      
+  })
+
+  
+
 
 
 app.listen(PORT, () => {
