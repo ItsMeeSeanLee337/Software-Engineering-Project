@@ -11,6 +11,9 @@ function RecipeSearch() {
   const [userType, setUserType] = useState('');
   const urlParams = new URLSearchParams(window.location.search);
   const dataToSend = urlParams.get('data');
+  const [showPopup, setShowPopup] = useState(false);
+  const [isByIngredient, setIsByIngredient] = useState(false);
+  const apiKey = 'KEY';
   var response;
   useEffect(()=>{
     console.log("This is user param:",dataToSend)
@@ -55,10 +58,9 @@ function RecipeSearch() {
   }, [userType])
 
   const searchRecipesByName = async () => {
-    const apiKey = '522c838fa8034d6f870c425c713cbf84 ';
 
     try {
-      const response = await fetch(`https://api.spoonacular.com/recipes/search?query=${query}&apiKey=${apiKey}`);
+      const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&addRecipeInformation=true&apiKey=${apiKey}`);
 
       if (response.ok) {
         const data = await response.json()
@@ -74,10 +76,9 @@ function RecipeSearch() {
   };
   
   const searchRecipesByDiet = async () => {
-    const apiKey = '522c838fa8034d6f870c425c713cbf84 ';
 
     try {
-      const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&diet=${diet}&apiKey=${apiKey}`);
+      const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&addRecipeInformation=true&diet=${diet}&apiKey=${apiKey}`);
 
       if (response.ok) {
         const data = await response.json()
@@ -93,10 +94,9 @@ function RecipeSearch() {
   };
 
   const searchByIngredients = async () => {
-    const apiKey = '522c838fa8034d6f870c425c713cbf84 ';
-
+    setIsByIngredient(true);
     try {
-      const response = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&apiKey=${apiKey}`);
+      const response = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&addRecipeInformation=true&apiKey=${apiKey}`);
 
       if (response.ok) {
         const data = await response.json()
@@ -116,6 +116,105 @@ function RecipeSearch() {
     setQuery(e.target.value);
   };
 
+  //Used to display the text as html and not just plain text from the API
+  //The text from the API includes actual HTML tags 
+  function createMarkup(text) {
+    return {__html: text};
+  }
+
+
+  const handleSave = async (recipe) =>  {
+    console.log("is by ingredient", isByIngredient)
+
+    if(isByIngredient === false)
+    {
+      const { title } = recipe; // Assuming these are the correct properties
+
+    const ingredients = recipe.analyzedInstructions[0].steps
+  .flatMap((step) => step.ingredients)
+  .map((ingredient) => ingredient.name);
+    // Use a Set to remove duplicates
+  const uniqueIngredients = [...new Set(ingredients)];
+
+    console.log('Title:', title);
+
+    console.log('Ingredients:', uniqueIngredients);
+    
+
+
+  const steps = recipe.analyzedInstructions[0].steps;
+
+  const concatenatedSteps = steps.map((step) => step.step).join('\n');
+
+  console.log(concatenatedSteps);
+    // Call saveRecipe and pass the necessary values
+    await saveRecipe(title, concatenatedSteps, uniqueIngredients, dataToSend);
+    }
+    else
+    {
+      //Need to search for the recipe based on its ID
+      const{id} = recipe;
+      console.log('ID for recipe', id)
+      try {
+        const response = await fetch(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${apiKey}`);
+  
+        if (response.ok) {
+          const data = await response.json()
+          recipe = data;
+          console.log(recipe)
+          const { title } = recipe; // Assuming these are the correct properties
+
+    const ingredients = recipe.analyzedInstructions[0].steps
+  .flatMap((step) => step.ingredients)
+  .map((ingredient) => ingredient.name);
+    // Use a Set to remove duplicates
+  const uniqueIngredients = [...new Set(ingredients)];
+
+    console.log('Title:', title);
+
+    console.log('Ingredients:', uniqueIngredients);
+    
+
+
+  const steps = recipe.analyzedInstructions[0].steps;
+
+  const concatenatedSteps = steps.map((step) => step.step).join('\n');
+
+  console.log(concatenatedSteps);
+    // Call saveRecipe and pass the necessary values
+    await saveRecipe(title, concatenatedSteps, uniqueIngredients, dataToSend);
+
+
+        } else {
+          // Handle API request error
+          console.error('API request error');
+        }
+      } catch (error) {
+        console.error('API request error:', error);
+      }
+
+    }
+    setIsByIngredient(false);
+  }
+
+
+  const saveRecipe = async (title, steps, ingredients, username) => {
+    const apiUrl = `http://172.16.122.26:8080/createRecipe/${username}`;
+    console.log(ingredients);
+    try {
+      const response = await axios.post(apiUrl, { title, steps, ingredients});
+      setShowPopup(true);
+  
+      // Hide the pop-up after 3 seconds
+      setTimeout(() => {
+        setShowPopup(false);
+      }, 1000);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+
   const handleDietChange = (e) => {
     const optionValue = e.target.value;
     setDiet((prevDiet) => {
@@ -132,6 +231,7 @@ function RecipeSearch() {
   };
 
   return (
+    <>
     <div>
       <Navbar></Navbar>
       <div>
@@ -162,10 +262,24 @@ function RecipeSearch() {
 
       <ul>
         {recipes.map((recipe) => (
-          <li key={recipe.id}>{recipe.title}</li>
+          <div>
+          <li key={recipe.id}>{recipe.title}
+          <button
+          onClick={() => handleSave(recipe)}>
+            Save</button>
+            {showPopup && (
+                  <div className="popup">
+                    <p>Recipe Saved!</p>
+                  </div>
+                )}
+          </li>
+          
+          </div>
+          
         ))}
       </ul>
     </div>
+    </>
   );
 }
 

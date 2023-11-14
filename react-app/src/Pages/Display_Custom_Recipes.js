@@ -103,12 +103,12 @@ useEffect(() => {
   
   
   const handleDelete = async (recipeID) =>  {
-    const { Title, Description } = recipeID; // Assuming these are the correct properties
+    const { Title, Description, crID } = recipeID; // Assuming these are the correct properties
     console.log('Title:', Title);
     console.log('Description:', Description);
-  
+    console.log("CRID:", crID);
     // Call deleteRecipe and pass the necessary values
-    await deleteRecipe(Title, Description, dataToSend);
+    await deleteRecipe(crID, dataToSend);
   }
 
 
@@ -149,11 +149,11 @@ useEffect(() => {
 
 
 
-const deleteRecipe = async (title, steps, username) => {
+const deleteRecipe = async (crID, username) => {
   const apiUrl = 'http://172.16.122.26:8080/deleteCustomRecipe';
-
+  console.log("CRID:", crID);
   try {
-    const response = await axios.post(apiUrl, { title, steps, username });
+    const response = await axios.post(apiUrl, {crID, username });
     
     console.log('Response:', response);
     window.location.reload();

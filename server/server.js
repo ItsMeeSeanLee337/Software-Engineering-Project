@@ -2,11 +2,12 @@ const express = require('express');
 const db = require('./db')
 const app = express();
 const cors = require('cors')
+const axios = require('axios');
 const bodyParser = require("body-parser");
 const { createConnection } = require('mariadb');
 const e = require('express');
 const PORT = 8080;
-
+const apiKEY = 'KEY'
 app.use(cors())
 
 app.use(bodyParser.json());
@@ -214,30 +215,43 @@ app.get('/MakerRecipes/Display', async(req,res) =>{
 app.post('/deleteCustomRecipe' , async(req,res)=>{
   console.log("here in deleteCustom");
   const {username} = req.body;
-  const { title } = req.body;
-  const { steps } = req.body;
-  console.log('Title:', title)
-  console.log('steps:', steps)
+  const { crID } = req.body;
   console.log(username);
+  console.log(crID)
 
   const userID = await getUserID(username, res);
 
 
   const query = `
-  DELETE cr, ur
+  DELETE ur
   FROM CustomRecipe cr
   JOIN UserRecipes ur ON ur.crID = cr.crID
   JOIN User u ON u.UserID = ur.userID
   WHERE u.Username = '${username}'
-  AND cr.Title = '${title}'
-  AND cr.Description = '${steps}';`
+  AND cr.crID = '${crID}';`
 
 
   try {
     const result = await db.pool.query(query);
     console.log(result);
     console.log(query);
-    res.send("Recipe Deleted");
+
+    const query2 = `
+    Delete from CustomRecipe where crID = ${crID};`
+
+
+  try {
+    const result = await db.pool.query(query);
+    console.log(result);
+    console.log(query);
+    //res.send("Recipe Deleted");
+    
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+    
     
 
   } catch (error) {
@@ -247,6 +261,7 @@ app.post('/deleteCustomRecipe' , async(req,res)=>{
 
 
   
+  res.send("Recipe Deleted");
 
 })
 
@@ -828,6 +843,185 @@ app.get('/getCustomRecipe', async (req, res) => {
   }
 
 });
+
+
+app.post('/saveSearchedRecipe', async (req,res) =>{
+  const {summary} = req.body.summary;
+  const {title} = req.body.title;
+  const {ingredients} = req.body.ingredients;
+  console.log("This is title ", title);
+  console.log("This is summary", summary);
+  console.log("This is ingredients", ingredients);
+
+})
+
+app.get('/topIngredients/:username', async (req, res) =>{
+
+  try{
+  //Get the userID for the user
+  const username = req.params.username;
+  console.log(username);
+  var finalUserID = await getUserID(username,res);
+
+  //Query the database for all ingredients from every recipe
+  query = `
+  SELECT IngredientList.list
+  FROM CustomRecipe
+  JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
+  JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
+  WHERE UserRecipes.userID = ${finalUserID};
+  `;
+  const result = await db.pool.query(query);
+  console.log(result);
+
+  //Turn ingredients from JSON in to a list of every single item repeated, not unique like a set
+  var allIngredients = result.map(item => item.list.ingredients).flat();
+  console.log(allIngredients);
+
+  // Create an object to store the count of each ingredient
+  const ingredientCount = {};
+
+  // Count occurrences of each ingredient
+  allIngredients.forEach(ingredient => {
+    ingredientCount[ingredient] = (ingredientCount[ingredient] || 0) + 1;
+  });
+
+  // Convert the object into an array of { ingredient, count } pairs
+  const countArray = Object.entries(ingredientCount).map(([ingredient, count]) => ({ ingredient, count }));
+
+  // Sort the array in descending order based on count
+  for (let i = countArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [countArray[i], countArray[j]] = [countArray[j], countArray[i]];
+  }
+
+  // Get the top 3 most common ingredients
+  const top3Ingredients = countArray.slice(0, 5);
+
+  console.log(top3Ingredients);
+  res.send(top3Ingredients);
+}
+catch{
+  res.status(404)
+}
+  
+
+
+})
+
+app.post("/PersonalizedSearch", async (req, res)=>{
+  
+  const {ingredients} = req.body;
+  console.log("Ingredients in personalized search",ingredients);
+
+  //Want to format ingredients like [ing1, ing2] -> "ing1,ing2"
+  let ingredientString = ingredients.join(',');
+  //Want to get rid of any whitespace
+  ingredientString = ingredientString.replace(/\s/g, '')
+  console.log(ingredientString)
+
+  //Now we just have to query the api for the recipes matching those ingredients
+  let apiQuery = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredientString}&number=5&apiKey=${apiKEY}`
+
+  let responseArray = [];
+  axios(apiQuery)
+  .then(result =>{
+      console.log(result)
+
+      //Get the title and id for each element
+      result.data.forEach(element => {
+        console.log(element.id)
+        console.log(element.title)
+        responseArray.push(element.id)
+        responseArray.push(element.title)
+      });
+      console.log(responseArray);
+
+      //Map each id to its title in a dictionary like way
+      const finalJSON = {};
+      for (let i = 0; i < responseArray.length; i += 2) {
+        const id = responseArray[i];
+        const title = responseArray[i + 1];
+        finalJSON[id] = title;
+      }
+
+      const finalArray = [];
+      //Give the keys a name of id and the titles a name of title
+      for (let i = 0; i < responseArray.length; i += 2) {
+        const id = responseArray[i];
+        const title = responseArray[i + 1];
+        finalArray.push({ id: id.toString(), title });
+      }
+
+      console.log(finalArray);
+      
+      res.send(finalArray);
+
+      
+  })
+  //Want to get the titles and Ids from each recipe in the JSON
+  
+})
+
+async function getRandomRecipes(numberOfRecipes) {
+  const responseArray = [];
+
+  // Make multiple calls to the "Random Recipe" endpoint
+  for (let i = 0; i < numberOfRecipes; i++) {
+    let apiQuery = `https://api.spoonacular.com/recipes/random?apiKey=${apiKEY}`
+    const result = await axios(apiQuery)
+
+      console.log(result.data.recipes)
+          
+      //Get the title and id for each element
+      result.data.recipes.forEach(element => {
+        console.log(element.id)
+        console.log(element.title)
+        responseArray.push(element.id)
+        responseArray.push(element.title)
+      });
+      console.log(responseArray);
+    
+  }
+  return responseArray;
+  
+}
+
+
+
+app.post("/PersonalizedRandomSearch", async (req, res)=>{
+
+getRandomRecipes(3)
+.then(result =>{
+    console.log(result)
+    let responseArray = result;
+     //Map each id to its title in a dictionary like way
+     const finalJSON = {};
+     for (let i = 0; i < responseArray.length; i += 2) {
+       const id = responseArray[i];
+       const title = responseArray[i + 1];
+       finalJSON[id] = title;
+     }
+
+     const finalArray = [];
+     //Give the keys a name of id and the titles a name of title
+     for (let i = 0; i < responseArray.length; i += 2) {
+       const id = responseArray[i];
+       const title = responseArray[i + 1];
+       finalArray.push({ id: id.toString(), title });
+     }
+
+     console.log(finalArray);
+     
+     res.send(finalArray);
+
+})
+      
+  })
+
+  
+
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
