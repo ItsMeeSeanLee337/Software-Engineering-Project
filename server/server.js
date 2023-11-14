@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const { createConnection } = require('mariadb');
 const e = require('express');
 const PORT = 8080;
-const apiKEY = '522c838fa8034d6f870c425c713cbf84'
+const apiKEY = 'KEY'
 app.use(cors())
 
 app.use(bodyParser.json());
