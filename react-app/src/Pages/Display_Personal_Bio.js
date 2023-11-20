@@ -92,7 +92,7 @@ function Display_Personal_Bio() {
         <button type="button" id='goToEditBio' onClick={handleBackEdit}>Go Back to Edit</button>
         <br />
         <br />
-        <button type="button" onClick={handleBackHome}>Go Back to Home</button>
+        <button  type="button" onClick={handleBackHome}>Go Back to Home</button>
         <p>Welcome to your Bio, {username}! If you want to edit your bio please click on Go Back to Edit!</p>
         <div style = {{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
         {bio.map((item, index) => (

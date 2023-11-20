@@ -233,7 +233,7 @@ const handleTag = (id) => {
     <>
     <Navbar></Navbar>
     <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
-        <button className='centerButtonCR' type="button" onClick={handleViewTags}>View Tagged Recipes</button>
+        <button id = "goToTaggedRecipes" className='centerButtonCR' type="button" onClick={handleViewTags}>View Tagged Recipes</button>
     </div>
     <div className='flex-container-CR'>
         <h3>Your Saved Custom Recipes</h3>
