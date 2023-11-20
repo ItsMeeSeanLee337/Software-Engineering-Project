@@ -59,24 +59,27 @@ useEffect(()=>{
   }
 }, [userType])
 
-
+// Make sure title doesn't reset
 function handleTitle(e){
   e.preventDefault()
 }
 
+// Make sure the steps don't reset
 function handleSteps(e){
   e.preventDefault()
 }
 
+//Update ingredient list when a new ingredient is added
 const updateIngredients = (updatedIngredients) => {
   setNewIngredient(updatedIngredients);
 };
 
-
-const handleSubmit = (event) => {
-  event.preventDefault();
+// Unit Tested
+// Handles the submitting of the recipe to be create to the server
+ function handleSubmit(){
   if (title === '' || title === null || steps === '' || steps === null || ingredients === '' || ingredients === null) {
     console.log('Field is empty');
+    return "field is empty"
   } else {
     console.log('Field is not empty');
     console.log('Ingredients:', ingredients);  // Log ingredients to console
@@ -93,13 +96,16 @@ const handleSubmit = (event) => {
     setTimeout(() => {
       setShowPopup(false);
     }, 3000);
+    return "success"
     })
     .catch(error => {
       console.error('Error:', error);
+      return "server error"
     });
   }
   
 };
+
 
 // Function to split the steps into lines
 const splitStepsIntoLines = (steps, maxLength) => {
@@ -200,6 +206,9 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
   </div>
 </>
   )
+ 
 }
+
+
 
 export default Create_Recipe;
