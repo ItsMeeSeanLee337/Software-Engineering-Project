@@ -13,7 +13,7 @@ function Display_Custom_Recipes() {
 const [recipes, setRecipes] = useState([]);
 const [title, setNewTitle] = useState("")
 const [steps, setNewStep] = useState("")
-const [username, setNewUsername] = useState("");
+//const [username, setNewUsername] = useState("");
 const [notesVisible, setNotesVisible] = useState(false);
 const [fillNotes, setfillNotes] = useState("");
 const [crid, setcrid] = useState('');
@@ -22,11 +22,16 @@ const [showTextArea, setShowTextArea] = useState(false);
 const [tagText, settagText] = useState('');
 const [recipeTagVisibility, setRecipeTagVisibility] = useState({});
 
+//for the MealPlanner
+
 const navigate = useNavigate(); //used to navigate to another page
 
 const urlParams = new URLSearchParams(window.location.search);
 const dataToSend = urlParams.get('data');
 const [userType, setUserType] = useState('');
+
+//setting username
+const username = dataToSend;
 
 
 var passID = '';
@@ -164,13 +169,7 @@ const deleteRecipe = async (crID, username) => {
 }
 
 
-
-
-
-
-
 const handleSaveText= (id) => {
-  // You can save the text to a server or perform any other desired action here
   console.log("ID handle save text:", id);
   console.log('Text to save:', tagText);
   setShowTextArea(false); 
@@ -181,7 +180,6 @@ const handleSaveText= (id) => {
 
   //insert into db for that crid
 try{
-  
   const apiUrl = `http://172.16.122.26:8080/setTaggedRecipes/${id}`;
     axios.post(apiUrl, {username, tagText})
       .then(response_tag => {
@@ -226,6 +224,30 @@ const handleTag = (id) => {
 
 };
 
+const handleMealPlanner = (id) => {
+  console.log("ID:", id);
+  console.log("Inside handleMealPlanner");
+  console.log("This is the username: ", dataToSend);
+  try{
+    const apiUrl = `http://172.16.122.26:8080/setMealPlannerRecipes/${id}`;
+      axios.post(apiUrl, {username})
+        .then(response_tag => {
+          if (response_tag.status === 200) {
+            console.log('Response:', response_tag.data);
+            alert("Successfully added meal");
+          } 
+        })
+        .catch(error => {
+          console.error('Already in DB:', error);
+          alert("Meal already in planner!");
+        });
+  
+      } catch (error) {
+        console.error('MealPlan DB Error:', error);
+      }
+
+};
+
 
 
 
@@ -267,6 +289,11 @@ const handleTag = (id) => {
                <button className = 'centerButtonCR'
                 onClick={() => handleTag(recipe.crID)}
                 >Add Tag</button>
+                <button className = 'centerButtonCR'
+
+                onClick={() => handleMealPlanner(recipe.crID)}
+                >Add to Meal Planner</button>
+
                 {recipeTagVisibility[recipe.crID] && (
                 <div>
                   <textarea

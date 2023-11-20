@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const { createConnection } = require('mariadb');
 const e = require('express');
 const PORT = 8080;
-const apiKEY = 'KEY'
+const apiKEY = '50d03a3364da470987316effc5628ecf'
 app.use(cors())
 
 app.use(bodyParser.json());
@@ -663,6 +663,142 @@ app.post('/setTaggedRecipes/:crID', async(req, res) => {
     }
 
 
+});
+
+app.post('/setMealPlannerRecipes/:crID', async(req, res) => {
+  const crID = req.params.crID;
+  console.log("This is the crID for setting meal planner recipies: ", crID);
+  const {username} = req.body;
+  console.log("This is the username for meal planner: ", username);
+
+  try {
+    var finalUserID = await getUserID(username, res);
+    console.log("UserID: ", finalUserID);
+    //needs to be an insert
+    const query = `
+      INSERT INTO MealPlanner (userID, crID, Username)
+      VALUES (?, ?, ?)
+    `;
+    const result = await db.pool.query(query, [finalUserID, crID, username]);
+    console.log(result);
+    res.send("Meal Plan Recipe added");
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+
+
+
+});
+
+app.get('/getMealPlannerRecipes/:username', async(req, res) => {
+  console.log("Inside get mealplanned recipes");
+  try {
+    const username = req.params.username;
+    console.log("Username: ", username);
+    var finalUserID = await getUserID(username, res);
+    console.log("UserID: ", finalUserID);
+    const query1 = `
+    SELECT crID FROM MealPlanner WHERE userID = ${finalUserID};`;
+    const result = await db.pool.query(query1);
+    console.log("First query: ", result);
+
+    // Extract crID values from the result
+    const crIDValues = result.map(row => row.crID);
+
+     // Array to store all recipe results
+    const allRecipeResults = [];
+
+    // Loop through each crID and query the CustomRecipe table
+    for (const crID of crIDValues) {
+      const query2 = `SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list
+                      FROM CustomRecipe
+                      JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
+                      JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
+                      WHERE UserRecipes.userID = ${finalUserID} AND CustomRecipe.crID = ${crID};`;
+      const recipeResult = await db.pool.query(query2);
+
+      // Push the result of each iteration into the array
+      allRecipeResults.push({ crID, recipes: recipeResult });
+
+      // Handle the recipeResult as needed (e.g., log or process the recipe data)
+      console.log('Recipe for crID', crID, ':', recipeResult);
+    }
+    res.send(allRecipeResults);
+
+  } catch(error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+
+
+});
+
+app.post('/setDay/:crID', async(req, res) => {
+  const crID = req.params.crID;
+  console.log("This is the crID for taggedRecipes: ", crID);
+  const {username} = req.body;
+  const {dayText} = req.body;
+  const upperCaseDayText = dayText.toUpperCase();
+
+  console.log("This is the crid: ", username, "This is the text: ", upperCaseDayText);
+  try {
+    var finalUserID = await getUserID(username, res);
+    console.log("UserID: ", finalUserID);
+    const query = `
+      INSERT INTO DaysOfWeek (userID, Username, crID, dayOfWeek)
+      VALUES (?, ?, ?, ?)
+    `;
+    const result = await db.pool.query(query, [finalUserID, username, crID, upperCaseDayText]);
+    console.log(result);
+    res.send("Meal Plan Day added!");
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+
+});
+
+app.get('/getDay/:day', async(req, res) => {
+  try {
+    const day = req.params.day;
+    const dayToUpper = day.toUpperCase();
+    console.log("day: ", dayToUpper);
+    const query1 = `
+    SELECT userID, crID FROM DaysOfWeek WHERE dayOfWeek = '${dayToUpper}';`;
+    const result = await db.pool.query(query1);
+    console.log("First query: ", result);
+    
+
+    const crIDValues = result.map(row => row.crID);
+
+    const allDayRecipeResults = [];
+
+    // Loop through each crID and query the CustomRecipe table
+    for (const crID of crIDValues) {
+      const query2 = `SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list
+                      FROM CustomRecipe
+                      JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
+                      JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
+                      WHERE CustomRecipe.crID = ${crID};`;
+      const recipeResult = await db.pool.query(query2);
+
+      // Push the result of each iteration into the array
+      allDayRecipeResults.push({ crID, recipes: recipeResult });
+
+      // Handle the recipeResult as needed (e.g., log or process the recipe data)
+      console.log('Recipe for crID', crID, ':', recipeResult);
+    }
+    res.send(allDayRecipeResults);
+
+
+
+  } catch(error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 
