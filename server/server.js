@@ -339,6 +339,38 @@ app.get('/getRandomRecipes/:username', async (req, res) => {
   }
 });
 
+app.get('/listOfIngredients/:username', async (req, res) => {
+  try {
+    // Get the userID for the user
+    const username = req.params.username;
+    console.log(username);
+    var finalUserID = await getUserID(username, res);
+
+    // Query the database for all ingredients from every recipe
+    query = `
+      SELECT IngredientList.list
+      FROM CustomRecipe
+      JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
+      JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
+      WHERE UserRecipes.userID = ${finalUserID};
+    `;
+    const result = await db.pool.query(query);
+    console.log(result);
+
+    // Extract ingredients from the result and flatten the array
+    const allIngredients = result.map((item) => item.list.ingredients).flat();
+    console.log(allIngredients);
+
+    // Get a list of unique ingredients using Set
+    const uniqueIngredients = [...new Set(allIngredients)];
+
+    console.log(uniqueIngredients);
+    res.send(uniqueIngredients);
+  } catch {
+    res.status(404);
+  }
+});
+
 
 
 // Section for postman testing
