@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const { createConnection } = require('mariadb');
 const e = require('express');
 const PORT = 8080;
-const apiKEY = ''
+const apiKEY = '50d03a3364da470987316effc5628ecf'
 app.use(cors())
 
 app.use(bodyParser.json());
@@ -793,12 +793,33 @@ app.get('/getDay/:day', async(req, res) => {
     }
     res.send(allDayRecipeResults);
 
-
-
   } catch(error) {
     console.error('Error executing query:', error);
     res.status(500).send('Internal Server Error');
   }
+});
+
+app.post('/dropMeal/:crID', async(req, res) => {
+  const crID = req.params.crID;
+  console.log("This is the crID for taggedRecipes: ", crID);
+  const {username} = req.body;
+  const {clickedDay} = req.body;
+  const upperCaseDayText = clickedDay.toUpperCase();
+  try {
+    var finalUserID = await getUserID(username, res);
+    console.log("UserID: ", finalUserID);
+    const query = `
+      DELETE FROM DaysOfWeek WHERE userID = '${finalUserID}' AND crID = '${crID}' AND dayOfWeek = '${upperCaseDayText}'
+    `;
+    const result = await db.pool.query(query);
+    console.log(result);
+    res.send("Removed recipe!");
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+  
 });
 
 
@@ -1154,9 +1175,6 @@ getRandomRecipes(3)
 })
       
   })
-
-  
-
 
 
 app.listen(PORT, () => {

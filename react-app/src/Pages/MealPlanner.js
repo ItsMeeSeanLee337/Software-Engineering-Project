@@ -17,7 +17,7 @@ function MealPlanner() {
 
     const [recipes, setRecipes] = useState(null);
     const [mealPlanRecipes, setmealPlanRecipes] = useState(false);
-    const[DayRecipes, setDayRecipes] = useState(null);
+    const [DayRecipes, setDayRecipes] = useState(null);
     const [clickedDay, setClickedDay] = useState(null);
 
 
@@ -152,6 +152,25 @@ function MealPlanner() {
 
     const dropMeal = (id) => {
         console.log('Here in drop meal:' , id);
+        console.log('The day of week:' , clickedDay);
+        try{
+            console.log("here now")
+            const apiUrl = `http://172.16.122.26:8080/dropMeal/${id}`;
+              axios.post(apiUrl, {username, clickedDay})
+                .then(response_tag => {
+                if (response_tag.status === 200) {
+                    console.log('Response:', response_tag.data);
+                    alert("Succesfully dropped meal!");
+                    window.location.reload();
+                  } 
+                })
+                .catch(error => {
+                  console.error('Tag Error:', error);
+                });
+          
+        } catch {
+            console.error('Tag Error:');
+        }
 
     };
 
@@ -187,63 +206,59 @@ function MealPlanner() {
                                 <li key={index}>{ingredient}</li>
                               ))
                             )}
-
-                         <button
-                            className='centerButtonCR'
-                            onClick={() => addToDay(recipe.crID)}
-                          >
-                            Add to:
-                          </button>
-                          
-                          {recipeTagVisibility[recipe.crID] && (
-                            <div>
-                              <textarea
-                                value={dayText}
-                                onChange={(event) => setDayText(event.target.value)}
-                                rows="2"
-                                cols="10"
-                              ></textarea>
-                              <button onClick={() => handleSaveText(recipe.crID)}>Save</button>
-                            </div>
-                          )}
+      
+                            <button
+                              className='centerButtonCR'
+                              onClick={() => addToDay(recipe.crID)}
+                            >
+                              Add to day of week:
+                            </button>
+      
+                            {recipeTagVisibility[recipe.crID] && (
+                              <div>
+                                <textarea
+                                  value={dayText}
+                                  onChange={(event) => setDayText(event.target.value)}
+                                  rows="2"
+                                  cols="10"
+                                ></textarea>
+                                <button onClick={() => handleSaveText(recipe.crID)}>Save</button>
+                              </div>
+                            )}
                           </ul>
-
+      
                         </div>
                       ))}
                   </ul>
                 </div>
               ))}
           </div>
-
+      
           <div>
-          <div >
-            {DayRecipes &&
-              Object.keys(DayRecipes).map((index) => (
-                <div key={index}>
-                  <p>crID: {DayRecipes[index].crID}</p>
-                  <ul>
-                    {DayRecipes[index].recipes &&
-                      DayRecipes[index].recipes.map((recipe, recipeIndex) => (
-                        <div key={recipeIndex} >
-                          <p>Title: {recipe.Title}</p>
+            <div>
+              {DayRecipes &&
+                Object.keys(DayRecipes).map((index) => (
+                  <div key={index}>
+                    <p>crID: {DayRecipes[index].crID}</p>
+                    <ul>
+                      {DayRecipes[index].recipes &&
+                        DayRecipes[index].recipes.map((recipe, recipeIndex) => (
+                          <div key={recipeIndex} >
+                            <p>Title: {recipe.Title}</p>
 
-                         <button
-                            className='centerButtonCR'
-                            onClick={() => dropMeal(recipe.crID)}
-                          >
-                            Drop
-                          </button>
-                        
-                        
-
-                        </div>
-                      ))}
-                  </ul>
-                </div>
-              ))}
-          </div>
-
-
+                            <button
+                              className='centerButtonCR'
+                              onClick={() => dropMeal(recipe.crID)}
+                            >
+                              Drop Meal
+                            </button>
+      
+                          </div>
+                        ))}
+                    </ul>
+                  </div>
+                ))}
+            </div>
           </div>
       
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -255,7 +270,6 @@ function MealPlanner() {
             ))}
           </div>
         </>
-    ); 
-
-};   
+      );    
+    };   
     export default MealPlanner;
