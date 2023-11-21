@@ -19,6 +19,7 @@ import Personalized_Recipes from './Pages/Personalized_Recipes';
 import TaggedRecipes from './Pages/TaggedRecipes'
 import Bio from './Pages/Bio'
 import RecipeSearch from './Pages/recipe_search'
+import Substitutions from './Pages/Substitutions';
 
 import {
   createBrowserRouter,
