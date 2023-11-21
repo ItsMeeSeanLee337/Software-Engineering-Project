@@ -16,12 +16,12 @@ const closeNotes = () =>
 }
 
 
-console.log("this crid", thiscrID)
+//console.log("this crid", thiscrID)
 
 useEffect(() => {
     // This code inside the useEffect will run after setfillNotes is updated.
     // You can perform actions that depend on the updated state here.
-    console.log("crid in recipe: ", crID)
+   // console.log("crid in recipe: ", crID)
     //console.log('fillNotes has been updated:', fillNotes);
 
     // You can set the notesVisible state here if needed
@@ -36,9 +36,10 @@ useEffect(() => {
 
     // You can set the notesVisible state here if needed
   }, [fillNotes]);
-
+  
+// Unit tested
 function handleSaveNotes() {
-    console.log("This is notes in recipe:", notes);
+    //console.log("This is notes in recipe:", notes);
     const apiUrl = `http://172.16.122.26:8080/saveRecipeNotes/${dataToSend}`;
     
   axios.post(apiUrl, {notes, thiscrID})
@@ -61,6 +62,7 @@ function handleSaveNotes() {
    <div className='showNotesPopUp'>
    <div className='showNotesPopUpContext'>
     <textarea className='notesTextArea'
+    data-testid="notesTextArea"
     rows={20}
     cols={100}
     onChange={(e) => setfillNotes(e.target.value)}
@@ -69,7 +71,7 @@ function handleSaveNotes() {
     <br></br>
     <button className = 'notesButtons' onClick={closeNotes}>Close Notes</button>
     <p></p>
-    <button onClick={handleSaveNotes}>Save Notes</button>
+    <button data-testid="saveNotesButton" onClick={handleSaveNotes}>Save Notes</button>
     {showPopup && (
         <div className="popup">
           <p>Notes Saved!</p>

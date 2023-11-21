@@ -32,10 +32,10 @@ const [userType, setUserType] = useState('');
 var passID = '';
 
 useEffect(()=>{
-  console.log("This is user param:",dataToSend)
+  //console.log("This is user param:",dataToSend)
   if(dataToSend === 'null' || dataToSend === null)
   {
-    console.log('navigating');
+    //console.log('navigating');
     navigate(`/`);
   }
 },[])
@@ -50,12 +50,12 @@ useEffect(() => {
       const apiUrl = `http://172.16.122.26:8080/checkMaker/${dataToSend}`;
 
       response = await axios.get(apiUrl);
-      console.log('Response:', response.data);
+      //console.log('Response:', response.data);
       setUserType(response.data[0].isMaker);
     } catch (error) {
       //This means an invalid user tried to access the system
       setUserType(-1);
-      console.error('Error:', error);
+      //console.error('Error:', error);
     }
   };
   }
@@ -65,10 +65,10 @@ useEffect(() => {
 
 //When the user type is checked, will redirect makers to the landing page
 useEffect(()=>{
-  console.log("This is user param:",dataToSend)
+  //console.log("This is user param:",dataToSend)
   if(userType === -1)
   {
-    console.log('navigating');
+    //console.log('navigating');
     navigate(`/`);
   }
 }, [userType])
@@ -76,13 +76,14 @@ useEffect(()=>{
 
 
 useEffect(() => {
-    console.log("useeffect crid", crid)
+    //console.log("useeffect crid", crid)
     getNotes(crid);
 }, [crid]);
 
 
 var response;
 useEffect(() => {
+  //Unit tested
     const fetchData = async () => {
       
       try {
@@ -90,7 +91,8 @@ useEffect(() => {
         const apiUrl = `http://172.16.122.26:8080/CustomRecipe/Display/${dataToSend}`;
 
         response = await axios.get(apiUrl);
-        console.log('Response:', response.data);
+        //console.log('Response:', response.data);
+        console.log("Got recipes successfully")
         setRecipes(response.data)
       } catch (error) {
         console.error('Error:', error);
@@ -101,7 +103,8 @@ useEffect(() => {
   }, []); // Empty dependency array ensures this effect runs once on mount
 
   
-  
+  //Not unit tested
+  //Endpoint unit testing covers this testing
   const handleDelete = async (recipeID) =>  {
     const { Title, Description, crID } = recipeID; // Assuming these are the correct properties
     console.log('Title:', Title);
@@ -113,26 +116,26 @@ useEffect(() => {
 
 
 const showNotes = (id) =>{
-  console.log("This is id", id);
+  //console.log("This is id", id);
     passID = id;
     setcrid(passID);
 
     //getNotes(id);
 }
 
-
+//Unit tested
 const getNotes = async (id) =>{
 
   try {
     //const apiUrl = 'http://localhost:8080/createRecipe';  
     const apiUrl = `http://172.16.122.26:8080/getRecipeNotes/${id}`;
-    console.log(id)
+    //console.log(id)
     var response = await axios.get(apiUrl, id);
-    console.log('Response:', response.data);
+    ///console.log('Response:', response.data);
     var newNotes = response.data[0].notes;
     setfillNotes(response.data[0].notes);
-    console.log(fillNotes);
-    console.log("This is new notes" ,newNotes);
+    console.log("Got notes");
+    //console.log("This is new notes" ,newNotes);
     setNotesVisible(!notesVisible);
   } catch (error) {
     console.error('Error:', error); 
@@ -148,7 +151,7 @@ useEffect(() => {
 
 
 
-
+// Note united tested since endpoint testing covers this
 const deleteRecipe = async (crID, username) => {
   const apiUrl = 'http://172.16.122.26:8080/deleteCustomRecipe';
   console.log("CRID:", crID);
@@ -294,6 +297,7 @@ const handleTag = (id) => {
                   >Delete
                   </button>
                   <button className='centerButtonCR'
+                    data-testid='showNotesButton'
                     onClick={() => showNotes(recipe.crID)}
                   >Notes
                   </button>

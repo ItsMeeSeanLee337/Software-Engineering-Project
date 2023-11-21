@@ -18,10 +18,10 @@ const maxLineLength = 30; // Set max line length
 const [userType, setUserType] = useState('');
 var response;
 useEffect(()=>{
-    console.log("This is user param:",dataToSend)
+    //console.log("This is user param:",dataToSend)
     if(dataToSend === 'null' || dataToSend == null)
     {
-      console.log('navigating');
+      //console.log('navigating');
       navigate(`/`);
     }
 })
@@ -36,7 +36,7 @@ useEffect(() => {
       const apiUrl = `http://172.16.122.26:8080/checkMaker/${dataToSend}`;
 
       response = await axios.get(apiUrl);
-      console.log('Response:', response.data);
+      //console.log('Response:', response.data);
       setUserType(response.data[0].isMaker);
     } catch (error) {
       //This means an invalid user tried to access the system
@@ -51,10 +51,10 @@ useEffect(() => {
 
 //When the user type is checked, will redirect makers to the landing page
 useEffect(()=>{
-  console.log("This is user param:",dataToSend)
+  //console.log("This is user param:",dataToSend)
   if(userType === -1)
   {
-    console.log('navigating');
+    //console.log('navigating');
     navigate(`/`);
   }
 }, [userType])
@@ -77,19 +77,23 @@ const updateIngredients = (updatedIngredients) => {
 // Unit Tested
 // Handles the submitting of the recipe to be create to the server
  function handleSubmit(){
-  if (title === '' || title === null || steps === '' || steps === null || ingredients === '' || ingredients === null) {
+  //console.log("Title", title)
+  //console.log("Steps", steps)
+  //console.log("Ing", ingredients)
+  if (title === '' || title === null || steps === '' || steps === null || ingredients === '' || ingredients === null
+  || ingredients[0] === "") {
     console.log('Field is empty');
     return "field is empty"
   } else {
-    console.log('Field is not empty');
-    console.log('Ingredients:', ingredients);  // Log ingredients to console
+    //console.log('Field is not empty');
+    //console.log('Ingredients:', ingredients);  // Log ingredients to console
   //const apiUrl = 'http://localhost:8080/createRecipe';  // Replace with your server endpoint
   //const apiUrl = 'http://172.16.122.26:8080/createRecipe';  // Replace with your server endpoint
   const apiUrl = `http://172.16.122.26:8080/createRecipe/${dataToSend}`;
-  console.log(apiUrl);
+  //console.log(apiUrl);
   axios.post(apiUrl, { title, steps, ingredients })
     .then(response => {
-      console.log('Response:', response.data);
+      console.log(response.data.message);
       setShowPopup(true);
 
     // Hide the pop-up after 3 seconds
@@ -139,18 +143,19 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
     <>
   <Navbar />
   <div className="flex-container">
-    <div className="center-container">
-      <h1 className="header">Create a Custom Recipe</h1>
+    <div data-testid="createText" className="center-container">
+      <h1  className="header">Create a Custom Recipe</h1>
       <form className="form center" onSubmit={handleTitle}>
         <label htmlFor="Title" className="headerCompliment">
           Enter Recipe Title
         </label>
         <input
+          data-testid="titleField"
           value={title}
           onChange={(e) => setNewTitle(e.target.value)}
           type="text"
           id="title"
-          maxlength="60"
+          maxLength="60"
         />
       </form>
       <form className="form center" onSubmit={handleSteps}>
@@ -158,6 +163,7 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
           Enter Recipe Steps
         </label>
         <textarea
+          data-testid="stepsField"
           value={steps}
           onChange={(e) => setNewStep(e.target.value)}
           id="steps"
@@ -176,7 +182,7 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
         however you want to format the steps
       </h5>
       <IngredientList updateIngredients={updateIngredients} />
-      <button className= "buttonMargin" onClick={handleSubmit}>Create Recipe</button>
+      <button data-testid="addRecipeButton" className= "buttonMargin" onClick={handleSubmit}>Create Recipe</button>
       {showPopup && (
         <div className="popup">
           <p>Recipe added!</p>

@@ -6,7 +6,7 @@ import '../styles/displayCustomRecipe.css'
 import { useHistory } from 'react-router-dom';
 import RecipeNotes from '../Modules/RecipeNotes';
 import { Navigate, useNavigate } from 'react-router-dom';
-function Display_Custom_Recipes() {
+function Display_Maker_Recipes() {
 const [recipes, setRecipes] = useState([]);
 const [title, setNewTitle] = useState("")
 const [steps, setNewStep] = useState("")
@@ -23,10 +23,10 @@ const [showPopup, setShowPopup] = useState(false);
 var passID = '';
 //If no one is loggin in, they go to the landing page
 useEffect(()=>{
-  console.log("This is user param:",dataToSend)
+  //console.log("This is user param:",dataToSend)
   if(dataToSend === 'null' || dataToSend === null)
   {
-    console.log('navigating');
+    //console.log('navigating');
     navigate(`/`);
   }
 },[])
@@ -41,12 +41,12 @@ useEffect(() => {
       const apiUrl = `http://172.16.122.26:8080/checkMaker/${dataToSend}`;
 
       response = await axios.get(apiUrl);
-      console.log('Response:', response.data);
+      //console.log('Response:', response.data);
       setUserType(response.data[0].isMaker);
     } catch (error) {
       //This means an invalid user tried to access the system
       setUserType(-1);
-      console.error('Error:', error);
+      //console.error('Error:', error);
     }
   };
   }
@@ -56,19 +56,15 @@ useEffect(() => {
 
 //When the user type is checked, will redirect makers to the landing page
 useEffect(()=>{
-  console.log("This is user param:",dataToSend)
+  //console.log("This is user param:",dataToSend)
   if(userType === 1 || userType === -1)
   {
-    console.log('navigating');
+    //console.log('navigating');
     navigate(`/`);
   }
 }, [userType])
 
 
-useEffect(() => {
-    console.log("useeffect crid", crid)
-    getNotes(crid);
-}, [crid]);
 
 
 var response;
@@ -80,7 +76,8 @@ useEffect(() => {
         const apiUrl = `http://172.16.122.26:8080/MakerRecipes/Display`;
 
         response = await axios.get(apiUrl);
-        console.log('Response:', response.data);
+        //console.log('Response:', response.data);
+        console.log("Got recipes successfully")
         setRecipes(response.data)
       } catch (error) {
         console.error('Error:', error);
@@ -96,34 +93,27 @@ useEffect(() => {
   const handleSave = async (recipeID) =>  {
     const { Title, Description } = recipeID; // Assuming these are the correct properties
     var ri = recipeID.list.ingredients;
-    console.log("Recipe ing in maker: " ,ri);
+    if(Title !== "" || Title !== undefined)
+    {
+      console.log("Title is filled")
+    }
+    if(Description !== "" || Description !== undefined)
+    {
+      console.log("Description is filled")
+    }
+    if(ri !== "" || ri !== undefined)
+    {
+      console.log("Ingredients are filled")
+    }
+    /* console.log("Recipe ing in maker: " ,ri);
     console.log('Title:', Title);
-    console.log('Description:', Description);
+    console.log('Description:', Description); */
   
     // Call deleteRecipe and pass the necessary values
     await saveRecipe(Title, Description, ri, dataToSend);
   }
 
 
-
-const getNotes = async (id) =>{
-
-  try {
-    //const apiUrl = 'http://localhost:8080/createRecipe';  
-    const apiUrl = `http://172.16.122.26:8080/getRecipeNotes/${id}`;
-    console.log(id)
-    var response = await axios.get(apiUrl, id);
-    console.log('Response:', response.data);
-    var newNotes = response.data[0].notes;
-    setfillNotes(response.data[0].notes);
-    console.log(fillNotes);
-    console.log("This is new notes" ,newNotes);
-    setNotesVisible(!notesVisible);
-  } catch (error) {
-    console.error('Error:', error); 
-  }
-
-}
 
 useEffect(() => {
   // This code inside the useEffect will run after setfillNotes is updated.
@@ -132,13 +122,14 @@ useEffect(() => {
 }, [fillNotes]);
 
 
-
+//Unit tested
 //Copy this recipe and put it into the user's own custom recipes
 const saveRecipe = async (title, steps, ingredients, username) => {
   const apiUrl = `http://172.16.122.26:8080/createRecipe/${username}`;
   console.log(ingredients);
   try {
     const response = await axios.post(apiUrl, { title, steps, ingredients});
+    console.log("Recipe Saved To Library")
     setShowPopup(true);
 
     // Hide the pop-up after 3 seconds
@@ -194,6 +185,7 @@ const saveRecipe = async (title, steps, ingredients, username) => {
               ></RecipeNotes>}
                   <button className='centerButtonCR'
                     onClick={() => handleSave(recipe)}
+                    data-testid='saveRecipeButton'
                   >Save
                   </button>
                   {showPopup && (
@@ -216,4 +208,4 @@ const saveRecipe = async (title, steps, ingredients, username) => {
   )
 }
 
-export default Display_Custom_Recipes
+export default Display_Maker_Recipes

@@ -31,6 +31,7 @@ const IngredientList = ({updateIngredients}) => {
         {ingredients.map((ingredient, index) => (
           <li key={index}>
             <input
+              data-testid="ingField"
               type="text"
               placeholder={`Ingredient ${index + 1}`}
               value={ingredient}
