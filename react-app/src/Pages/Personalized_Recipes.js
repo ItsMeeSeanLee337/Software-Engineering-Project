@@ -17,7 +17,7 @@ function Personalized_Recipes() {
     const [clickedIndex, setClickedIndex] = useState(null);
     const navigate = useNavigate(); //used to navigate to another page
     const [userType, setUserType] = useState('');
-    const apiKEY = '522c838fa8034d6f870c425c713cbf84'
+    const apiKEY = '248402bf586449c59ffe2b9624ff978a'
   
 //If no one is loggin in, they go to the landing page
 useEffect(()=>{
