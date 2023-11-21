@@ -101,6 +101,14 @@ const router = createBrowserRouter([
   {
     path:"Personalized_Recipes",
     element:<Personalized_Recipes/>
+  },
+  {
+    path: "Assistant_Features",
+    element: <Assistant_Features/>,
+  },
+  {
+    path: "Substitutions",
+    element: <Substitutions/>,
   }
   
 
