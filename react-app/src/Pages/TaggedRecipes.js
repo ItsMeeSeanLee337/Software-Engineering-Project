@@ -132,7 +132,7 @@ function TaggedRecipes() {
                 {uniqueTags.map((tag) => (
                   <div key={tag}>
                     <br />
-                    <button onClick={() => handleTagClick(tag)}>{tag}</button>
+                    <button id = 'specific_tag' onClick={() => handleTagClick(tag)}>{tag}</button>
                     <br />
                   </div>
                 ))}
@@ -164,7 +164,7 @@ function TaggedRecipes() {
                           </ul>
                           <p>Notes: {recipe.notes}</p>
 
-                          <button className = 'centerButtonCR'
+                          <button id ='removeTag' className = 'centerButtonCR'
                             onClick={() => removeTag(recipe.crID)}
                           >Untag this recipe</button>
                         </div>

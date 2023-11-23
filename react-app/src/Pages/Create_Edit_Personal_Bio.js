@@ -135,7 +135,7 @@ useEffect(()=>{
           alt="Image 1" 
           style={{ width: '100px', height: '100px' }}
           />
-          <button onClick={() => handleImageSelect(('img1'))}>Select Image 1</button>
+          <button id = 'img1' onClick={() => handleImageSelect(('img1'))}>Select Image 1</button>
         </div>
         <div>
           <img 
@@ -143,15 +143,16 @@ useEffect(()=>{
           alt="Image 2" 
           style={{ width: '100px', height: '100px' }}
           />
-          <button onClick={() => handleImageSelect(('img2'))}>Select Image 2</button>
+          <button id = 'img2' onClick={() => handleImageSelect(('img2'))}>Select Image 2</button>
         </div>
         <div>
-        <button onClick={() => handleImageSelect("")}>No image</button>
+        <button id = 'no_image' onClick={() => handleImageSelect("")}>No image</button>
         </div>
         </div>
         </div>
         <h1 className='text'>About Me:</h1>
         <textarea
+          id = 'about'
           rows="5"
           cols="30"
           value={bio}
@@ -162,6 +163,7 @@ useEffect(()=>{
         <br />
         <h1 className='text'>Favorite Food:</h1>
         <textarea
+          id = 'fav_food'
           rows="5"
           cols="30"
           value={favoriteFood}
@@ -172,6 +174,7 @@ useEffect(()=>{
         <br />
         <h1 className='text'>Favorite Recipe:</h1>
         <textarea
+          id = 'fav_recipe'
           rows="5"
           cols="30"
           value={favoriteRecipe}
@@ -179,7 +182,7 @@ useEffect(()=>{
           placeholder="What's your favorite recipe?"
         />
         <div>
-          <button onClick={handleSubmit}>Update</button>
+          <button id = 'submit_edit_bio' onClick={handleSubmit}>Update</button>
         </div>
       </div>
     

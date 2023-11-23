@@ -199,9 +199,6 @@ try{
 };
 
 
-
-
-
 //view all tagged recipies
 const handleViewTags = async (event) => {
   event.preventDefault();
@@ -249,20 +246,18 @@ const handleMealPlanner = (id) => {
 };
 
 
-
-
   return (
     <>
     <Navbar></Navbar>
     <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
-        <button className='centerButtonCR' type="button" onClick={handleViewTags}>View Tagged Recipes</button>
+        <button id = 'view_tags' className='centerButtonCR' type="button" onClick={handleViewTags}>View Tagged Recipes</button>
     </div>
     <div className='flex-container-CR'>
         <h3>Your Saved Custom Recipes</h3>
         <div>
             {recipes.map(recipe => (
           <div className = 'recipeItem' id='map' key={recipe.crID}>
-            <h4 className='recipeTitle'>Title</h4>
+            <h4 id = 'title' className='recipeTitle'>Title</h4>
             <p className='recipeTitle'>{recipe.Title}</p>
             <h4 className='recipeTitle'>Steps</h4>
             <textarea
@@ -286,23 +281,30 @@ const handleMealPlanner = (id) => {
               )}
 
               <div>
-               <button className = 'centerButtonCR'
+               <button 
+                id = 'tag'
+                className = 'centerButtonCR'
                 onClick={() => handleTag(recipe.crID)}
                 >Add Tag</button>
-                <button className = 'centerButtonCR'
 
+                <button 
+                id = 'meal_planner'
+                className = 'centerButtonCR'
                 onClick={() => handleMealPlanner(recipe.crID)}
                 >Add to Meal Planner</button>
 
                 {recipeTagVisibility[recipe.crID] && (
                 <div>
                   <textarea
+                    id = 'tagText'
                     value={tagText}
                     onChange={(event) => settagText(event.target.value)}
                     rows="2"
                     cols="40"
                   ></textarea>
-                  <button onClick={() => handleSaveText(recipe.crID)}>Save</button>
+                  <button 
+                  id = 'saveTag'
+                  onClick={() => handleSaveText(recipe.crID)}>Save</button>
                 </div>
                 )}
               </div>

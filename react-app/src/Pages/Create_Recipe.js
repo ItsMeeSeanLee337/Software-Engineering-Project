@@ -170,7 +170,7 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
         however you want to format the steps
       </h5>
       <IngredientList updateIngredients={updateIngredients} />
-      <button className= "buttonMargin" onClick={handleSubmit}>Create Recipe</button>
+      <button id = 'create_recipe_button' className= "buttonMargin" onClick={handleSubmit}>Create Recipe</button>
       {showPopup && (
         <div className="popup">
           <p>Recipe added!</p>

@@ -820,9 +820,32 @@ app.post('/dropMeal/:crID', async(req, res) => {
     res.status(500).send('Internal Server Error');
   }
   
+  
 });
 
 
+app.post('/dropMealPlanMeal/:crID', async(req, res) => {
+  const crID = req.params.crID;
+  console.log("This is the crID for dropping meal plan : ", crID);
+  const {username} = req.body;
+  try {
+    var finalUserID = await getUserID(username, res);
+    console.log("UserID: ", finalUserID);
+    const query1 = `
+      DELETE FROM MealPlanner WHERE userID = '${finalUserID}' AND crID = '${crID}' 
+    `;
+    const result1 = await db.pool.query(query1);
+    const query2 = `
+    DELETE FROM MealPlanner WHERE userID = '${finalUserID}' AND crID = '${crID}' 
+  `;
+  res.send("Removed recipe from meal planner and days!");
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+
+});
 
 app.post('/login', async (req, res) => {
     const { username } = req.body;
