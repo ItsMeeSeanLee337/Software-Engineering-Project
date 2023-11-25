@@ -244,7 +244,7 @@ const handleTag = (id) => {
             {recipes.map(recipe => (
           <div className = 'recipeItem' id='map' key={recipe.crID}>
             <h4 className='recipeTitle'>Title</h4>
-            <p className='recipeTitle'>{recipe.Title}</p>
+            <p id = "recipeTitle" className='recipeTitle'>{recipe.Title}</p>
             <h4 className='recipeTitle'>Steps</h4>
             <textarea
             rows={6}
@@ -268,17 +268,19 @@ const handleTag = (id) => {
 
               <div>
                <button className = 'centerButtonCR'
+                id="addTagButton"
                 onClick={() => handleTag(recipe.crID)}
                 >Add Tag</button>
                 {recipeTagVisibility[recipe.crID] && (
                 <div>
                   <textarea
+                  id = "tagTextArea"
                     value={tagText}
                     onChange={(event) => settagText(event.target.value)}
                     rows="2"
                     cols="40"
                   ></textarea>
-                  <button onClick={() => handleSaveText(recipe.crID)}>Save</button>
+                  <button id = "saveTagButton" onClick={() => handleSaveText(recipe.crID)}>Save</button>
                 </div>
                 )}
               </div>

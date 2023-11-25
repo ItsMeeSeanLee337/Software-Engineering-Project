@@ -4,7 +4,7 @@ import "@testing-library/jest-dom";
 import {BrowserRouter as Router} from 'react-router-dom';
 import Personalized_Recipes from "../../Pages/Personalized_Recipes";
 
-/*
+
 test('FetchData testing', async () => {
   const logSpy = jest.spyOn(console, 'log');
   const url = `${window.location.pathname}?data=testing`;
@@ -193,7 +193,7 @@ test('Fetch Top Ingredients Again testing', async () => {
         expect(logSpy).toHaveBeenCalledWith('Random recipes fetched');
       }) 
       
-  }); */
+  });
 
   //Only test using random to ensure a recipe is genereated for testing
   //Ingredient search can have no generations messing up the

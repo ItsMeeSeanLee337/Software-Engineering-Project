@@ -152,16 +152,17 @@ const saveRecipe = async (title, steps, ingredients, username) => {
         <div>
             {recipes.map(recipe => (
           <div className = 'recipeItem' id='map' key={recipe.crID}>
-            <h4 className='recipeTitle'>Title</h4>
-            <p className='recipeTitle'>{recipe.Title}</p>
-            <h4 className='recipeTitle'>Steps</h4>
+            <h4 id="title" className='recipeTitle'>Title</h4>
+            <p id = "makerTitle" className='recipeTitle'>{recipe.Title}</p>
+            <h4 id = "steps" className='recipeTitle'>Steps</h4>
             <textarea
+            id = "makerSteps"
             rows={6}
              className='recipeSteps textareaSteps'
              maxLength={100}
              >
               {recipe.Description}</textarea>
-            <h4 className='recipeTitle'>Ingredients</h4>
+            <h4 id = "ing" className='recipeTitle'>Ingredients</h4>
             <ul className= 'recipeIngredients'>
               {Array.isArray(recipe.list) ? (
                 // For the first type of ingredient structure
@@ -171,7 +172,7 @@ const saveRecipe = async (title, steps, ingredients, username) => {
               ) : (
                 // For the second type of ingredient structure
                 recipe.list.ingredients.map((ingredient, index) => (
-                  <li key={index}>{ingredient}</li>
+                  <li id = "makerIng" key={index}>{ingredient}</li>
                 ))
               )}
               {notesVisible && <RecipeNotes 

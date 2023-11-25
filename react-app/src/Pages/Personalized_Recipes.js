@@ -319,6 +319,7 @@ let IngResponse;
         }}
       >
         <input
+        id = "ing1"
           type="checkbox"
           data-testid= "input1"
           style={{ marginRight: "5px" }}
@@ -345,6 +346,7 @@ let IngResponse;
         }}
       >
         <input
+        id = "ing2"
           data-testid= "input2"
           type="checkbox"
           style={{ marginRight: "5px" }}
@@ -371,6 +373,7 @@ let IngResponse;
         }}
       >
         <input
+        id = "ing3"
           type="checkbox"
           style={{ marginRight: "5px" }}
           checked={isChecked3}
@@ -385,6 +388,7 @@ let IngResponse;
         <div id='recipeButtons' style={{ display: "flex", justifyContent: "center", alignContent: "center", textAlign: "center", justifyItems: "row", padding: 0 }}>
             <button style={{margin: "10px"}}
             onClick={() => handleIngredientSearch()}
+            id = "ingredientSearchButton"
             data-testid = "ingredientSearchButton"
             >Ingredient Search</button>
             <button style={{margin: "10px"}}
@@ -392,6 +396,7 @@ let IngResponse;
             data-testid = "genereateNewButton"
             >Generate New</button>
             <button style={{margin: "10px"}}
+            id="randomButton"
             data-testid = "randomButton"
             onClick={() => handleRandomSearch()}
             >Random Search</button>
@@ -402,6 +407,7 @@ let IngResponse;
             {recipes.map((item, index) => (
             <li style={{margin: "10px auto", color: clickedIndex === index ? "green" : "black", cursor: "pointer", listStyle: 'none'}} 
             data-testid="recipeList"
+            id = "recipeList"
             key={item.id}
             onClick={() => handleSaveRecipe(index, item.id)}
             

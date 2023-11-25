@@ -18,10 +18,10 @@ const maxLineLength = 30; // Set max line length
 const [userType, setUserType] = useState('');
 var response;
 useEffect(()=>{
-    //console.log("This is user param:",dataToSend)
+    console.log("This is user param:",dataToSend)
     if(dataToSend === 'null' || dataToSend == null)
     {
-      //console.log('navigating');
+      console.log('navigating');
       navigate(`/`);
     }
 })
@@ -36,7 +36,7 @@ useEffect(() => {
       const apiUrl = `http://172.16.122.26:8080/checkMaker/${dataToSend}`;
 
       response = await axios.get(apiUrl);
-      //console.log('Response:', response.data);
+      console.log('Response:', response.data);
       setUserType(response.data[0].isMaker);
     } catch (error) {
       //This means an invalid user tried to access the system
@@ -59,57 +59,47 @@ useEffect(()=>{
   }
 }, [userType])
 
-// Make sure title doesn't reset
+
 function handleTitle(e){
   e.preventDefault()
 }
 
-// Make sure the steps don't reset
 function handleSteps(e){
   e.preventDefault()
 }
 
-//Update ingredient list when a new ingredient is added
 const updateIngredients = (updatedIngredients) => {
   setNewIngredient(updatedIngredients);
 };
 
-// Unit Tested
-// Handles the submitting of the recipe to be create to the server
- function handleSubmit(){
-  //console.log("Title", title)
-  //console.log("Steps", steps)
-  //console.log("Ing", ingredients)
-  if (title === '' || title === null || steps === '' || steps === null || ingredients === '' || ingredients === null
-  || ingredients[0] === "") {
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+  if (title === '' || title === null || steps === '' || steps === null || ingredients === '' || ingredients === null) {
     console.log('Field is empty');
-    return "field is empty"
   } else {
-    //console.log('Field is not empty');
-    //console.log('Ingredients:', ingredients);  // Log ingredients to console
+    console.log('Field is not empty');
+    console.log('Ingredients:', ingredients);  // Log ingredients to console
   //const apiUrl = 'http://localhost:8080/createRecipe';  // Replace with your server endpoint
   //const apiUrl = 'http://172.16.122.26:8080/createRecipe';  // Replace with your server endpoint
   const apiUrl = `http://172.16.122.26:8080/createRecipe/${dataToSend}`;
   //console.log(apiUrl);
   axios.post(apiUrl, { title, steps, ingredients })
     .then(response => {
-      console.log(response.data.message);
+      console.log('Response:', response.data);
       setShowPopup(true);
 
     // Hide the pop-up after 3 seconds
     setTimeout(() => {
       setShowPopup(false);
     }, 3000);
-    return "success"
     })
     .catch(error => {
       console.error('Error:', error);
-      return "server error"
     });
   }
   
 };
-
 
 // Function to split the steps into lines
 const splitStepsIntoLines = (steps, maxLength) => {
@@ -143,19 +133,18 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
     <>
   <Navbar />
   <div className="flex-container">
-    <div data-testid="createText" className="center-container">
-      <h1  className="header">Create a Custom Recipe</h1>
+    <div className="center-container">
+      <h1 className="header">Create a Custom Recipe</h1>
       <form className="form center" onSubmit={handleTitle}>
         <label htmlFor="Title" className="headerCompliment">
           Enter Recipe Title
         </label>
         <input
-          data-testid="titleField"
           value={title}
           onChange={(e) => setNewTitle(e.target.value)}
           type="text"
           id="title"
-          maxLength="60"
+          maxlength="60"
         />
       </form>
       <form className="form center" onSubmit={handleSteps}>
@@ -163,7 +152,6 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
           Enter Recipe Steps
         </label>
         <textarea
-          data-testid="stepsField"
           value={steps}
           onChange={(e) => setNewStep(e.target.value)}
           id="steps"
@@ -182,10 +170,10 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
         however you want to format the steps
       </h5>
       <IngredientList updateIngredients={updateIngredients} />
-      <button data-testid="addRecipeButton" className= "buttonMargin" onClick={handleSubmit}>Create Recipe</button>
+      <button id="addRecipeButton" className= "buttonMargin" onClick={handleSubmit}>Create Recipe</button>
       {showPopup && (
         <div className="popup">
-          <p>Recipe added!</p>
+          <p id="recipeAdded">Recipe added!</p>
         </div>
       )}
     </div>
@@ -212,9 +200,6 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
   </div>
 </>
   )
- 
 }
-
-
 
 export default Create_Recipe;

@@ -2,6 +2,7 @@ import{render, screen, act,  cleanup, fireEvent, waitFor} from "@testing-library
 import renderer from "react-test-renderer"
 import "@testing-library/jest-dom";
 import {BrowserRouter as Router} from 'react-router-dom';
+//Import your page correctly
 import Create_Recipe from '../../Pages/Create_Recipe.js';
 
 
@@ -9,6 +10,7 @@ test('HandleSubmit with all fields', async () => {
   const logSpy = jest.spyOn(console, 'log');
   const url = `${window.location.pathname}?data=testing`;
   window.history.pushState({}, '', url);
+  // Need to put the page your testing here
   await act(async () => {
     render(
       <Router>

@@ -96,7 +96,7 @@ function Display_Personal_Bio() {
         <p>Welcome to your Bio, {username}! If you want to edit your bio please click on Go Back to Edit!</p>
         <div style = {{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
         {bio.map((item, index) => (
-          <div key={index}>
+          <div id="bioImage" key={index}>
             {item.imgUrl === 'img1' ? (
             <div>
               {<img 
@@ -119,12 +119,12 @@ function Display_Personal_Bio() {
             </div>
           )}
 
-            <h1 className='text'>Bio: </h1>
-            <p>{item.bio}</p>
-            <h1 className='text'>Favorite Food: </h1>
-            <p>{item.favoriteFood}</p>
-            <h1 className='text'> Favorite Recipe: </h1>
-            <p>{item.favoriteRecipe}</p>
+            <h1 id ="bioTitle" className='text'>Bio: </h1>
+            <p id="bioText">{item.bio}</p>
+            <h1 id = "bioFoodHeader"className='text'>Favorite Food: </h1>
+            <p id = "bioFood">{item.favoriteFood}</p>
+            <h1 id="bioRecipeHeader" className='text'> Favorite Recipe: </h1>
+            <p id="bioRecipe">{item.favoriteRecipe}</p>
           </div>
         ))}
       </div>
