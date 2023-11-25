@@ -10,7 +10,6 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 function Display_Custom_Recipes() {
 
-const [recipes, setRecipes] = useState([]);
 const [title, setNewTitle] = useState("")
 const [steps, setNewStep] = useState("")
 const [username, setNewUsername] = useState("");
@@ -28,58 +27,52 @@ const urlParams = new URLSearchParams(window.location.search);
 const dataToSend = urlParams.get('data');
 const [userType, setUserType] = useState('');
 
+const testRecipe1 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
+  "crID": 1,
+  "Title": "Spaghetti Carbonara 1",
+  "Description": "Bring a large pot of water to a boil and season generously with salt. Add the pasta to the water once boiling and cook until al dente. Reserve 2 cups of cooking water and drain the pasta. ",
+  "list": [
+      "1 lb spaghetti",
+      "3.5 oz pancetta",
+      "2 Tbsps olive oil",
+      "1  egg",
+      "0.5 cup parmesan cheese"
+  ]
+}; 
+
+const testRecipe2 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
+  "crID": 2,
+  "Title": "Spaghetti Carbonara 2",
+  "Description": "Bring a large pot of water to a boil and season generously with salt. Add the pasta to the water once boiling and cook until al dente. Reserve 2 cups of cooking water and drain the pasta. ",
+  "list": [
+      "1 lb spaghetti",
+      "3.5 oz pancetta",
+      "2 Tbsps olive oil",
+      "1  egg",
+      "0.5 cup parmesan cheese"
+  ]
+}; 
+
+const testRecipe3 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
+  "crID": 3,
+  "Title": "Spaghetti Carbonara 3",
+  "Description": "Bring a large pot of water to a boil and season generously with salt. Add the pasta to the water once boiling and cook until al dente. Reserve 2 cups of cooking water and drain the pasta. ",
+  "list": [
+      "1 lb spaghetti",
+      "3.5 oz pancetta",
+      "2 Tbsps olive oil",
+      "1  egg",
+      "0.5 cup parmesan cheese"
+  ]
+}; 
+const [recipes, setRecipes] = useState([testRecipe1, testRecipe2, testRecipe2]);
 
 var passID = '';
-
-useEffect(()=>{
-  console.log("This is user param:",dataToSend)
-  if(dataToSend === 'null' || dataToSend === null)
-  {
-    console.log('navigating');
-    navigate(`/`);
-  }
-},[])
-
-//Check user type on page loading
-useEffect(() => {
-  const checkUser = async () => {
-    if(dataToSend !== "null" || dataToSend !== null){
-    try {
-      //const apiUrl = 'http://localhost:8080/createRecipe';  
-      
-      const apiUrl = `http://172.16.122.26:8080/checkMaker/${dataToSend}`;
-
-      response = await axios.get(apiUrl);
-      console.log('Response:', response.data);
-      setUserType(response.data[0].isMaker);
-    } catch (error) {
-      //This means an invalid user tried to access the system
-      setUserType(-1);
-      console.error('Error:', error);
-    }
-  };
-  }
-  checkUser();
-}, []); // Empty dependency array ensures this effect runs once on mount
-
-
-//When the user type is checked, will redirect makers to the landing page
-useEffect(()=>{
-  console.log("This is user param:",dataToSend)
-  if(userType === -1)
-  {
-    console.log('navigating');
-    navigate(`/`);
-  }
-}, [userType])
-  
-
 
 useEffect(() => {
     console.log("useeffect crid", crid)
     getNotes(crid);
 }, [crid]);
-
 
 var response;
 useEffect(() => {
@@ -100,8 +93,6 @@ useEffect(() => {
     fetchData();
   }, []); // Empty dependency array ensures this effect runs once on mount
 
-  
-  
   const handleDelete = async (recipeID) =>  {
     const { Title, Description, crID } = recipeID; // Assuming these are the correct properties
     console.log('Title:', Title);
@@ -119,7 +110,6 @@ const showNotes = (id) =>{
 
     //getNotes(id);
 }
-
 
 const getNotes = async (id) =>{
 
@@ -146,9 +136,6 @@ useEffect(() => {
   //console.log('fillNotes has been updated:', fillNotes);
 }, [fillNotes]);
 
-
-
-
 const deleteRecipe = async (crID, username) => {
   const apiUrl = 'http://172.16.122.26:8080/deleteCustomRecipe';
   console.log("CRID:", crID);
@@ -162,12 +149,6 @@ const deleteRecipe = async (crID, username) => {
     console.error('Error:', error);
   }
 }
-
-
-
-
-
-
 
 const handleSaveText= (id) => {
   // You can save the text to a server or perform any other desired action here
@@ -200,10 +181,6 @@ try{
 
 };
 
-
-
-
-
 //view all tagged recipies
 const handleViewTags = async (event) => {
   event.preventDefault();
@@ -211,7 +188,6 @@ const handleViewTags = async (event) => {
   window.location.href = `/TaggedRecipes?data=${dataToSend}`;
 
 }
-
 
 //handler for when add tag is clicked
 const handleTag = (id) => {
@@ -226,8 +202,10 @@ const handleTag = (id) => {
 
 };
 
-
-
+const handleNutritionalInfo = (recipe) => {
+  // Navigate to the nutritional information page and pass the recipe details
+  navigate(`/Custom_Recipe_Nutritioninfo?crID=${recipe.crID}&title=${recipe.Title}&description=${recipe.Description}&list=${JSON.stringify(recipe.list)}`);
+};
 
   return (
     <>
@@ -297,18 +275,14 @@ const handleTag = (id) => {
                     onClick={() => showNotes(recipe.crID)}
                   >Notes
                   </button>
+                  <button className='centerButtonCR' 
+                    onClick={() => handleNutritionalInfo(recipe)}
+                  >Nutritional Info
+                  </button>
                 </ul>
-            
           </div>
-
         ))}</div>
-
-        
-        
-    
-    
     </div>
-      
     </>
   )
 }
