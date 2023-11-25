@@ -7,7 +7,8 @@ const bodyParser = require("body-parser");
 const { createConnection } = require('mariadb');
 const e = require('express');
 const PORT = 8080;
-const apiKEY = '50d03a3364da470987316effc5628ecf'
+//replace with your api key
+//const apiKEY = 
 app.use(cors())
 
 app.use(bodyParser.json());
@@ -786,7 +787,7 @@ app.get('/getMealPlannerRecipes/:username', async(req, res) => {
 
     // Loop through each crID and query the CustomRecipe table
     for (const crID of crIDValues) {
-      const query2 = `SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list
+      const query2 = `SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list, CustomRecipe.calories, CustomRecipe.protein, CustomRecipe.fat, CustomRecipe.carbs 
                       FROM CustomRecipe
                       JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
                       JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
@@ -868,7 +869,7 @@ app.post('/getDay/:day', async(req, res) => {
 
     // Loop through each crID and query the CustomRecipe table
     for (const crID of crIDValues) {
-      const query2 = `SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list
+      const query2 = `SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list, CustomRecipe.calories, CustomRecipe.protein, CustomRecipe.fat, CustomRecipe.carbs 
                       FROM CustomRecipe
                       JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
                       JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
@@ -1423,6 +1424,33 @@ app.get('/getRecipeNotesTest/:crID', async (req, res) => {
   }
 });
 
+app.post('/setCustomRecipeNutrition/:crID', async(req, res) => {
+  const crID = req.params.crID;
+  const {calorieData} = req.body;
+  const {proteinData} = req.body;
+  const {fatData} = req.body;
+  const {carbData} = req.body;
+
+  console.log("This is the crid for nutrition: ", crID);
+  try {
+    const query = `
+      UPDATE CustomRecipe
+      SET calories = ${calorieData},
+          protein = ${proteinData},
+          fat = ${fatData},
+          carbs = ${carbData}
+      WHERE crID = ${crID};
+    `;
+    const result = await db.pool.query(query);
+    console.log(result);
+    console.log(query);
+    res.send("Nutrition info Updated");
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 
 
 app.post('/registrationTest', async (req, res) => {
@@ -1513,5 +1541,7 @@ app.post('/registrationTest', async (req, res) => {
     console.error('Database error:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
+
+  
  
 });

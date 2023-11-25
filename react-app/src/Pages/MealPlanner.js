@@ -224,6 +224,10 @@ function MealPlanner() {
                         <div key={recipeIndex} className="r-box">
                           <p>Title: {recipe.Title}</p>
                           <p>Description: {recipe.Description}</p>
+                          <p>Calories: {recipe.calories}</p>
+                          <p>Protein: {recipe.protein}</p>
+                          <p>Fat: {recipe.fat}</p>
+                          <p>Carbs: {recipe.carbs}</p>
                           <p>Ingredients: </p>
                           <ul>
                             {Array.isArray(recipe.list) ? (
@@ -299,7 +303,11 @@ function MealPlanner() {
                       {DayRecipes[index].recipes &&
                         DayRecipes[index].recipes.map((recipe, recipeIndex) => (
                           <div key={recipeIndex} >
-                            <p>{recipe.Title}</p>
+                            <p><b>{recipe.Title}</b></p>
+                            <p>Calories: {recipe.calories}</p>
+                            <p>Protein: {recipe.protein}</p>
+                            <p>Fat: {recipe.fat}</p>
+                            <p>Carbs: {recipe.carbs}</p>
                             <button
                               data-testid="dropDayMealButton"
                               id = 'dropDayMeal'

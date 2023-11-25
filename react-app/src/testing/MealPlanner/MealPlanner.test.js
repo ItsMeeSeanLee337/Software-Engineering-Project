@@ -28,11 +28,10 @@ test('Add meal to meal planner', async () => {
   const mealPlanButton = screen.getAllByTestId('mealPlanButton');
   fireEvent.click(mealPlanButton[0]);
 
-  await waitFor(() =>{
-    expect(logSpy).toHaveBeenCalledWith('Got recipes successfully');
-})
+  
 
   await waitFor(() =>{
+    expect(logSpy).toHaveBeenCalledWith('Got recipes successfully');
     expect(logSpy).toHaveBeenCalledWith("Added recipe to meal planner!");
   }) 
 
