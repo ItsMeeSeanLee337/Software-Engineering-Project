@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from 'axios'
 import Navbar from './Navbar';
 import '../styles/login.css'
 
@@ -12,39 +12,31 @@ function Login() {
   //handler every time we enter info in the username field, for now just indicates the changes to console
   function handleUsername (event) {
     setUsername(event.target.value);
-    console.log("changed uname");
+   //console.log("changed uname");
   };
   
   //handler every time we enter info in the password field, for now just indicates the changes to console
   function handlePassword (event) {
     setPassword(event.target.value);
-    console.log("changed pass");
+    //console.log("changed pass");
   };
 
   //handler for when we submit, indicates the username and pass to console and sends information to server
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Submitted!");
-    console.log("username", username);
-    console.log("password", password);
+    //console.log("Submitted!");
+    //console.log("username", username);
+    //console.log("password", password);
 
     const apiUrl = 'http://172.16.122.26:8080/login';; 
     axios.post(apiUrl, { username, password })
       .then(response => {
         if (response.status === 200) {
-          console.log('Response:', response.data);
+          console.log(response.data);
           const dataToSend = encodeURIComponent(username)
           setUsername('');
           setPassword ('');
-          
-
-
-         
-          
           setUserID(response);
-
-
-          console.log("Stuff", response.data);
           window.location.href = `/Login_Success?data=${dataToSend}`;
         } 
       })
@@ -54,18 +46,6 @@ function Login() {
         setPassword ('');
         alert('Invalid username or password! Try again.');
       });
-
-    //this part was to test locally- not with db
-      /*
-    try {
-      //sending username and password values to the server
-      const response = await axios.post('http://localhost:8083/login', {username, password});
-      console.log(response.data); // Log the response from the server
-    } catch (error) {
-      console.error('Error submitting form:', error);
-    }
-    */
-
 
   };
 
@@ -80,6 +60,7 @@ return (
       <label>
           Username:
           <input
+            data-testid="usernameField"
             id='username'
             type="text"
             value={username}
@@ -93,6 +74,7 @@ return (
         <label>
           Password:
           <input
+            data-testid="passwordField"
             id='password'
             type="password"
             value={password}
@@ -102,7 +84,7 @@ return (
         </label>
         </div>
         <br />
-      <button id = "loginButton" className = "login_button" type="submit">Login</button>
+      <button data-testid="tryLoginButton" id = "loginButton" className = "login_button" type="submit">Login</button>
     </form>
     </div>
     </div>

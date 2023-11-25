@@ -14,7 +14,7 @@ function Display_Personal_Bio() {
     console.log("This is user param:",data)
     if(data === 'null' || data === null)
     {
-      console.log('navigating');
+      //console.log('navigating');
       navigate(`/`);
     }
   },[])
@@ -29,7 +29,7 @@ function Display_Personal_Bio() {
         const apiUrl = `http://172.16.122.26:8080/checkMaker/${data}`;
   
         response = await axios.get(apiUrl);
-        console.log('Response:', response.data);
+        //console.log('Response:', response.data);
         setUserType(response.data[0].isMaker);
       } catch (error) {
         setUserType(-1);
@@ -46,7 +46,7 @@ function Display_Personal_Bio() {
     console.log("This is user param:",data)
     if(userType === 1 || userType === -1)
     {
-      console.log('navigating');
+      //console.log('navigating');
       navigate(`/`);
     }
   }, [userType])
@@ -55,17 +55,17 @@ function Display_Personal_Bio() {
     const urlParams = new URLSearchParams(window.location.search);
     const data = urlParams.get('data');
     const username = decodeURIComponent(data);
-    console.log("username", username);
+    //console.log("username", username);
 
     const handleBackEdit = async (event) => {
-      console.log("moved to edit bio page");
+      //console.log("moved to edit bio page");
       event.preventDefault();
       const dataToSend = encodeURIComponent(username)
       window.location.href = `/Create_Edit_Personal_Bio?data=${dataToSend}`;
   }
 
     const handleBackHome = async (event) => {
-      console.log("moved to edit bio page");
+      //console.log("moved to edit bio page");
       event.preventDefault();
       const dataToSend = encodeURIComponent(username)
       window.location.href = `/Login_Success?data=${dataToSend}`;
@@ -78,7 +78,8 @@ function Display_Personal_Bio() {
       axios.post(apiUrl, { username })
         .then((response) => {
           setBio(response.data);
-          console.log("This is the response: ", response.data)
+          console.log("Got Bio information succesfully!")
+          //console.log("This is the response: ", response.data)
         })
         .catch((error) => {
           console.error('Error:', error);

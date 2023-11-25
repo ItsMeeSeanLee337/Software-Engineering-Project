@@ -37,10 +37,10 @@ const username = dataToSend;
 var passID = '';
 
 useEffect(()=>{
-  console.log("This is user param:",dataToSend)
+  //console.log("This is user param:",dataToSend)
   if(dataToSend === 'null' || dataToSend === null)
   {
-    console.log('navigating');
+    //console.log('navigating');
     navigate(`/`);
   }
 },[])
@@ -55,12 +55,12 @@ useEffect(() => {
       const apiUrl = `http://172.16.122.26:8080/checkMaker/${dataToSend}`;
 
       response = await axios.get(apiUrl);
-      console.log('Response:', response.data);
+      //console.log('Response:', response.data);
       setUserType(response.data[0].isMaker);
     } catch (error) {
       //This means an invalid user tried to access the system
       setUserType(-1);
-      console.error('Error:', error);
+      //console.error('Error:', error);
     }
   };
   }
@@ -70,10 +70,10 @@ useEffect(() => {
 
 //When the user type is checked, will redirect makers to the landing page
 useEffect(()=>{
-  console.log("This is user param:",dataToSend)
+  //console.log("This is user param:",dataToSend)
   if(userType === -1)
   {
-    console.log('navigating');
+    //console.log('navigating');
     navigate(`/`);
   }
 }, [userType])
@@ -81,7 +81,7 @@ useEffect(()=>{
 
 
 useEffect(() => {
-    console.log("useeffect crid", crid)
+    //console.log("useeffect crid", crid)
     getNotes(crid);
 }, [crid]);
 
@@ -95,7 +95,8 @@ useEffect(() => {
         const apiUrl = `http://172.16.122.26:8080/CustomRecipe/Display/${dataToSend}`;
 
         response = await axios.get(apiUrl);
-        console.log('Response:', response.data);
+        //console.log('Response:', response.data);
+        console.log("Got recipes successfully")
         setRecipes(response.data)
       } catch (error) {
         console.error('Error:', error);
@@ -109,16 +110,16 @@ useEffect(() => {
   
   const handleDelete = async (recipeID) =>  {
     const { Title, Description, crID } = recipeID; // Assuming these are the correct properties
-    console.log('Title:', Title);
-    console.log('Description:', Description);
-    console.log("CRID:", crID);
+    //console.log('Title:', Title);
+    //console.log('Description:', Description);
+    //console.log("CRID:", crID);
     // Call deleteRecipe and pass the necessary values
     await deleteRecipe(crID, dataToSend);
   }
 
 
 const showNotes = (id) =>{
-  console.log("This is id", id);
+  //console.log("This is id", id);
     passID = id;
     setcrid(passID);
 
@@ -131,13 +132,13 @@ const getNotes = async (id) =>{
   try {
     //const apiUrl = 'http://localhost:8080/createRecipe';  
     const apiUrl = `http://172.16.122.26:8080/getRecipeNotes/${id}`;
-    console.log(id)
+    //console.log(id)
     var response = await axios.get(apiUrl, id);
-    console.log('Response:', response.data);
+    //console.log('Response:', response.data);
     var newNotes = response.data[0].notes;
     setfillNotes(response.data[0].notes);
-    console.log(fillNotes);
-    console.log("This is new notes" ,newNotes);
+    //console.log(fillNotes);
+    //console.log("This is new notes" ,newNotes);
     setNotesVisible(!notesVisible);
   } catch (error) {
     console.error('Error:', error); 
@@ -156,11 +157,11 @@ useEffect(() => {
 
 const deleteRecipe = async (crID, username) => {
   const apiUrl = 'http://172.16.122.26:8080/deleteCustomRecipe';
-  console.log("CRID:", crID);
+  //console.log("CRID:", crID);
   try {
     const response = await axios.post(apiUrl, {crID, username });
     
-    console.log('Response:', response);
+    //console.log('Response:', response);
     window.location.reload();
     
   } catch (error) {
@@ -170,8 +171,8 @@ const deleteRecipe = async (crID, username) => {
 
 
 const handleSaveText= (id) => {
-  console.log("ID handle save text:", id);
-  console.log('Text to save:', tagText);
+  //console.log("ID handle save text:", id);
+  //console.log('Text to save:', tagText);
   setShowTextArea(false); 
   setRecipeTagVisibility((prevVisibility) => ({
     ...prevVisibility,
@@ -184,8 +185,8 @@ try{
     axios.post(apiUrl, {username, tagText})
       .then(response_tag => {
         if (response_tag.status === 200) {
-          console.log('Response:', response_tag.data);
-
+          //console.log('Response:', response_tag.data);
+          console.log("Tag added!")
         } 
       })
       .catch(error => {
@@ -202,7 +203,7 @@ try{
 //view all tagged recipies
 const handleViewTags = async (event) => {
   event.preventDefault();
-  console.log("And the username: ", dataToSend);
+  //console.log("And the username: ", dataToSend);
   window.location.href = `/TaggedRecipes?data=${dataToSend}`;
 
 }
@@ -212,7 +213,7 @@ const handleViewTags = async (event) => {
 const handleTag = (id) => {
   //show text box
   setShowTextArea(true);
-  console.log("ID:", id);
+  //console.log("ID:", id);
   //set the text box visible for only that specific recipe
   setRecipeTagVisibility((prevVisibility) => ({
     ...prevVisibility,
@@ -222,27 +223,28 @@ const handleTag = (id) => {
 };
 
 const handleMealPlanner = (id) => {
-  console.log("ID:", id);
-  console.log("Inside handleMealPlanner");
-  console.log("This is the username: ", dataToSend);
+  //console.log("ID:", id);
+  //console.log("Inside handleMealPlanner");
+  //console.log("This is the username: ", dataToSend);
   try{
     const apiUrl = `http://172.16.122.26:8080/setMealPlannerRecipes/${id}`;
       axios.post(apiUrl, {username})
         .then(response_tag => {
           if (response_tag.status === 200) {
-            console.log('Response:', response_tag.data);
+            //console.log('Response:', response_tag.data);
+            console.log("Added recipie to meal planner!")
             alert("Successfully added meal");
           } 
         })
         .catch(error => {
-          console.error('Already in DB:', error);
+          console.log("Meal already in planner!");
+          //console.error('Already in DB:', error);
           alert("Meal already in planner!");
         });
   
       } catch (error) {
         console.error('MealPlan DB Error:', error);
       }
-
 };
 
 
@@ -282,12 +284,14 @@ const handleMealPlanner = (id) => {
 
               <div>
                <button 
+                data-testid="tagButton"
                 id = 'tag'
                 className = 'centerButtonCR'
                 onClick={() => handleTag(recipe.crID)}
                 >Add Tag</button>
 
-                <button 
+                <button
+                data-testid="mealPlanButton" 
                 id = 'meal_planner'
                 className = 'centerButtonCR'
                 onClick={() => handleMealPlanner(recipe.crID)}
@@ -296,6 +300,7 @@ const handleMealPlanner = (id) => {
                 {recipeTagVisibility[recipe.crID] && (
                 <div>
                   <textarea
+                    data-testid="tagTextField"
                     id = 'tagText'
                     value={tagText}
                     onChange={(event) => settagText(event.target.value)}
@@ -303,6 +308,7 @@ const handleMealPlanner = (id) => {
                     cols="40"
                   ></textarea>
                   <button 
+                  data-testid="saveTagField"
                   id = 'saveTag'
                   onClick={() => handleSaveText(recipe.crID)}>Save</button>
                 </div>
@@ -331,10 +337,6 @@ const handleMealPlanner = (id) => {
           </div>
 
         ))}</div>
-
-        
-        
-    
     
     </div>
       

@@ -1,6 +1,6 @@
 describe('Tag Recipe Testing', () => {
 
-    it('Succesful test: Add a tag to a recipe, view tag and remove tag', () => {
+    it('Add a tag to a recipe, view tag and remove tag', () => {
         cy.visit('http://localhost:3000/Login')
         cy.get('#username').type('testuser')
         cy.get('#password').type('password123')
@@ -17,7 +17,7 @@ describe('Tag Recipe Testing', () => {
         cy.get("#removeTag").click()
     })
 
-    it('Succesful test: Add multiple tags to a recipe, view tag and remove tag', () => {
+    it('Add multiple tags to a recipe, view tag and remove tag', () => {
         cy.visit('http://localhost:3000/Login')
         cy.get('#username').type('testuser')
         cy.get('#password').type('password123')
@@ -46,7 +46,7 @@ describe('Tag Recipe Testing', () => {
         cy.contains('button', 'Italian').click();
     })
 
-    it('Succesful test: Untag all recipes for a certain tag', () => {
+    it('Untag all recipes for Italian tag', () => {
         cy.visit('http://localhost:3000/Login')
         cy.get('#username').type('testuser')
         cy.get('#password').type('password123')
@@ -57,6 +57,20 @@ describe('Tag Recipe Testing', () => {
         cy.get("#view_tags").click()
         cy.url().should('include', '/TaggedRecipes')
         cy.contains('button', 'Italian').click();
+        cy.get('[id="removeTag"]').eq(0).click()
+    })
+
+    it('Untag all recipes', () => {
+        cy.visit('http://localhost:3000/Login')
+        cy.get('#username').type('testuser')
+        cy.get('#password').type('password123')
+        cy.get("#loginButton").click()
+        cy.get('#goToCreateRecipe').trigger('mouseover').get("#goToDisplayRecipe");
+        cy.get('#goToDisplayRecipe').click()
+        cy.url().should('include', '/display-custom-recipes')
+        cy.get("#view_tags").click()
+        cy.url().should('include', '/TaggedRecipes')
+        cy.contains('button', 'American').click();
         cy.get('[id="removeTag"]').eq(0).click()
     })
 

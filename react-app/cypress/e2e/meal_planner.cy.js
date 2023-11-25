@@ -38,9 +38,9 @@ describe('Meal Planner Testing', () => {
         cy.get('#goToMealPlanner').click()
         cy.url().should('include', '/MealPlanner')
         cy.get('#show').click()
-        cy.get('.r-box')  // Assuming each recipe is wrapped in an element with class 'r-box'
-        .eq(1)           // Select the second recipe (zero-based index)
-        .find('button#add_day')  // Find the button with id 'id' inside the second recipe
+        cy.get('.r-box')  
+        .eq(1)          
+        .find('button#add_day') 
         .click();
         cy.get('#dayText').type('monday')
         cy.get('#saveDay').click()
@@ -58,16 +58,16 @@ describe('Meal Planner Testing', () => {
         cy.get('#goToMealPlanner').click()
         cy.url().should('include', '/MealPlanner')
         cy.get('#show').click()
-        cy.get('.r-box')  // Assuming each recipe is wrapped in an element with class 'r-box'
-        .eq(1)           // Select the second recipe (zero-based index)
-        .find('button#add_day')  // Find the button with id 'id' inside the second recipe
+        cy.get('.r-box') 
+        .eq(1)           
+        .find('button#add_day') 
         .click();
         cy.get('#dayText').type('monday')
         cy.get('#saveDay').click()
         cy.get('#dayButton').first().click();
-        cy.get('.r-box')  // Assuming each recipe is wrapped in an element with class 'r-box'
-        .eq(1)           // Select the second recipe (zero-based index)
-        .find('button#add_day')  // Find the button with id 'id' inside the second recipe
+        cy.get('.r-box') 
+        .eq(1)          
+        .find('button#add_day') 
         .click();
         cy.get('#dayText').type('monday')
         cy.get('#saveDay').click()
@@ -81,22 +81,22 @@ describe('Meal Planner Testing', () => {
         cy.get('#goToMealPlanner').click()
         cy.url().should('include', '/MealPlanner')
         cy.get('#show').click()
-        cy.get('.r-box')  // Assuming each recipe is wrapped in an element with class 'r-box'
-        .eq(1)           // Select the second recipe (zero-based index)
-        .find('button#add_day')  // Find the button with id 'id' inside the second recipe
+        cy.get('.r-box')  
+        .eq(1)          
+        .find('button#add_day')  
         .click();
         cy.get('#dayText').type('tuesday')
         cy.get('#saveDay').click()
-        cy.get('.r-box')  // Assuming each recipe is wrapped in an element with class 'r-box'
-        .eq(0)           // Select the second recipe (zero-based index)
-        .find('button#add_day')  // Find the button with id 'id' inside the second recipe
+        cy.get('.r-box') 
+        .eq(0)           
+        .find('button#add_day') 
         .click();
         cy.get('#dayText').clear()
         cy.get('#dayText').type('monday')
         cy.get('#saveDay').click()
-        cy.get('.r-box')  // Assuming each recipe is wrapped in an element with class 'r-box'
-        .eq(3)           // Select the second recipe (zero-based index)
-        .find('button#add_day')  // Find the button with id 'id' inside the second recipe
+        cy.get('.r-box') 
+        .eq(3)         
+        .find('button#add_day')  
         .click();
         cy.get('#dayText').clear()
         cy.get('#dayText').type('friday')
@@ -111,9 +111,9 @@ describe('Meal Planner Testing', () => {
         cy.get('#dayButton').first().click();
         cy.get('button#dropDayMeal').eq(1).click();
         cy.get('#show').click()
-        cy.get('.r-box')  // Assuming each recipe is wrapped in an element with class 'r-box'
-        .eq(3)           // Select the second recipe (zero-based index)
-        .find('button#add_day')  // Find the button with id 'id' inside the second recipe
+        cy.get('.r-box') 
+        .eq(3)          
+        .find('button#add_day')  
         .click();
         cy.get('#dayText').clear()
         cy.get('#dayText').type('monday')
@@ -137,9 +137,9 @@ describe('Meal Planner Testing', () => {
         cy.get('#goToMealPlanner').click()
         cy.url().should('include', '/MealPlanner')
         cy.get('#show').click()
-        cy.get('.r-box')  // Assuming each recipe is wrapped in an element with class 'r-box'
-        .eq(3)           // Select the second recipe (zero-based index)
-        .find('button#drop')  // Find the button with id 'id' inside the second recipe
+        cy.get('.r-box') 
+        .eq(3)        
+        .find('button#drop') 
         .click();
         cy.contains('h2', 'Friday')
         .siblings('#dayButton')
@@ -147,6 +147,39 @@ describe('Meal Planner Testing', () => {
         cy.get('#dayButton').first().click();
         
     })
+
+    it('Drops all meals from mealPlanner', () => {
+        cy.visit('http://localhost:3000/Login')
+        cy.get('#username').type('testuser')
+        cy.get('#password').type('password123')
+        cy.get("#loginButton").click()
+        cy.get('#goToMealPlanner').click()
+        cy.url().should('include', '/MealPlanner')
+        cy.get('#show').click()
+        cy.get('.r-box')  
+        .eq(0)           
+        .find('button#drop')  
+        .click();
+        cy.get('#show').click()
+        cy.get('.r-box')  
+        .eq(0)         
+        .find('button#drop')  
+        .click();
+        cy.get('#show').click()
+        cy.get('.r-box')  
+        .eq(0)          
+        .find('button#drop') 
+        .click();
+        cy.get('#show').click()
+        cy.get('.r-box')  
+        .eq(0)           
+        .find('button#drop')  
+        .click();
+          
+        
+    })
+
+
     
 
 

@@ -15,6 +15,7 @@ describe('Bio Testing', () => {
         cy.get('#fav_recipe').type('My favorite recipe is PBJ Sandwich')
         cy.get("#submit_edit_bio").click()
     })
+
     it('Tests with correct credentials only edits one field', () => {
         cy.visit('http://localhost:3000/Login')
         cy.get('#username').type('testuser')
