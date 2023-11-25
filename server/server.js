@@ -1033,10 +1033,10 @@ app.post('/setCustomRecipeNutrition/:crID', async(req, res) => {
     try {
       const query = `
       Update CustomRecipe
-      Set calories = '${calorieData}'
-      Set protein = '${proteinData}'
-      Set fat = '${fatData}'
-      Set carbs = '${carbData}'
+      Set calories = calorieData
+      Set protein = proteinData
+      Set fat = fatData
+      Set carbs = carbData
       where crID = ${crID}
       `;
       const result = await db.pool.query(query);

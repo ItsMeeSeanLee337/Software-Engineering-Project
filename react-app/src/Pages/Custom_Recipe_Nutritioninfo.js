@@ -4,20 +4,21 @@ import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 function Custom_Recipe_Nutritioninfo() {
-  const apiKey = '00298f1246234721b20874aa5f8c7c0f';
+  const navigate = useNavigate(); //used to navigate to another page
   const urlParams = new URLSearchParams(window.location.search);
+  const dataToSend = urlParams.get('data');
+  const [userType, setUserType] = useState('');
+  var response;
+
+
+  const apiKey = '00298f1246234721b20874aa5f8c7c0f';
   const recipecrID = decodeURIComponent(urlParams.get('crID'));
   const recipeTitle = decodeURIComponent(urlParams.get('title'));
   const recipeDescription = decodeURIComponent(urlParams.get('description'));
   const recipeList = JSON.parse(decodeURIComponent(urlParams.get('list')));
-  const [recipe, setRecipe] = useState(
-    {
-      "title": recipeTitle,
-      "ingredients": recipeList,
-      "instructions": recipeDescription
-    }
-  );
-  const testRecipe = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
+  console.log("recipeList", recipeList)
+  
+  /*const testRecipe = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
     "title": "Spaghetti Carbonara",
     "ingredients": [
         "1 lb spaghetti",
@@ -27,13 +28,20 @@ function Custom_Recipe_Nutritioninfo() {
         "0.5 cup parmesan cheese"
     ],
     "instructions": "Bring a large pot of water to a boil and season generously with salt. Add the pasta to the water once boiling and cook until al dente. Reserve 2 cups of cooking water and drain the pasta. "
-  }; 
+  }; */
   const [calories, setCalories] = useState(null);
   const [fat, setFat] = useState(null);
   const [protein, setProtein] = useState(null);
   const [carbs, setCarbs] = useState(null);
+  const [recipe, setRecipe] = useState(
+    {
+      "title": recipeTitle,
+      "ingredients": recipeList.ingredients,
+      "instructions": recipeDescription
+    }
+  );
 
-  /*useEffect(()=>{
+  useEffect(()=>{
       console.log("This is user param:",dataToSend)
       if(dataToSend === 'null' || dataToSend == null)
       {
@@ -73,13 +81,14 @@ function Custom_Recipe_Nutritioninfo() {
       console.log('navigating');
       navigate(`/`);
     }
-  }, [userType])*/
+  }, [userType])
   
   const analyzeRecipe = async () => {
     console.log("recipecrID", recipecrID)
     console.log("recipeTitle", recipeTitle)
     console.log("recipeDescription", recipeDescription)
     console.log("recipeList", recipeList)
+    console.log(recipe)
     try {
       const response = await fetch(`https://api.spoonacular.com/recipes/analyze?includeNutrition=true&apiKey=${apiKey}`, {
           method: 'POST',
@@ -140,7 +149,7 @@ function Custom_Recipe_Nutritioninfo() {
       <p className='recipeDescription'>{recipeDescription}</p>
       <h4 className='recipeIngredients'>Ingredients</h4>
       <ul>
-        {recipeList.map((ingredient, index) => (
+        {recipeList.ingredients.map((ingredient, index) => (
           <li key={index}>{ingredient}</li>
         ))}
       </ul>

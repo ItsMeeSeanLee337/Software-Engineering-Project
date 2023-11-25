@@ -204,7 +204,7 @@ const handleTag = (id) => {
 
 const handleNutritionalInfo = (recipe) => {
   // Navigate to the nutritional information page and pass the recipe details
-  navigate(`/Custom_Recipe_Nutritioninfo?crID=${recipe.crID}&title=${recipe.Title}&description=${recipe.Description}&list=${JSON.stringify(recipe.list)}`);
+  navigate(`/Custom_Recipe_Nutritioninfo?crID=${recipe.crID}&title=${recipe.Title}&description=${recipe.Description}&list=${JSON.stringify(recipe.list)}&data=${dataToSend}`);
 };
 
   return (
@@ -275,11 +275,12 @@ const handleNutritionalInfo = (recipe) => {
                     onClick={() => showNotes(recipe.crID)}
                   >Notes
                   </button>
-                  <button className='centerButtonCR' 
+                  
+                </ul>
+                <button className='centerButtonCR' 
                     onClick={() => handleNutritionalInfo(recipe)}
                   >Nutritional Info
                   </button>
-                </ul>
           </div>
         ))}</div>
     </div>
