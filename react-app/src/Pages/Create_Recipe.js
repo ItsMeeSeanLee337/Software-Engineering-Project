@@ -17,7 +17,7 @@ const navigate = useNavigate(); //used to navigate to another page
 const maxLineLength = 30; // Set max line length
 const [userType, setUserType] = useState('');
 var response;
-useEffect(()=>{
+/*useEffect(()=>{
     console.log("This is user param:",dataToSend)
     if(dataToSend === 'null' || dataToSend == null)
     {
@@ -57,7 +57,7 @@ useEffect(()=>{
     console.log('navigating');
     navigate(`/`);
   }
-}, [userType])
+}, [userType])*/
 
 
 function handleTitle(e){
@@ -167,7 +167,22 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
         <br />
         You can label the steps, write a paragraph,
         <br />
-        however you want to format the steps
+        however you want to format the steps.
+        <br />
+        <br />
+        When writing the ingredients please list
+        <br />
+        The amount for each ingredient as well. Ex: 
+        <br />
+        1 egg
+        <br />
+        1 lb spaghetti
+        <br />
+        3.5 oz pancetta
+        <br />
+        2 Tbsps olive oil
+        <br />
+        0.5 cup parmesan cheese
       </h5>
       <IngredientList updateIngredients={updateIngredients} />
       <button className= "buttonMargin" onClick={handleSubmit}>Create Recipe</button>

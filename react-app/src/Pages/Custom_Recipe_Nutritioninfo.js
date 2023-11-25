@@ -32,8 +32,50 @@ function Custom_Recipe_Nutritioninfo() {
   const [fat, setFat] = useState(null);
   const [protein, setProtein] = useState(null);
   const [carbs, setCarbs] = useState(null);
+
+  /*useEffect(()=>{
+      console.log("This is user param:",dataToSend)
+      if(dataToSend === 'null' || dataToSend == null)
+      {
+        console.log('navigating');
+        navigate(`/`);
+      }
+  })
+
+  //Check user type on page loading
+  useEffect(() => {
+    const checkUser = async () => {
+      if(dataToSend !== "null" || dataToSend !== null){
+      try {
+        //const apiUrl = 'http://localhost:8080/createRecipe';  
+        
+        const apiUrl = `http://172.16.122.26:8080/checkMaker/${dataToSend}`;
+
+        response = await axios.get(apiUrl);
+        console.log('Response:', response.data);
+        setUserType(response.data[0].isMaker);
+      } catch (error) {
+        //This means an invalid user tried to access the system
+        setUserType(-1);
+        console.error('Error:', error);
+      }
+    };
+    }
+    checkUser();
+  }, []); // Empty dependency array ensures this effect runs once on mount
+
+
+  //When the user type is checked, will redirect makers to the landing page
+  useEffect(()=>{
+    console.log("This is user param:",dataToSend)
+    if(userType === -1)
+    {
+      console.log('navigating');
+      navigate(`/`);
+    }
+  }, [userType])*/
   
-  const testToSeeRecipe = async () => {
+  const analyzeRecipe = async () => {
     console.log("recipecrID", recipecrID)
     console.log("recipeTitle", recipeTitle)
     console.log("recipeDescription", recipeDescription)
@@ -64,6 +106,22 @@ function Custom_Recipe_Nutritioninfo() {
           setFat(fatData);
           setProtein(proteinData);
           setCarbs(carbData);
+          try{
+            const apiUrl = `http://172.16.122.26:8080/setCustomRecipeNutrition/${recipecrID}`;
+              axios.post(apiUrl, {calorieData, fatData, proteinData, carbData})
+                .then(response_tag => {
+                  if (response_tag.status === 200) {
+                    console.log('Response:', response_tag.data);
+          
+                  } 
+                })
+                .catch(error => {
+                  console.error('Nutrition Error:', error);
+                });
+          
+              } catch {
+                console.error('Nutrition Error:');
+          }
         })
         .catch(error => {
           console.error('There was a problem with the fetch operation:', error);
@@ -76,7 +134,6 @@ function Custom_Recipe_Nutritioninfo() {
   return (
     <div>
       <Navbar></Navbar>
-      <button onClick={() => testToSeeRecipe(recipe.crID)}>testbutton</button>
       <h4 className='recipeTitle'>Title</h4>
       <p className='recipeTitle'>{recipeTitle}</p>
       <h4 className='recipeDescription'>Description</h4>
@@ -88,6 +145,7 @@ function Custom_Recipe_Nutritioninfo() {
         ))}
       </ul>
       <h4 className='recipeIngredients'>Nutrition Information</h4>
+      <button onClick={() => analyzeRecipe()}>Get Nutrition Info</button>
       {calories ? (
         <div>
           <div>
@@ -98,7 +156,7 @@ function Custom_Recipe_Nutritioninfo() {
         </div>
         </div>
       ) : (
-        <p>something went wrong</p>
+        <p></p>
       )}
     </div>
   );
