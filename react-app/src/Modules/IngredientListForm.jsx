@@ -31,6 +31,8 @@ const IngredientList = ({updateIngredients}) => {
         {ingredients.map((ingredient, index) => (
           <li key={index}>
             <input
+            id='ings'
+              data-testid="ingField"
               type="text"
               placeholder={`Ingredient ${index + 1}`}
               value={ingredient}
@@ -41,7 +43,7 @@ const IngredientList = ({updateIngredients}) => {
         ))}
       </ul>
       <div className="button-container">
-        <button onClick={addIngredient}>Add Ingredient</button>
+        <button id="addIngButton" onClick={addIngredient}>Add Ingredient</button>
       </div>
     </div>
   );

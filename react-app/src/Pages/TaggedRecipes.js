@@ -55,7 +55,7 @@ function TaggedRecipes() {
     //When the user type is checked, will redirect makers to the landing page
     useEffect(()=>{
       console.log("This is user param:",dataToSend)
-      if(userType === 1 || userType === -1)
+      if(userType === -1)
       {
         console.log('navigating');
         navigate(`/`);
@@ -132,7 +132,7 @@ function TaggedRecipes() {
                 {uniqueTags.map((tag) => (
                   <div key={tag}>
                     <br />
-                    <button onClick={() => handleTagClick(tag)}>{tag}</button>
+                    <button id = "tagButton" onClick={() => handleTagClick(tag)}>{tag}</button>
                     <br />
                   </div>
                 ))}
@@ -148,7 +148,7 @@ function TaggedRecipes() {
                     .map((recipe) => (
                       <li key={recipe.crID}>
                         <div className="recipe-box">
-                          <p>Title: {recipe.Title}</p>
+                          <p id = "tagRecipeTitle">Title: {recipe.Title}</p>
                           <p>Description: {recipe.Description}</p>
                           <p>Ingredients:</p>
                           <ul>

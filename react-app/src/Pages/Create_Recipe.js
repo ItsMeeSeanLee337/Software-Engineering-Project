@@ -51,10 +51,10 @@ useEffect(() => {
 
 //When the user type is checked, will redirect makers to the landing page
 useEffect(()=>{
-  console.log("This is user param:",dataToSend)
+  //console.log("This is user param:",dataToSend)
   if(userType === -1)
   {
-    console.log('navigating');
+    //console.log('navigating');
     navigate(`/`);
   }
 }, [userType])
@@ -83,7 +83,7 @@ const handleSubmit = (event) => {
   //const apiUrl = 'http://localhost:8080/createRecipe';  // Replace with your server endpoint
   //const apiUrl = 'http://172.16.122.26:8080/createRecipe';  // Replace with your server endpoint
   const apiUrl = `http://172.16.122.26:8080/createRecipe/${dataToSend}`;
-  console.log(apiUrl);
+  //console.log(apiUrl);
   axios.post(apiUrl, { title, steps, ingredients })
     .then(response => {
       console.log('Response:', response.data);
@@ -170,10 +170,10 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
         however you want to format the steps
       </h5>
       <IngredientList updateIngredients={updateIngredients} />
-      <button className= "buttonMargin" onClick={handleSubmit}>Create Recipe</button>
+      <button id="addRecipeButton" className= "buttonMargin" onClick={handleSubmit}>Create Recipe</button>
       {showPopup && (
         <div className="popup">
-          <p>Recipe added!</p>
+          <p id="recipeAdded">Recipe added!</p>
         </div>
       )}
     </div>
