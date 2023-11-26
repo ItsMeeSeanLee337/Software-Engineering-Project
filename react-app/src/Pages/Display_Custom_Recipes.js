@@ -88,6 +88,7 @@ useEffect(() => {
 
 var response;
 useEffect(() => {
+  //Unit tested
     const fetchData = async () => {
       
       try {
@@ -107,7 +108,8 @@ useEffect(() => {
   }, []); // Empty dependency array ensures this effect runs once on mount
 
   
-  
+  //Not unit tested
+  //Endpoint unit testing covers this testing
   const handleDelete = async (recipeID) =>  {
     const { Title, Description, crID } = recipeID; // Assuming these are the correct properties
     //console.log('Title:', Title);
@@ -126,7 +128,7 @@ const showNotes = (id) =>{
     //getNotes(id);
 }
 
-
+//Unit tested
 const getNotes = async (id) =>{
 
   try {
@@ -134,10 +136,10 @@ const getNotes = async (id) =>{
     const apiUrl = `http://172.16.122.26:8080/getRecipeNotes/${id}`;
     //console.log(id)
     var response = await axios.get(apiUrl, id);
-    //console.log('Response:', response.data);
+    ///console.log('Response:', response.data);
     var newNotes = response.data[0].notes;
     setfillNotes(response.data[0].notes);
-    //console.log(fillNotes);
+    console.log("Got notes");
     //console.log("This is new notes" ,newNotes);
     setNotesVisible(!notesVisible);
   } catch (error) {
@@ -154,7 +156,7 @@ useEffect(() => {
 
 
 
-
+// Note united tested since endpoint testing covers this
 const deleteRecipe = async (crID, username) => {
   const apiUrl = 'http://172.16.122.26:8080/deleteCustomRecipe';
   //console.log("CRID:", crID);
@@ -329,6 +331,7 @@ const handleMealPlanner = (id) => {
                   >Delete
                   </button>
                   <button className='centerButtonCR'
+                    data-testid='showNotesButton'
                     onClick={() => showNotes(recipe.crID)}
                   >Notes
                   </button>

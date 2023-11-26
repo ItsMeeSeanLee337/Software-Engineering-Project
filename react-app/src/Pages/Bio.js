@@ -110,10 +110,10 @@ function Bio(){
     <div>
         <Navbar></Navbar>
         <p>Welcome to your Bio page! Click on Create/Edit Bio to edit your bio and Go to Bio to view your bio!</p>
-        <button id = 'goToEditCreateBio' type="button" onClick={handleCreateEditBio}>Create/Edit Bio</button>
+        <button id='goToEditBio'  type="button" onClick={handleCreateEditBio}>Create/Edit Bio</button>
         <br />
         <br />
-        <button id='goToEditBio' type="button" onClick={handleGoToBio}>Go to Bio</button>
+        <button id='goToBioPage' type="button" onClick={handleGoToBio}>Go to Bio</button>
         <br />
         <br />
 

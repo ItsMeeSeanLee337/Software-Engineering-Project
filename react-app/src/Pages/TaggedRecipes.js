@@ -147,7 +147,7 @@ function TaggedRecipes() {
                     .map((recipe) => (
                       <li key={recipe.crID}>
                         <div className="recipe-box">
-                          <p>Title: {recipe.Title}</p>
+                          <p id = "tagRecipeTitle">Title: {recipe.Title}</p>
                           <p>Description: {recipe.Description}</p>
                           <p>Ingredients:</p>
                           <ul>

@@ -32,6 +32,7 @@ const IngredientList = ({updateIngredients}) => {
           <li key={index}>
             <input
               id = 'ingredient'
+              data-testid="ingField"
               type="text"
               placeholder={`Ingredient ${index + 1}`}
               value={ingredient}
