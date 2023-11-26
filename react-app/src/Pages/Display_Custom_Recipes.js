@@ -262,7 +262,7 @@ const handleMealPlanner = (id) => {
             {recipes.map(recipe => (
           <div className = 'recipeItem' id='map' key={recipe.crID}>
             <h4 id = 'title' className='recipeTitle'>Title</h4>
-            <p className='recipeTitle'>{recipe.Title}</p>
+            <p  id = "recipeTitle" className='recipeTitle'>{recipe.Title}</p>
             <h4 className='recipeTitle'>Steps</h4>
             <textarea
             rows={6}

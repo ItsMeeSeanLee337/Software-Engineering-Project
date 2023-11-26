@@ -16,10 +16,10 @@ describe('R13', () => {
         cy.get("#goToDisplayRecipe").click();
 
         //Verify the recipe to get correct and compare later to
-        cy.get("#title").should("contain", "Tex-Mex");
+        cy.get("#recipeTitle").should("contain", "Tex-Mex");
         
         //Press the add tag button
-        cy.get("#tagButton").first().click()
+        cy.get("#tag").first().click()
 
         //Get and type a tag into the text box
         cy.get("#tagText").type("Tag")
