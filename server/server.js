@@ -8,7 +8,7 @@ const { createConnection } = require('mariadb');
 const e = require('express');
 const PORT = 8080;
 const apiKEY = 'key '
-
+const bcrypt = require('bcrypt');
 app.use(cors())
 
 app.use(bodyParser.json());
@@ -734,10 +734,28 @@ app.post('/setTaggedRecipes/:crID', async(req, res) => {
 });
 
 
+async function comparePasswords(enteredPassword, storedHash) {
+  try {
+      const result = await bcrypt.compare(enteredPassword, storedHash);
+      console.log('Comparison Result:', result);
+      return 1;
+  } catch (error) {
+      console.error(error);
+      return 0;
+  }
+}
 
 app.post('/login', async (req, res) => {
     const { username } = req.body;
-    const { password } = req.body;
+    let { password } = req.body;
+
+    
+
+    const plaintextPassword = password; // Replace this with the actual user input
+
+    //password = await getEncryptedPassword(plaintextPassword);
+    //console.log("This is hashed password again after function" , password);
+
     console.log('This is the username:', username);
     console.log('This is the password:', password);
     //res.json({ message: 'Recieved Data'});
@@ -748,15 +766,62 @@ app.post('/login', async (req, res) => {
         const result = await connection.query('SELECT * FROM User WHERE username = ? AND password = ?', [username, password]);
         connection.release();
         console.log("This is the result: ", result);
+        
 
         if (result.length >= 1) {
             // Valid login
+            console.log("This is password from result:", result[0].Password);
             res.status(200).json(result);
             //res.send(JSON.stringify({ username, password }));
         } else {
             // Invalid login
-            console.log("Invalid Login");
-            res.status(401).json({ message: 'Invalid login credentials' });
+
+            //Check for the encrypted password account type
+
+            //password = await getEncryptedPassword(plaintextPassword);
+            console.log("Hashed:", password);
+            try {
+              const connection = await db.pool.getConnection();
+              const result = await connection.query('SELECT Password FROM User WHERE username = ?', [username]);
+              connection.release();
+              console.log("This is the result: ", result);
+      
+              if (result.length >= 1) {
+                  // Valid login
+
+                  //Valid result need to compare passwords and its stored hash
+                  let isSame = await bcrypt.compare(password, result[0].Password);
+                  // let isSame = await comparePasswords(password, result[0].Password)
+
+                  if(isSame === true)
+                  {
+                    const result = await connection.query('SELECT * FROM User WHERE username = ?', [username]);
+                    res.status(200).json(result);
+                  }
+                  else
+                  {
+                    console.log("Invalid Login");
+                   res.status(401).json({ message: 'Invalid login credentials' });
+                  }
+                  
+                  //res.send(JSON.stringify({ username, password }));
+              } else {
+                  // Invalid login
+      
+                  //Check for the encrypted password account type
+      
+        
+      
+                  
+                  console.log("Invalid Login");
+                  res.status(401).json({ message: 'Invalid login credentials' });
+              }
+          } catch (error) {
+            console.error('Database error:', error);
+            res.status(500).json({ message: 'Internal Server Error' });
+          }
+
+            
         }
     } catch (error) {
       console.error('Database error:', error);
@@ -985,12 +1050,30 @@ app.post('/dropMealPlanMeal/:crID', async(req, res) => {
 
 });
 
+const getEncryptedPassword = async function(plaintextPassword) {
+  const saltRounds = 0;
+
+  return new Promise((resolve, reject) => {
+      bcrypt.hash(plaintextPassword, saltRounds, (err, hash) => {
+          if (err) {
+              // Handle error
+              console.error(err);
+              reject(err);
+          } else {
+              // Resolve with the hash value
+              console.log('Hashed Password:', hash);
+              resolve(hash);
+          }
+      });
+  });
+};
+
 
 app.post('/registration', async (req, res) => {
   const { firstname } = req.body;
   const { lastname } = req.body;
   const { username } = req.body;
-  const { password } = req.body;
+  var { password } = req.body;
   const { email } = req.body;
   const { isMaker } = req.body;
   console.log('This is the firstname:', firstname);
@@ -1000,6 +1083,10 @@ app.post('/registration', async (req, res) => {
   console.log('This is the email:', email);
   console.log("This is ismaker: ", isMaker)
 
+ 
+
+    
+    
   if(password === "" || password === undefined)
   {
     let response = {
@@ -1018,8 +1105,13 @@ app.post('/registration', async (req, res) => {
     return;
   }
 
+  const plaintextPassword = password; // Replace this with the actual user input
+  
+    password = await getEncryptedPassword(plaintextPassword);
+    console.log("This is hashed password again after function" , password);
  
   try {
+    console.log("This is hashed password again" , password);
       const connection = await db.pool.getConnection();
       const result = await connection.query('SELECT * FROM User WHERE username = ?', [username]);
       connection.release();
@@ -1501,7 +1593,8 @@ app.post('/registrationTest', async (req, res) => {
   console.log('This is the password:', password);
   console.log('This is the email:', email);
   console.log("This is ismaker: ", isMaker)
- 
+  
+  
   try {
       const connection = await db.pool.getConnection();
       const result = await connection.query('SELECT * FROM User WHERE username = ?', [username]);
@@ -1516,7 +1609,7 @@ app.post('/registrationTest', async (req, res) => {
             username : username,
             firstname : firstname,
             lastname : lastname,
-            password : password,
+            password : result[0].Password,
             email : email,
             isMaker : isMaker
           }
@@ -1580,3 +1673,4 @@ app.post('/registrationTest', async (req, res) => {
   
  
 });
+
