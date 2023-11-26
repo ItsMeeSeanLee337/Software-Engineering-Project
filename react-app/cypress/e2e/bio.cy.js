@@ -6,10 +6,14 @@ describe('Bio Testing', () => {
         cy.get('#password').type('password123')
         cy.get("#loginButton").click()
 
+        cy.wait(100)
         cy.get('#goToBio').click()
+        cy.wait(100)
         cy.url().should('include', '/Bio')
+        
 
-        cy.get('#goToEditCreateBio').click()
+
+        cy.get('#goToEditBio').click()
         cy.url().should('include', '/Create_Edit_Personal_Bio')
 
         cy.get('#img2').click()
@@ -25,10 +29,13 @@ describe('Bio Testing', () => {
         cy.get('#username').type('testuser')
         cy.get('#password').type('password123')
         cy.get("#loginButton").click()
+
+        cy.wait(100)
         cy.get('#goToBio').click()
+        cy.wait(100)
         cy.url().should('include', '/Bio')
 
-        cy.get('#goToEditCreateBio').click()
+        cy.get('#goToEditBio').click()
         cy.url().should('include', '/Create_Edit_Personal_Bio')
 
         cy.get('#about').type('My name is testuser. ')
@@ -40,9 +47,11 @@ describe('Bio Testing', () => {
         cy.get('#password').type('password123')
         cy.get("#loginButton").click()
 
+        cy.wait(100)
         cy.get('#goToBio').click()
+        cy.wait(100)
         cy.url().should('include', '/Bio')
-        cy.get('#goToEditBio').click()
+        cy.get('#goToBioPage').click()
 
         cy.url().should('include', '/Display_Personal_Bio')
     })
@@ -52,10 +61,12 @@ describe('Bio Testing', () => {
         cy.get('#password').type('password123')
         cy.get("#loginButton").click()
         
+        cy.wait(100)
         cy.get('#goToBio').click()
+        cy.wait(100)
         cy.url().should('include', '/Bio')
 
-        cy.get('#goToEditCreateBio').click()
+        cy.get('#goToEditBio').click()
         cy.url().should('include', '/Create_Edit_Personal_Bio')
 
         cy.get('#img1').click()
