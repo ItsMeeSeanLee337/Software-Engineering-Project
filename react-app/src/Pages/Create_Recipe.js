@@ -18,7 +18,7 @@ const maxLineLength = 30; // Set max line length
 const [userType, setUserType] = useState('');
 var response;
 useEffect(()=>{
-    console.log("This is user param:",dataToSend)
+    //console.log("This is user param:",dataToSend)
     if(dataToSend === 'null' || dataToSend == null)
     {
       console.log('navigating');
@@ -36,12 +36,12 @@ useEffect(() => {
       const apiUrl = `http://172.16.122.26:8080/checkMaker/${dataToSend}`;
 
       response = await axios.get(apiUrl);
-      console.log('Response:', response.data);
+      //console.log('Response:', response.data);
       setUserType(response.data[0].isMaker);
     } catch (error) {
       //This means an invalid user tried to access the system
       setUserType(-1);
-      console.error('Error:', error);
+      //console.error('Error:', error);
     }
   };
   }
@@ -78,15 +78,16 @@ const handleSubmit = (event) => {
   if (title === '' || title === null || steps === '' || steps === null || ingredients === '' || ingredients === null) {
     console.log('Field is empty');
   } else {
-    console.log('Field is not empty');
-    console.log('Ingredients:', ingredients);  // Log ingredients to console
+    //console.log('Field is not empty');
+    //console.log('Ingredients:', ingredients);  // Log ingredients to console
   //const apiUrl = 'http://localhost:8080/createRecipe';  // Replace with your server endpoint
   //const apiUrl = 'http://172.16.122.26:8080/createRecipe';  // Replace with your server endpoint
   const apiUrl = `http://172.16.122.26:8080/createRecipe/${dataToSend}`;
   //console.log(apiUrl);
   axios.post(apiUrl, { title, steps, ingredients })
     .then(response => {
-      console.log('Response:', response.data);
+      console.log('Recipe successfully inserted');
+      //console.log('Response:', response.data);
       setShowPopup(true);
 
     // Hide the pop-up after 3 seconds
@@ -140,6 +141,7 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
           Enter Recipe Title
         </label>
         <input
+        data-testid="titleField"
           value={title}
           onChange={(e) => setNewTitle(e.target.value)}
           type="text"
@@ -153,6 +155,7 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
         </label>
         <textarea
           value={steps}
+          data-testid="stepsField"
           onChange={(e) => setNewStep(e.target.value)}
           id="steps"
           rows={"8"}
@@ -170,7 +173,7 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
         however you want to format the steps
       </h5>
       <IngredientList updateIngredients={updateIngredients} />
-      <button id="addRecipeButton" className= "buttonMargin" onClick={handleSubmit}>Create Recipe</button>
+      <button data-testid="addRecipeButton" id="addRecipeButton" className= "buttonMargin" onClick={handleSubmit}>Create Recipe</button>
       {showPopup && (
         <div className="popup">
           <p id="recipeAdded">Recipe added!</p>
@@ -179,7 +182,7 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
     </div>
     <div className="displayRecipe">
       <div>
-        <h3 className='alignCenter'>Title</h3>
+        <h3 className='alignCenter' >Title</h3>
         <ul className='alignCenter'>
           {titleLines.map((line, index) => (
             <li key={index}>{line}</li>
