@@ -13,7 +13,7 @@ function Display_Custom_Recipes() {
 const [recipes, setRecipes] = useState([]);
 const [title, setNewTitle] = useState("")
 const [steps, setNewStep] = useState("")
-const [username, setNewUsername] = useState("");
+//const [username, setNewUsername] = useState("");
 const [notesVisible, setNotesVisible] = useState(false);
 const [fillNotes, setfillNotes] = useState("");
 const [crid, setcrid] = useState('');
@@ -22,11 +22,16 @@ const [showTextArea, setShowTextArea] = useState(false);
 const [tagText, settagText] = useState('');
 const [recipeTagVisibility, setRecipeTagVisibility] = useState({});
 
+//for the MealPlanner
+
 const navigate = useNavigate(); //used to navigate to another page
 
 const urlParams = new URLSearchParams(window.location.search);
 const dataToSend = urlParams.get('data');
 const [userType, setUserType] = useState('');
+
+//setting username
+const username = dataToSend;
 
 
 var passID = '';
@@ -107,9 +112,9 @@ useEffect(() => {
   //Endpoint unit testing covers this testing
   const handleDelete = async (recipeID) =>  {
     const { Title, Description, crID } = recipeID; // Assuming these are the correct properties
-    console.log('Title:', Title);
-    console.log('Description:', Description);
-    console.log("CRID:", crID);
+    //console.log('Title:', Title);
+    //console.log('Description:', Description);
+    //console.log("CRID:", crID);
     // Call deleteRecipe and pass the necessary values
     await deleteRecipe(crID, dataToSend);
   }
@@ -154,11 +159,11 @@ useEffect(() => {
 // Note united tested since endpoint testing covers this
 const deleteRecipe = async (crID, username) => {
   const apiUrl = 'http://172.16.122.26:8080/deleteCustomRecipe';
-  console.log("CRID:", crID);
+  //console.log("CRID:", crID);
   try {
     const response = await axios.post(apiUrl, {crID, username });
     
-    console.log('Response:', response);
+    //console.log('Response:', response);
     window.location.reload();
     
   } catch (error) {
@@ -167,15 +172,9 @@ const deleteRecipe = async (crID, username) => {
 }
 
 
-
-
-
-
-
 const handleSaveText= (id) => {
-  // You can save the text to a server or perform any other desired action here
-  console.log("ID handle save text:", id);
-  console.log('Text to save:', tagText);
+  //console.log("ID handle save text:", id);
+  //console.log('Text to save:', tagText);
   setShowTextArea(false); 
   setRecipeTagVisibility((prevVisibility) => ({
     ...prevVisibility,
@@ -184,13 +183,12 @@ const handleSaveText= (id) => {
 
   //insert into db for that crid
 try{
-  
   const apiUrl = `http://172.16.122.26:8080/setTaggedRecipes/${id}`;
     axios.post(apiUrl, {username, tagText})
       .then(response_tag => {
         if (response_tag.status === 200) {
-          console.log('Response:', response_tag.data);
-
+          //console.log('Response:', response_tag.data);
+          console.log("Tag added!")
         } 
       })
       .catch(error => {
@@ -204,13 +202,10 @@ try{
 };
 
 
-
-
-
 //view all tagged recipies
 const handleViewTags = async (event) => {
   event.preventDefault();
-  console.log("And the username: ", dataToSend);
+  //console.log("And the username: ", dataToSend);
   window.location.href = `/TaggedRecipes?data=${dataToSend}`;
 
 }
@@ -220,7 +215,7 @@ const handleViewTags = async (event) => {
 const handleTag = (id) => {
   //show text box
   setShowTextArea(true);
-  console.log("ID:", id);
+  //console.log("ID:", id);
   //set the text box visible for only that specific recipe
   setRecipeTagVisibility((prevVisibility) => ({
     ...prevVisibility,
@@ -229,22 +224,45 @@ const handleTag = (id) => {
 
 };
 
-
+const handleMealPlanner = (id) => {
+  //console.log("ID:", id);
+  //console.log("Inside handleMealPlanner");
+  //console.log("This is the username: ", dataToSend);
+  try{
+    const apiUrl = `http://172.16.122.26:8080/setMealPlannerRecipes/${id}`;
+      axios.post(apiUrl, {username})
+        .then(response_tag => {
+          if (response_tag.status === 200) {
+            //console.log('Response:', response_tag.data);
+            console.log("Added recipie to meal planner!")
+            alert("Successfully added meal");
+          } 
+        })
+        .catch(error => {
+          console.log("Meal already in planner!");
+          //console.error('Already in DB:', error);
+          alert("Meal already in planner!");
+        });
+  
+      } catch (error) {
+        console.error('MealPlan DB Error:', error);
+      }
+};
 
 
   return (
     <>
     <Navbar></Navbar>
     <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
-        <button id = "goToTaggedRecipes" className='centerButtonCR' type="button" onClick={handleViewTags}>View Tagged Recipes</button>
+        <button id = 'view_tags' className='centerButtonCR' type="button" onClick={handleViewTags}>View Tagged Recipes</button>
     </div>
     <div className='flex-container-CR'>
         <h3>Your Saved Custom Recipes</h3>
         <div>
             {recipes.map(recipe => (
           <div className = 'recipeItem' id='map' key={recipe.crID}>
-            <h4 className='recipeTitle'>Title</h4>
-            <p id = "recipeTitle" className='recipeTitle'>{recipe.Title}</p>
+            <h4 id = 'title' className='recipeTitle'>Title</h4>
+            <p className='recipeTitle'>{recipe.Title}</p>
             <h4 className='recipeTitle'>Steps</h4>
             <textarea
             rows={6}
@@ -267,20 +285,34 @@ const handleTag = (id) => {
               )}
 
               <div>
-               <button className = 'centerButtonCR'
-                id="addTagButton"
+               <button 
+                data-testid="tagButton"
+                id = 'tag'
+                className = 'centerButtonCR'
                 onClick={() => handleTag(recipe.crID)}
                 >Add Tag</button>
+
+                <button
+                data-testid="mealPlanButton" 
+                id = 'meal_planner'
+                className = 'centerButtonCR'
+                onClick={() => handleMealPlanner(recipe.crID)}
+                >Add to Meal Planner</button>
+
                 {recipeTagVisibility[recipe.crID] && (
                 <div>
                   <textarea
-                  id = "tagTextArea"
+                    data-testid="tagTextField"
+                    id = 'tagText'
                     value={tagText}
                     onChange={(event) => settagText(event.target.value)}
                     rows="2"
                     cols="40"
                   ></textarea>
-                  <button id = "saveTagButton" onClick={() => handleSaveText(recipe.crID)}>Save</button>
+                  <button 
+                  data-testid="saveTagField"
+                  id = 'saveTag'
+                  onClick={() => handleSaveText(recipe.crID)}>Save</button>
                 </div>
                 )}
               </div>
@@ -308,10 +340,6 @@ const handleTag = (id) => {
           </div>
 
         ))}</div>
-
-        
-        
-    
     
     </div>
       

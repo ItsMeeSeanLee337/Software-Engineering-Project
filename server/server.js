@@ -7,7 +7,8 @@ const bodyParser = require("body-parser");
 const { createConnection } = require('mariadb');
 const e = require('express');
 const PORT = 8080;
-const apiKEY = '522c838fa8034d6f870c425c713cbf84 '
+const apiKEY = 'key '
+
 app.use(cors())
 
 app.use(bodyParser.json());
@@ -52,19 +53,34 @@ app.get('/Nutripro', async (req, res) => {
   }
 });
 
+// Unit Tested
 /*Used for Create Recipe Section */
+//Will insert a recipe into the database given a title, steps, and ingredients
 app.post('/createRecipe/:username', async (req, res) => {
   try{
   const username = req.params.username;
   console.log(username);
   var userID = await getUserID(username, res);
   //Getting the parameters from the form
-  const { title } = req.body;
-  const { steps } = req.body;
-  const { ingredients } = req.body;
-  console.log('Title:', title)
-  console.log('steps:', steps)
-  console.log('ingredients:', ingredients)
+    const { title } = req.body;
+    const { steps } = req.body;
+    const { ingredients } = req.body;
+    console.log('Title:', title)
+    console.log('steps:', steps)
+    console.log('ingredients:', ingredients)
+  
+    if (title === undefined || steps === undefined || ingredients === undefined)
+    {
+      let responseData = {
+        error: "missing recipe field"
+      };
+      console.error(responseData);
+      res.status(400).json(responseData);
+      return;
+    }
+    
+  
+  
 
   //Creating a unique ilID for the ingredients table
   var ilID = Math.floor(Math.random() * 10000) + 1;
@@ -125,9 +141,20 @@ app.post('/createRecipe/:username', async (req, res) => {
 
   queryDatabase(query_UR, values_UR);
 
-  res.status(200).send(`Title received: ${title}, Steps received ${steps}, Ingredients received: ${ingredients}`);
+  let responseData = {
+    title: title,
+    steps: steps,
+    ingredients: ingredients,
+    message: 'Recipe successfully inserted'
+  };
+
+  res.status(200).json(responseData);
 } catch (error) {
-  console.error('An error occurred with username:', error);
+  let responseData = {
+    error: 'Error inserting recipe'
+  };
+  console.log(responseData)
+  res.status(400).json(responseData);
   return; // Stop further execution
 }
 });
@@ -149,17 +176,23 @@ async function getUserID(Username, res) {
 }
 
 
+//Returns all of the custom recipe for a given user on request
 app.get('/CustomRecipe/Display/:username', async(req,res) =>{
   
   try {
+    //Get the userID based on the username passed in the url params
     const username = req.params.username;
     console.log(username);
     var finalUserID = await getUserID(username, res);
-  
-  
-  
 
-
+    //Check if the username was given
+    if(username === undefined){
+      let responseData = {
+    error: 'No username for display recipes'
+    };
+      res.status(400).json(responseData)
+      console.log(responseData)
+    }
 
   query = `
   SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list
@@ -184,6 +217,7 @@ app.get('/CustomRecipe/Display/:username', async(req,res) =>{
   return; // Stop further execution
 }
 })
+
 
 app.get('/MakerRecipes/Display', async(req,res) =>{
   
@@ -372,20 +406,6 @@ app.get('/listOfIngredients/:username', async (req, res) => {
 });
 
 
-
-// Section for postman testing
-
-
-// GET: Used for api/postman testing
-app.get('/get', async (req, res) => {
-  try {
-      const result = await db.pool.query("SELECT * FROM User WHERE Username = 'testuser'");
-      res.send(result);
-  } catch (err) {
-      throw err;
-  }
-});
-
 //This is for display bio
 app.post('/getBio', async(req,res) => {
   const {username} = req.body;
@@ -556,7 +576,14 @@ app.post('/createEditBio', async(req,res) => {
     `, [username, bio, favoriteFood, favoriteRecipe, bio, favoriteFood, favoriteRecipe]);
 
     console.log("This is the result: ", result);
-    res.send("Added to db");
+    let response = {
+      message: "Added to db",
+      bio : bio,
+      favoriteFood : favoriteFood,
+      favoriteRecipe : favoriteRecipe
+    }
+    res.send(response);
+    //res.send("Added to db fdsafs");
 
     //just bio, food and img
     } else if(bio != '' && favoriteFood != '' && selectedImage != '' && favoriteRecipe == '' ) {
@@ -657,7 +684,11 @@ app.post('/untagRecipes/:crID' , async(req, res) => {
     const result = await db.pool.query(query);
     console.log(result);
     console.log(query);
-    res.send("Tag removed");
+    let response = {
+      message : "Tag Removed",
+      crID : crID
+    }
+    res.status(200).json(response);
 
   } catch (error) {
     console.error('Error executing query:', error);
@@ -687,7 +718,12 @@ app.post('/setTaggedRecipes/:crID', async(req, res) => {
       const result = await db.pool.query(query);
       console.log(result);
       console.log(query);
-      res.send("Tags Updated");
+      let response = {
+        message: "Tags Updated",
+        crID : crID,
+        tagText : tagText
+      }
+      res.status(200).json(response);
   
     } catch (error) {
       console.error('Error executing query:', error);
@@ -715,7 +751,7 @@ app.post('/login', async (req, res) => {
 
         if (result.length >= 1) {
             // Valid login
-            res.status(200).json({ message: JSON.stringify(result)});
+            res.status(200).json(result);
             //res.send(JSON.stringify({ username, password }));
         } else {
             // Invalid login
@@ -730,19 +766,225 @@ app.post('/login', async (req, res) => {
 });
 
 
-// Post: Used for api/postman testing
-app.post('/postLogin', async (req, res) => {
+app.post('/setMealPlannerRecipes/:crID', async(req, res) => {
+  const crID = req.params.crID;
+  console.log("This is the crID for setting meal planner recipies: ", crID);
+  const {username} = req.body;
+  console.log("This is the username for meal planner: ", username);
 
-  //Data from the post request
-  const username = req.body.username;
-  const password = req.body.password;
-  
-  console.log('Received username', username)
-  console.log('Received password', password)
+  try {
+    var finalUserID = await getUserID(username, res);
+    console.log("UserID: ", finalUserID);
+    //needs to be an insert
+    const query = `
+      INSERT INTO MealPlanner (userID, crID, Username)
+      VALUES (?, ?, ?)
+    `;
+    
+    const result = await db.pool.query(query, [finalUserID, crID, username]);
+    //res.send("Meal Plan Recipe added");
 
-  res.send('Received login data: ' + JSON.stringify({ username, password }));
+
+    let response = {
+      message: "Meal Plan Recipe added",
+      crID : crID,
+      username : username
+    }
+    res.status(200).json(response);
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
 
 });
+
+app.get('/getMealPlannerRecipes/:username', async(req, res) => {
+  console.log("Inside get mealplanned recipes");
+  try {
+    const username = req.params.username;
+    console.log("Username: ", username);
+    var finalUserID = await getUserID(username, res);
+    console.log("UserID: ", finalUserID);
+    const query1 = `
+    SELECT crID FROM MealPlanner WHERE userID = ${finalUserID};`;
+    const result = await db.pool.query(query1);
+    console.log("First query: ", result);
+
+    // Extract crID values from the result
+    const crIDValues = result.map(row => row.crID);
+
+     // Array to store all recipe results
+    const allRecipeResults = [];
+
+    // Loop through each crID and query the CustomRecipe table
+    for (const crID of crIDValues) {
+      const query2 = `SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list, CustomRecipe.calories, CustomRecipe.protein, CustomRecipe.fat, CustomRecipe.carbs 
+                      FROM CustomRecipe
+                      JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
+                      JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
+                      WHERE UserRecipes.userID = ${finalUserID} AND CustomRecipe.crID = ${crID};`;
+      const recipeResult = await db.pool.query(query2);
+
+      // Push the result of each iteration into the array
+      allRecipeResults.push({ crID, recipes: recipeResult });
+
+      // Handle the recipeResult as needed (e.g., log or process the recipe data)
+      console.log('Recipe for crID', crID, ':', recipeResult);
+    }
+    res.send(allRecipeResults);
+
+  } catch(error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+
+
+});
+
+app.post('/setDay/:crID', async(req, res) => {
+  const crID = req.params.crID;
+  console.log("This is the crID for taggedRecipes: ", crID);
+  const {username} = req.body;
+  const {dayText} = req.body;
+  const upperCaseDayText = dayText.toUpperCase();
+
+  console.log("This is the crid: ", username, "This is the text: ", upperCaseDayText);
+  try {
+    var finalUserID = await getUserID(username, res);
+    console.log("UserID: ", finalUserID);
+    const query = `
+      INSERT INTO DaysOfWeek (userID, Username, crID, dayOfWeek)
+      VALUES (?, ?, ?, ?)
+    `;
+    const result = await db.pool.query(query, [finalUserID, username, crID, upperCaseDayText]);
+    console.log(result);
+    //res.send("Meal Plan Day added!");
+    let response = {
+      message: "Meal Plan Day set",
+      crID : crID,
+      username : username,
+      dayText : upperCaseDayText
+    }
+    res.status(200).json(response);
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    //res.status(500).send('Internal Server Error');
+    let response = {
+      message: "Invalid Day!",
+    }
+    res.status(500).json(response);
+  }
+
+});
+
+app.post('/getDay/:day', async(req, res) => {
+  console.log("Here in getDay")
+  try {
+    const day = req.params.day;
+    const dayToUpper = day.toUpperCase();
+    console.log("day: ", dayToUpper);
+    const {username} = req.body;
+    console.log("Username: ", username);
+    var finalUserID = await getUserID(username, res);
+    console.log("UserID: ", finalUserID);
+    const query1 = `
+    SELECT crID FROM DaysOfWeek WHERE userID = '${finalUserID}' AND dayOfWeek = '${dayToUpper}';`;
+    const result = await db.pool.query(query1);
+    console.log("First query: ", result);
+    
+
+    const crIDValues = result.map(row => row.crID);
+
+    const allDayRecipeResults = [];
+
+    // Loop through each crID and query the CustomRecipe table
+    for (const crID of crIDValues) {
+      const query2 = `SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list, CustomRecipe.calories, CustomRecipe.protein, CustomRecipe.fat, CustomRecipe.carbs 
+                      FROM CustomRecipe
+                      JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
+                      JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
+                      WHERE UserRecipes.userID = ${finalUserID} AND CustomRecipe.crID = ${crID};`;
+      const recipeResult = await db.pool.query(query2);
+
+      // Push the result of each iteration into the array
+      allDayRecipeResults.push({ crID, recipes: recipeResult });
+
+      // Handle the recipeResult as needed (e.g., log or process the recipe data)
+      console.log('Recipe for crID', crID, ':', recipeResult);
+    }
+    res.send(allDayRecipeResults);
+
+
+
+  } catch(error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.post('/dropMeal/:crID', async(req, res) => {
+  const crID = req.params.crID;
+  console.log("This is the crID for taggedRecipes: ", crID);
+  const {username} = req.body;
+  const {clickedDay} = req.body;
+  const upperCaseDayText = clickedDay.toUpperCase();
+  try {
+    var finalUserID = await getUserID(username, res);
+    console.log("UserID: ", finalUserID);
+    const query = `
+      DELETE FROM DaysOfWeek WHERE userID = '${finalUserID}' AND crID = '${crID}' AND dayOfWeek = '${upperCaseDayText}'
+    `;
+    const result = await db.pool.query(query);
+    console.log(result);
+    //res.send("Removed recipe!");
+    let response = {
+      message: "Removed recipe!",
+      crID : crID,
+      username : username,
+      clickedDay : upperCaseDayText
+    }
+    res.status(200).json(response);
+
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+  
+});
+
+app.post('/dropMealPlanMeal/:crID', async(req, res) => {
+  const crID = req.params.crID;
+  console.log("This is the crID for dropping meal plan : ", crID);
+  const {username} = req.body;
+  try {
+    var finalUserID = await getUserID(username, res);
+    console.log("UserID: ", finalUserID);
+    const query1 = `
+      DELETE FROM MealPlanner WHERE userID = '${finalUserID}' AND crID = '${crID}' 
+    `;
+    const result1 = await db.pool.query(query1);
+    const query2 = `
+    DELETE FROM DaysOfWeek WHERE userID = '${finalUserID}' AND crID = '${crID}' 
+  `;
+  const result2 = await db.pool.query(query2);
+  //res.send("Removed recipe from meal planner and days!");
+  let response = {
+    message: "Removed recipe from meal planner and days!",
+    crID : crID,
+    username : username
+  }
+  res.status(200).json(response);
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+
+});
+
 
 app.post('/registration', async (req, res) => {
   const { firstname } = req.body;
@@ -757,6 +999,25 @@ app.post('/registration', async (req, res) => {
   console.log('This is the password:', password);
   console.log('This is the email:', email);
   console.log("This is ismaker: ", isMaker)
+
+  if(password === "" || password === undefined)
+  {
+    let response = {
+      message : "Password is blank",
+    }
+    res.status(401).json(response);
+    return;
+  }
+
+  if(username === "" || username === undefined) 
+  {
+    let response = {
+      message : "Username is blank",
+    }
+    res.status(401).json(response);
+    return;
+  }
+
  
   try {
       const connection = await db.pool.getConnection();
@@ -767,7 +1028,15 @@ app.post('/registration', async (req, res) => {
       if (result.length >= 1) {
           // Username already exists so must choose another one
           console.log("Username already exists");
-          res.status(401).json({ message: 'Username already exists' });
+          let response = {
+            username : username,
+            fistname : firstname,
+            lastname : lastname,
+            lastname : lastname,
+            lastname : lastname,
+            isMaker : isMaker
+          }
+          res.status(401).json(response);
       } else {
           // Valid registration
           //INSERT INTO QUERY ***
@@ -805,18 +1074,6 @@ app.post('/registration', async (req, res) => {
           const values_CR = [userID, firstname, lastname, username, password, email, isMaker];
           queryDatabase(query_CR, values_CR);
 
-          /*try {
-            const result = await db.pool.query(query);
-            console.log(result);
-            console.log(query);
-            res.send("Account added");
-        
-        
-          } catch (error) {
-            console.error('Error executing query:', error);
-            res.status(500).send('Internal Server Error');
-          }*/
-
       }
   } catch (error) {
     console.error('Database error:', error);
@@ -826,8 +1083,6 @@ app.post('/registration', async (req, res) => {
 });
 
 //Returns the JSON of [ { isMaker: 1 } ]
-
-
 app.get('/checkMaker/:username', async (req,res)=>{
   try{
 
@@ -928,10 +1183,10 @@ app.get('/topIngredients/:username', async (req, res) =>{
   }
 
   // Get the top 3 most common ingredients
-  const top3Ingredients = countArray.slice(0, 5);
+  const top5Ingredients = countArray.slice(0, 5);
 
-  console.log(top3Ingredients);
-  res.send(top3Ingredients);
+  console.log(top5Ingredients);
+  res.send(top5Ingredients);
 }
 catch{
   res.status(404)
@@ -1060,4 +1315,268 @@ getRandomRecipes(3)
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+});
+
+//  THESE ENDPOINTS ARE USED TO TEST ORIGINAL ENDPOINTS WITH SLIGHT ALTERATIONS TO WORK FOR TESTING
+
+const apiRecipe = 8364
+
+// Used to test the delete recipe endpoint by selecting a random recipe from the user's recipes
+app.post('/deleteCustomRecipeTest' , async(req,res)=>{
+
+  //get reandom recipe crID
+  //will not check for empty json as its impossible to trigger the delete recipe endpoint without one
+  let recipe = await axios("http://172.16.122.26:8080/CustomRecipe/Display/api")
+  recipe = recipe.data
+  console.log(recipe)
+
+  console.log(Object.keys(recipe).length === 0 || (Object.keys(recipe).length === 1 && recipe[0].crID === apiRecipe))
+  //return;
+  if(Object.keys(recipe).length === 0 || (Object.keys(recipe).length === 1 && recipe[0].crID === apiRecipe))
+  {
+    let response = {
+      error: `No recipes for user`
+    }
+    res.status(400).json(response);
+    return;
+  }
+
+  console.log("here in deleteCustom");
+  const username = "api";
+  
+  
+  let crID = recipe[0].crID;
+  if(crID === apiRecipe)
+  {
+    crID = recipe[1].crID;
+  }
+  console.log(username);
+  console.log(crID)
+
+  const userID = await getUserID(username, res);
+
+
+  const query = `
+  DELETE ur
+  FROM CustomRecipe cr
+  JOIN UserRecipes ur ON ur.crID = cr.crID
+  JOIN User u ON u.UserID = ur.userID
+  WHERE u.Username = '${username}'
+  AND cr.crID = '${crID}';`
+
+
+  try {
+    const result = await db.pool.query(query);
+    console.log(result);
+    console.log(query);
+
+    const query2 = `
+    Delete from CustomRecipe where crID = ${crID};`
+
+
+  try {
+    const result = await db.pool.query(query);
+    console.log(result);
+    console.log(query);
+    //res.send("Recipe Deleted");
+    
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+    
+    
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+
+
+  let response = {
+    message: `Recipe Deleted with crID ${crID}`
+  }
+  res.status(200).json(response);
+
+})
+
+
+app.post('/saveRecipeNotesTest/:username', async (req, res) => {
+  try{
+  const username = req.params.username;
+  console.log(username);
+  var finalUserID = await getUserID(username, res);
+  
+
+  const {notes} = req.body;
+  //THIS IS HARD CODED FOR TESTING, SHOULD NEVER GET DELETED
+  const thiscrID = apiRecipe;
+  console.log(notes);
+  console.log(thiscrID);
+
+
+  //Query for adding notes based on the userID to custom recipe table
+
+    const query = `
+    Update CustomRecipe
+    Set notes = '${notes}'
+    where crID = ${thiscrID};
+    `;
+
+    try {
+      const result = await db.pool.query(query);
+      console.log(result);
+      console.log(query);
+      let response = {
+        message: `Notes Updated with: ${notes}`
+      }
+      res.status(200).json(response);
+      
+  
+    } catch (error) {
+      console.error('Error executing query:', error);
+      res.status(500).send('Internal Server Error');
+    }
+
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+
+});
+
+
+app.get('/getRecipeNotesTest/:crID', async (req, res) => {
+  try {
+      const crID = apiRecipe
+      //const {crID} = req.body;
+      console.log(crID)
+      const result = await db.pool.query(`SELECT notes FROM CustomRecipe WHERE crID = ${crID}`);
+      res.send(result);
+  } catch (err) {
+      throw err;
+  }
+});
+
+app.post('/setCustomRecipeNutrition/:crID', async(req, res) => {
+  const crID = req.params.crID;
+  const {calorieData} = req.body;
+  const {proteinData} = req.body;
+  const {fatData} = req.body;
+  const {carbData} = req.body;
+
+  console.log("This is the crid for nutrition: ", crID);
+  try {
+    const query = `
+      UPDATE CustomRecipe
+      SET calories = ${calorieData},
+          protein = ${proteinData},
+          fat = ${fatData},
+          carbs = ${carbData}
+      WHERE crID = ${crID};
+    `;
+    const result = await db.pool.query(query);
+    console.log(result);
+    console.log(query);
+    res.send("Nutrition info Updated");
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+app.post('/registrationTest', async (req, res) => {
+  const { firstname } = req.body;
+  const { lastname } = req.body;
+  const { username } = req.body;
+  const { password } = req.body;
+  const { email } = req.body;
+  const { isMaker } = req.body;
+  console.log('This is the firstname:', firstname);
+  console.log('This is the lastname:', lastname);
+  console.log('This is the username:', username);
+  console.log('This is the password:', password);
+  console.log('This is the email:', email);
+  console.log("This is ismaker: ", isMaker)
+ 
+  try {
+      const connection = await db.pool.getConnection();
+      const result = await connection.query('SELECT * FROM User WHERE username = ?', [username]);
+      connection.release();
+      console.log("This is the result: ", result);
+
+      if (result.length >= 1) {
+          // Username already exists so must choose another one
+          console.log("Username already exists");
+          let response = {
+            message : "Username already exists",
+            username : username,
+            firstname : firstname,
+            lastname : lastname,
+            password : password,
+            email : email,
+            isMaker : isMaker
+          }
+          res.status(401).json(response);
+      } else {
+          // Valid registration
+          //INSERT INTO QUERY ***
+          //Creating a unique UserID for database
+        var userID = 0;
+
+        //Have to make sure the primary key is unique
+        //Checking the ingredientList table to ensure generated id is unique
+        var isUnique = false;
+        while(!isUnique)
+        {
+          while (!isUnique) {
+            userID = Math.floor(Math.random() * 10000) + 1;
+            console.log('Random integer for User ID:', userID);
+        
+            try {
+              const rows = await db.pool.query(`SELECT UserID FROM User WHERE userID = ${userID}`);
+              
+              if (rows.length === 0) {
+                isUnique = true;
+                console.log('No rows found for userID:', userID);
+              } else {
+                isUnique = false;
+                console.log('Rows found for userID:', userID);
+              }
+            } catch (error) {
+              console.error('Query error:', error);
+            }
+          }
+        }
+
+          //const query = `INSERT INTO User (UserID, Firstname, Lastname, Username, Password, Email)
+          //VALUES (${userID}, ${firstname}, ${lastname}, ${username}, ${password}, ${email}); `
+          const query_CR = 'INSERT INTO User (UserID, Firstname, Lastname, Username, Password, Email, isMaker ) VALUES (?, ?, ?, ?, ?, ?, ?)';
+          const values_CR = [userID, firstname, lastname, username, password, email, isMaker];
+          queryDatabase(query_CR, values_CR);
+
+
+          db.pool.query(`Delete From User where username = "${username}"`)
+
+          let response = {
+            message : "Username already exists",
+            username : username,
+            firstname : firstname,
+            lastname : lastname,
+            password : password,
+            email : email,
+            isMaker : isMaker
+          }
+          res.status(200).json(response);
+      }
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+
+  
+ 
 });
