@@ -32,7 +32,8 @@ function Login() {
     axios.post(apiUrl, { username, password })
       .then(response => {
         if (response.status === 200) {
-          console.log(response.data);
+          //console.log(response.data);
+          console.log("Logged in!");
           const dataToSend = encodeURIComponent(username)
           setUsername('');
           setPassword ('');

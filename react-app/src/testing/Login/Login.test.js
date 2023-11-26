@@ -38,17 +38,7 @@ test('HandleSubmit with all fields', async () => {
     //click the button
     fireEvent.click(tryLoginButton);
     await waitFor(() => {
-        expect(logSpy).toHaveBeenCalledWith([
-        {
-            UserID: 1,
-            Username: 'testuser',
-            Password: 'password123',
-            Email: 'testuser@example.com',
-            Firstname: null,
-            Lastname: null,
-            isMaker: 0
-        }
-    ]);
-});
+        expect(logSpy).toHaveBeenCalledWith("Logged in!");
+    });
     
 });
