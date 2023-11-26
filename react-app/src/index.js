@@ -19,6 +19,7 @@ import Personalized_Recipes from './Pages/Personalized_Recipes';
 import TaggedRecipes from './Pages/TaggedRecipes'
 import Bio from './Pages/Bio'
 import RecipeSearch from './Pages/recipe_search'
+import MealPlanner from './Pages/MealPlanner'
 
 import {
   createBrowserRouter,
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
   {
     path: "TaggedRecipes",
     element: <TaggedRecipes/>,
+  },
+  {
+    path: "MealPlanner",
+    element: <MealPlanner/>,
   },
   {
     path: "Display_Personal_Bio",

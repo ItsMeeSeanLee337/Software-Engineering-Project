@@ -11,10 +11,10 @@ function Create_Edit_Personal_Bio() {
   const navigate = useNavigate(); //used to navigate to another page
   const [userType, setUserType] = useState('');
   useEffect(()=>{
-    console.log("This is user param:",data)
+    //console.log("This is user param:",data)
     if(data === 'null' || data === null)
     {
-      console.log('navigating');
+      //console.log('navigating');
       navigate(`/`);
     }
   },[])
@@ -29,7 +29,7 @@ useEffect(() => {
       const apiUrl = `http://172.16.122.26:8080/checkMaker/${data}`;
 
       response = await axios.get(apiUrl);
-      console.log('Response:', response.data);
+      //console.log('Response:', response.data);
       setUserType(response.data[0].isMaker);
     } catch (error) {
       //This means an invalid user tried to access the system
@@ -44,7 +44,7 @@ useEffect(() => {
 
 //When the user type is checked, will redirect makers to the landing page
 useEffect(()=>{
-  console.log("This is user param:",data)
+  //console.log("This is user param:",data)
   if(userType === 1 || userType === -1)
   {
     console.log('navigating');
@@ -66,28 +66,28 @@ useEffect(()=>{
       
     function handleBio (event) {
         setBio(event.target.value);
-        console.log("changed bio");
+        //console.log("changed bio");
     };
 
     function handlefavoriteFood (event) {
         setfavoriteFood(event.target.value);
-        console.log("changed food");
+        //console.log("changed food");
     };
 
     function handlefavoriteRecipe (event) {
         setfavoriteRecipe(event.target.value);
-        console.log("changed recipe");
+        //console.log("changed recipe");
     };
 
     const handleBack = async (event) => {
-        console.log("moved to home page");
+        //console.log("moved to home page");
         event.preventDefault();
         const dataToSend = encodeURIComponent(username)
         window.location.href = `/Login_Success?data=${dataToSend}`;
     }
 
     useEffect(() => {
-        console.log("selected image", selectedImage);
+        //console.log("selected image", selectedImage);
       }, [selectedImage]);
 
       const handleImageSelect = (imgUrl) => {
@@ -96,12 +96,12 @@ useEffect(()=>{
 
     function handleSubmit (event) {
         event.preventDefault();
-        console.log("submitted!");
-        console.log("username", username);
-        console.log("bio", bio);
-        console.log("fav food", favoriteFood);
-        console.log("fav recipe", favoriteRecipe);
-        console.log("img", selectedImage);
+        //console.log("submitted!");
+        //console.log("username", username);
+        //console.log("bio", bio);
+        //console.log("fav food", favoriteFood);
+        //console.log("fav recipe", favoriteRecipe);
+        //console.log("img", selectedImage);
         const apiUrl = 'http://172.16.122.26:8080/createEditBio';
         axios.post(apiUrl, { username, bio, favoriteFood, favoriteRecipe, selectedImage })
           .then(response => {
@@ -135,7 +135,7 @@ useEffect(()=>{
           alt="Image 1" 
           style={{ width: '100px', height: '100px' }}
           />
-          <button onClick={() => handleImageSelect(('img1'))}>Select Image 1</button>
+          <button data-testid="img1Button" id = 'img1' onClick={() => handleImageSelect(('img1'))}>Select Image 1</button>
         </div>
         <div>
           <img 
@@ -143,15 +143,17 @@ useEffect(()=>{
           alt="Image 2" 
           style={{ width: '100px', height: '100px' }}
           />
-          <button onClick={() => handleImageSelect(('img2'))}>Select Image 2</button>
+          <button data-testid="img2Button" id = 'img2' onClick={() => handleImageSelect(('img2'))}>Select Image 2</button>
         </div>
         <div>
-        <button onClick={() => handleImageSelect("")}>No image</button>
+        <button data-testid="no_img_Button" id = 'no_image' onClick={() => handleImageSelect("")}>No image</button>
         </div>
         </div>
         </div>
         <h1 className='text'>About Me:</h1>
         <textarea
+          data-testid="aboutField"
+          id = 'about'
           rows="5"
           cols="30"
           value={bio}
@@ -162,6 +164,8 @@ useEffect(()=>{
         <br />
         <h1 className='text'>Favorite Food:</h1>
         <textarea
+          data-testid="fav_foodField"
+          id = 'fav_food'
           rows="5"
           cols="30"
           value={favoriteFood}
@@ -172,6 +176,8 @@ useEffect(()=>{
         <br />
         <h1 className='text'>Favorite Recipe:</h1>
         <textarea
+          data-testid="fav_recipeField"
+          id = 'fav_recipe'
           rows="5"
           cols="30"
           value={favoriteRecipe}
@@ -179,7 +185,7 @@ useEffect(()=>{
           placeholder="What's your favorite recipe?"
         />
         <div>
-          <button onClick={handleSubmit}>Update</button>
+          <button data-testid="submitBioButton" id = 'submit_edit_bio' onClick={handleSubmit}>Update</button>
         </div>
       </div>
     

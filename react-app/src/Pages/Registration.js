@@ -104,35 +104,55 @@ const hideToolTip = async(e)=>{
             <div className="up_label">
               <label>
                 Firstname:
-                <input type="text" value={firstname} onChange={handleFirstnameChange} />
+                <input 
+                id = 'firstname'
+                type="text" 
+                value={firstname} 
+                onChange={handleFirstnameChange} />
               </label>
             </div>
             <br />
             <div className="up_label">
               <label>
                 Lastname:
-                <input type="text" value={lastname} onChange={handleLastnameChange} />
+                <input 
+                id = 'lastname'
+                type="text" 
+                value={lastname} 
+                onChange={handleLastnameChange} />
               </label>
             </div>
             <br />
             <div className="up_label">
               <label>
                 Username:
-                <input type="text" value={username} onChange={handleUsernameChange} />
+                <input 
+                id = 'username'
+                type="text" 
+                value={username} 
+                onChange={handleUsernameChange} />
               </label>
             </div>
             <br />
             <div className="up_label">
               <label>
                 Password:
-                <input type="password" value={password} onChange={handlePasswordChange} />
+                <input 
+                id = 'password'
+                type="password" 
+                value={password} 
+                onChange={handlePasswordChange} />
               </label>
             </div>
             <br />
             <div className="up_label">
               <label>
                 Email:
-                <input type="text" value={email} onChange={handleEmailChange} />
+                <input 
+                id = 'email'
+                type="text" 
+                value={email} 
+                onChange={handleEmailChange} />
               </label>
             </div>
             <br />
@@ -141,6 +161,7 @@ const hideToolTip = async(e)=>{
             onMouseLeave={hideToolTip}>
             <label className='up_label'>
               <input
+                id = 'checkbox'
                 type="checkbox"
                 value={isMaker}
                 onChange={handleIsMakerChange}
@@ -152,7 +173,10 @@ const hideToolTip = async(e)=>{
               
               </div>
               <br></br>
-            <button className = "submit_button" type="submit">Sign up</button>
+            <button 
+            id = 'registerButton'
+            className = "submit_button" 
+            type="submit">Sign up</button>
           </form>
         </div>
       </div>

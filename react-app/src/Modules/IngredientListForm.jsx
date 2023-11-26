@@ -31,19 +31,23 @@ const IngredientList = ({updateIngredients}) => {
         {ingredients.map((ingredient, index) => (
           <li key={index}>
             <input
+<<<<<<< HEAD
             id='ingredient'
+=======
+              id = 'ingredient'
+>>>>>>> main
               data-testid="ingField"
               type="text"
               placeholder={`Ingredient ${index + 1}`}
               value={ingredient}
               onChange={(e) => handleIngredientChange(index, e.target.value)}
             />
-            <button onClick={() => removeIngredient(index)}>Remove</button>
+            <button id = 'remove_ingredient' onClick={() => removeIngredient(index)}>Remove</button>
           </li>
         ))}
       </ul>
       <div className="button-container">
-        <button id="addIngButton" onClick={addIngredient}>Add Ingredient</button>
+        <button id = 'add_ingredient' onClick={addIngredient}>Add Ingredient</button>
       </div>
     </div>
   );
