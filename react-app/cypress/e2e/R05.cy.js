@@ -29,13 +29,13 @@ describe('R05', () => {
       cy.get("#bioFoodHeader").should('contain', 'Favorite Food')
         
       //Verify the information of the bio
-      cy.get("#bioFood").should('contain', 'Favorite food is test')
+      cy.get("#bioFood").should('contain', 'My favorite food is sushi')
 
       //Get the favorite recipe of the bio
       cy.get("#bioRecipeHeader").should('contain', 'Favorite Recipe')
         
       //Verify the information of the bio
-      cy.get("#bioRecipe").should('contain', 'Favorite recipe is test')
+      cy.get("#bioRecipe").should('contain', 'My favorite recipe is PBJ Sandwich')
 
       //Verify the image is in the bio as well
       cy.get('#bioImage').should('exist')

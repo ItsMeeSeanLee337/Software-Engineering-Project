@@ -66,12 +66,11 @@ useEffect(()=>{
 //Getting the change for the check boxes
 const handleCheckboxChange1 = () => {
     setIsChecked1(!isChecked1);
-    
   };
-  const handleCheckboxChange2 = () => {
+const handleCheckboxChange2 = () => {
     setIsChecked2(!isChecked2);
   };
-  const handleCheckboxChange3 = () => {
+const handleCheckboxChange3 = () => {
     setIsChecked3(!isChecked3);
   };
 

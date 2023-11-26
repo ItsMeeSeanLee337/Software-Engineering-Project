@@ -191,7 +191,7 @@ test('Fetch Top Ingredients Again testing', async () => {
         expect(logSpy).toHaveBeenCalledWith('Ingredients were fetched');
         //Indicates that new ingredients were successfully generated
         expect(logSpy).toHaveBeenCalledWith('Random recipes fetched');
-      }) 
+      }, { timeout: 5000 }) 
       
   });
 

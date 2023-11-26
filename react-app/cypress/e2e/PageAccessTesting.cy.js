@@ -512,7 +512,7 @@ describe('Display Tagged Recipe Access Testing: Both Regular and Makers', () => 
     cy.get('#goToCreateRecipe').trigger('mouseover')
     cy.wait(100)
     cy.get("#goToDisplayRecipe").click();
-    cy.get("#goToTaggedRecipes").click();
+    cy.get("#view_tags").click();
 
     cy.url().should('include', '/TaggedRecipes')
   })
@@ -528,7 +528,7 @@ describe('Display Tagged Recipe Access Testing: Both Regular and Makers', () => 
     cy.get('#goToCreateRecipe').trigger('mouseover')
     cy.wait(100)
     cy.get("#goToDisplayRecipe").click();
-    cy.get("#goToTaggedRecipes").click();
+    cy.get("#view_tags").click();
 
     cy.url().should('include', '/TaggedRecipes')
   })
