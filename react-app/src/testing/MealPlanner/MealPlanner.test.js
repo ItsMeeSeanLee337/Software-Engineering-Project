@@ -3,7 +3,6 @@ import renderer from "react-test-renderer"
 import "@testing-library/jest-dom";
 import {BrowserRouter as Router} from 'react-router-dom';
 import Display_Custom_Recipes from '../../Pages/Display_Custom_Recipes.js';
-import TaggedRecipes from '../../Pages/MealPlanner.js';
 import MealPlanner from "../../Pages/MealPlanner.js";
 
 
@@ -32,7 +31,7 @@ test('Add meal to meal planner', async () => {
 
   await waitFor(() =>{
     expect(logSpy).toHaveBeenCalledWith('Got recipes successfully');
-    expect(logSpy).toHaveBeenCalledWith("Added recipe to meal planner!");
+    expect(logSpy).toHaveBeenCalledWith("Added recipie to meal planner!");
   }) 
 
 
