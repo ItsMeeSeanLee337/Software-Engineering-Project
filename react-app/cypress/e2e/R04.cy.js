@@ -1,5 +1,5 @@
 //The system shall allow regular users to view recipes created by certified recipe makers
-describe('R13', () => {
+describe('R04', () => {
     it('The system shall allow regular users to view recipes created by certified recipe makers ', () => {
         cy.visit('http://localhost:3000/Login')
 

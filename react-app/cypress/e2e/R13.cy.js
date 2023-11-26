@@ -19,19 +19,19 @@ describe('R13', () => {
         cy.get("#recipeTitle").should("contain", "Tex-Mex");
         
         //Press the add tag button
-        cy.get("#addTagButton").first().click()
+        cy.get("#tag").first().click()
 
         //Get and type a tag into the text box
-        cy.get("#tagTextArea").type("Tag")
+        cy.get("#tagText").type("Tag")
 
         //Save the tag for the recipe
-        cy.get("#saveTagButton").click()
+        cy.get("#saveTag").click()
 
         //Go view the tag in the library of them
-        cy.get("#goToTaggedRecipes").click()
+        cy.get("#view_tags").click()
 
         //click the first tag
-        cy.get("#tagButton").first().click()
+        cy.get("#specific_tag").first().click()
 
         //verify it contains the recipe we just tagged
         cy.get("#tagRecipeTitle").should("contain", "Tex-Mex");

@@ -1,5 +1,5 @@
 //The system shall allow certified recipe makers to create custom recipes
-describe('R17', () => {
+describe('R04', () => {
     it('The system shall allow certified recipe makers to create custom recipes', () => {
         cy.visit('http://localhost:3000/Login')
         
@@ -17,8 +17,8 @@ describe('R17', () => {
 
         cy.get("#steps").type("Step 1: Boil, Step 2: Peel, Step 3: Eat");
 
-        cy.get("#addIngButton").click();
-        cy.get("#addIngButton").click();
+        cy.get("#add_ingredient").click();
+        cy.get("#add_ingredient").click();
         cy.wait(100)
         cy.get("input").each(($input, index) => {
             // Generate a unique value for each input box
@@ -38,7 +38,7 @@ describe('R17', () => {
           });
 
         //click the add recipe button
-        cy.get("#addRecipeButton").click();
+        cy.get("#create_recipe_button").click();
 
         //Only happens if the endpoint confirms the recipe was added
         cy.get("#recipeAdded").should('contain', 'Recipe added!').should('be.visible')
