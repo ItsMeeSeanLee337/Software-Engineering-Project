@@ -41,7 +41,7 @@ function Custom_Recipe_Nutritioninfo() {
     }
   );
 
-  useEffect(()=>{
+  /*useEffect(()=>{
       console.log("This is user param:",dataToSend)
       if(dataToSend === 'null' || dataToSend == null)
       {
@@ -81,7 +81,7 @@ function Custom_Recipe_Nutritioninfo() {
       console.log('navigating');
       navigate(`/`);
     }
-  }, [userType])
+  }, [userType])*/
   
   const analyzeRecipe = async () => {
     console.log("recipecrID", recipecrID)

@@ -14,8 +14,10 @@ function NutritionalInformation() {
   const urlParams = new URLSearchParams(window.location.search);
   const dataToSend = urlParams.get('data');
   var response;
+  // Replace 'YOUR_API_KEY' with your actual Spoonacular API key
+  const apiKey = '00298f1246234721b20874aa5f8c7c0f';
   
-  useEffect(()=>{
+  /*useEffect(()=>{
     console.log("This is user param:",dataToSend)
     if(dataToSend === 'null' || dataToSend === null)
     {
@@ -55,12 +57,9 @@ function NutritionalInformation() {
       console.log('navigating');
       navigate(`/`);
     }
-  }, [userType])
+  }, [userType])*/
 
   const fetchIngredientID = async () => {
-    // Replace 'YOUR_API_KEY' with your actual Spoonacular API key
-    const apiKey = 'YOURAPIKEY';
-
     try {
       const response = await fetch(
         `https://api.spoonacular.com/food/ingredients/search?query=${foodItem}&apiKey=${apiKey}`
@@ -94,9 +93,6 @@ function NutritionalInformation() {
   };
 
   const fetchNutritionalInformation = async (ingredientId) => {
-    // Replace 'YOUR_API_KEY' with your actual Spoonacular API key
-    const apiKey = 'YOURAPIKEY';
-
     try {
       const response = await fetch(
         `https://api.spoonacular.com/food/ingredients/${ingredientID}/information?amount=1&apiKey=${apiKey}`
@@ -142,8 +138,9 @@ function NutritionalInformation() {
           value={foodItem}
           onChange={(e) => setFoodItem(e.target.value)}
         />
-        <button onClick={fetchIngredientID}>Search</button>
+        <button onClick={fetchIngredientID}>Search ID</button>
       </div>
+      <button onClick={fetchNutritionalInformation}>Analyze ID</button>
       {ingredientID ? (
         <p>ID of the top result: {ingredientID}</p>
       ) : (

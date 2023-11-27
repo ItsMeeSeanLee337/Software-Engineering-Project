@@ -27,45 +27,53 @@ const urlParams = new URLSearchParams(window.location.search);
 const dataToSend = urlParams.get('data');
 const [userType, setUserType] = useState('');
 
-/*const testRecipe1 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
+const testRecipe1 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
   "crID": 1,
   "Title": "Spaghetti Carbonara",
   "Description": "Bring a large pot of water to a boil and season generously with salt. Add the pasta to the water once boiling and cook until al dente. Reserve 2 cups of cooking water and drain the pasta. ",
-  "list": [
+  "list": {
+    "ingredients": [
       "1 lb spaghetti",
       "3.5 oz pancetta",
       "2 Tbsps olive oil",
-      "1  egg",
+      "1 egg",
       "0.5 cup parmesan cheese"
-  ]
+    ]
+  }
 }; 
 
 const testRecipe2 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
   "crID": 2,
   "Title": "Grilled Cheese",
   "Description": "Make the grilled cheese sandwich",
-  "list": [
+  "list": {
+    "ingredients":
+    [
       "2 pc white bread",
       "3 slices cheddar cheese",
       "2 Tbsps olive oil",
       "1 egg",
       "2 Tbsps mayo sauce"
-  ]
+    ]
+  }
 }; 
 
 const testRecipe3 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
   "crID": 3,
   "Title": "Chicken Fried Rice",
   "Description": "Make the chicken fried rice ",
-  "list": [
+  "list": {
+    ingredients:
+    [
       "1 cup white rice",
       "1 lb chicken breast",
       "2 Tbsps olive oil",
       "1  egg",
       "2 Tbsps soy sauce"
-  ]
-};*/
-const [recipes, setRecipes] = useState([]);
+    ]
+  }
+};
+const [recipes, setRecipes] = useState([testRecipe1, testRecipe2, testRecipe3]);
 
 var passID = '';
 
@@ -74,24 +82,47 @@ useEffect(() => {
     getNotes(crid);
 }, [crid]);
 
-var response;
+/*useEffect(()=>{
+  console.log("This is user param:",dataToSend)
+  if(dataToSend === 'null' || dataToSend === null)
+  {
+    console.log('navigating');
+    navigate(`/`);
+  }
+},[])
+
+//Check user type on page loading
 useEffect(() => {
-    const fetchData = async () => {
+  const checkUser = async () => {
+    if(dataToSend !== "null" || dataToSend !== null){
+    try {
+      //const apiUrl = 'http://localhost:8080/createRecipe';  
       
-      try {
-        //const apiUrl = 'http://localhost:8080/createRecipe';  
-        const apiUrl = `http://172.16.122.26:8080/CustomRecipe/Display/${dataToSend}`;
+      const apiUrl = `http://172.16.122.26:8080/checkMaker/${dataToSend}`;
 
-        response = await axios.get(apiUrl);
-        console.log('Response:', response.data);
-        setRecipes(response.data)
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
+      response = await axios.get(apiUrl);
+      console.log('Response:', response.data);
+      setUserType(response.data[0].isMaker);
+    } catch (error) {
+      //This means an invalid user tried to access the system
+      setUserType(-1);
+      console.error('Error:', error);
+    }
+  };
+  }
+  checkUser();
+}, []); // Empty dependency array ensures this effect runs once on mount
 
-    fetchData();
-  }, []); // Empty dependency array ensures this effect runs once on mount
+
+//When the user type is checked, will redirect makers to the landing page
+useEffect(()=>{
+  console.log("This is user param:",dataToSend)
+  if(userType === 1 || userType === -1)
+  {
+    console.log('navigating');
+    navigate(`/`);
+  }
+}, [userType])*/
 
   const handleDelete = async (recipeID) =>  {
     const { Title, Description, crID } = recipeID; // Assuming these are the correct properties
