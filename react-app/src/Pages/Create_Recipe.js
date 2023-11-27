@@ -17,7 +17,7 @@ const navigate = useNavigate(); //used to navigate to another page
 const maxLineLength = 30; // Set max line length
 const [userType, setUserType] = useState('');
 var response;
-/*useEffect(()=>{
+useEffect(()=>{
     console.log("This is user param:",dataToSend)
     if(dataToSend === 'null' || dataToSend == null)
     {
@@ -57,7 +57,7 @@ useEffect(()=>{
     console.log('navigating');
     navigate(`/`);
   }
-}, [userType])*/
+}, [userType])
 
 
 function handleTitle(e){

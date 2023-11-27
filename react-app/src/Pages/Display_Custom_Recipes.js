@@ -27,7 +27,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const dataToSend = urlParams.get('data');
 const [userType, setUserType] = useState('');
 
-const testRecipe1 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
+/*const testRecipe1 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
   "crID": 1,
   "Title": "Spaghetti Carbonara",
   "Description": "Bring a large pot of water to a boil and season generously with salt. Add the pasta to the water once boiling and cook until al dente. Reserve 2 cups of cooking water and drain the pasta. ",
@@ -64,8 +64,8 @@ const testRecipe3 = { // For the recipe it must be in this specific format, need
       "1  egg",
       "2 Tbsps soy sauce"
   ]
-}; 
-const [recipes, setRecipes] = useState([testRecipe1, testRecipe2, testRecipe3]);
+};*/
+const [recipes, setRecipes] = useState([]);
 
 var passID = '';
 
