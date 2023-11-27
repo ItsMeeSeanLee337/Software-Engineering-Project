@@ -1,7 +1,7 @@
 describe('Display Custom Recipes Page', () => {
   beforeEach(() => {
     // Assuming your app is hosted at localhost:3000 and the Display Custom Recipes page is the default page
-    cy.visit('http://localhost:3000/display-custom-recipes') 
+    cy.visit('http://localhost:3000/display-custom-recipes?data=testuser') 
   })
 
   it('Redirects to Nutritional Info Page on button click', () => {

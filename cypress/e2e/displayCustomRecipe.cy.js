@@ -1,7 +1,7 @@
 describe('Display_Custom_Recipes page', () => {
   beforeEach(() => {
     // Assuming your page URL is '/display-custom-recipes'
-    cy.visit('http://localhost:3000/display-custom-recipes')
+    cy.visit('http://localhost:3000/display-custom-recipes?data=testuser')
   })
 
   it('displays at least one recipe with title, steps, and ingredients', () => {

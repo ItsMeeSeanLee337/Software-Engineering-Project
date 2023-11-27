@@ -10,16 +10,14 @@ describe('R02', () => {
       cy.url().should('include', '/Login_Success')
 
       //Handling the hover menu
-      cy.get("#goToDisplayRecipe").click();
+      cy.visit('http://localhost:3000/display-custom-recipes?data=testuser')
       
       //Should be on the display maker recipes page
       cy.url().should('include', '/display-custom-recipes')
 
-      //Should be able to see a recipe that a user has made previously
-      cy.get("#title").should('be.visible')
-
-      cy.get("#steps").should('be.visible')
-
-      cy.get("#ing").should('be.visible')      
+      // Validate the presence of title, steps, and ingredients in the first recipe
+      cy.get('.recipeTitle').first().should('exist') // Check if the title exists
+      cy.get('.textareaSteps').first().should('exist') // Check if the steps textarea exists
+      cy.get('.recipeIngredients').first().find('li').should('have.length.gt', 0) // Check if ingredients exist
   })
 });

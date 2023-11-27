@@ -1,6 +1,6 @@
 describe('Nutritional Information Page', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000/NutritionalInformation');
+    cy.visit('http://localhost:3000/NutritionalInformation?data=testuser');
   });
 
   it('Enters ingredient and clicks search button', () => {
