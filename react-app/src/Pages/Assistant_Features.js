@@ -1,9 +1,5 @@
 import Navbar from './Navbar';
-import '../styles/registration.css'
-
-import '../styles/assistant_features.css'; // Import the CSS file
 import React, { useState, useEffect } from 'react';
-
 
 function TimerApp() {
   const [timer, setTimer] = useState(null);
@@ -77,32 +73,106 @@ function TimerApp() {
   }, [timeRemaining, isRunning, timer]);
 
   return (
-    <div className="container">
-      <h1>Timer</h1>
+    <div
+      style={{
+        fontFamily: 'Arial, sans-serif',
+        backgroundColor: '#f5f5f5',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 0,
+      }}
+    >
+      <div
+        style={{
+          textAlign: 'center',
+          maxWidth: '600px',
+          margin: '20px auto',
+          padding: '20px',
+        }}
+      >
+        <h1 style={{ color: '#333' }}>Timer</h1>
 
-      {/* Timer display */}
-      <p id="timer">{displayTime()}</p>
+        {/* Timer display */}
+        <p
+          id="timer"
+          style={{
+            fontSize: '24px',
+            marginBottom: '20px',
+          }}
+        >
+          {displayTime()}
+        </p>
 
-      {/* Increment and Decrement buttons */}
-      <button className="increment-button" onClick={incrementMinutes} disabled={isRunning}>
-        Increment
-      </button>
-      <button className="decrement-button" onClick={decrementMinutes} disabled={isRunning}>
-        Decrement
-      </button>
+        {/* Increment and Decrement buttons */}
+        <button
+          className="increment-button"
+          onClick={incrementMinutes}
+          disabled={isRunning}
+          style={{
+            fontSize: '16px',
+            padding: '10px 20px',
+            margin: '5px',
+            cursor: 'pointer',
+            backgroundColor: 'white',
+            color: '#333',
+            border: '1px solid #ccc',
+          }}
+        >
+          Increment
+        </button>
+        <button
+          className="decrement-button"
+          onClick={decrementMinutes}
+          disabled={isRunning}
+          style={{
+            fontSize: '16px',
+            padding: '10px 20px',
+            margin: '5px',
+            cursor: 'pointer',
+            backgroundColor: 'white',
+            color: '#333',
+            border: '1px solid #ccc',
+          }}
+        >
+          Decrement
+        </button>
 
-      {/* Start button */}
-      <button className="start-button" onClick={startTimer} disabled={isRunning}>
-        {isRunning ? "Running..." : "Start"}
-      </button>
+        {/* Start button */}
+        <button
+          className="start-button"
+          onClick={startTimer}
+          disabled={isRunning}
+          style={{
+            fontSize: '16px',
+            padding: '10px 20px',
+            margin: '5px',
+            cursor: 'pointer',
+            backgroundColor: '#4caf50',
+            color: 'white',
+            border: 'none',
+          }}
+        >
+          {isRunning ? 'Running...' : 'Start'}
+        </button>
 
-      {/* Expired message and restart button */}
-      {expiredMessage && (
-        <div>
-          <p>{expiredMessage}</p>
-          <button onClick={() => setTimerDuration(5)}>Restart Timer</button>
-        </div>
-      )}
+        {/* Expired message and restart button */}
+        {expiredMessage && (
+          <div>
+            <p>{expiredMessage}</p>
+            <button
+              onClick={() => setTimerDuration(5)}
+              style={{
+                fontSize: '16px',
+                padding: '10px 20px',
+                cursor: 'pointer',
+              }}
+            >
+              Restart Timer
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

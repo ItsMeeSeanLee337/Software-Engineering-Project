@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'; // Assuming you're using React Router for routing
-//import '../styles/homepage.css';
-import '../styles/substitutions.css';
 
 const urlParams = new URLSearchParams(window.location.search);
-  const dataToSend = urlParams.get('data');
+const dataToSend = urlParams.get('data');
 
 const RecipeSubstitutes = ({ userId }) => {
   const [userIngredients, setUserIngredients] = useState([]); // State to store user-specific ingredients
@@ -16,14 +14,11 @@ const RecipeSubstitutes = ({ userId }) => {
   var response;
   useEffect(() => {
     const fetchTopIngredients = async () => {
-      
       try {
         const apiUrl = `http://172.16.122.26:8080/listOfIngredients/${dataToSend}`;
-
         response = await axios.get(apiUrl);
         console.log('Response:', response.data);
         setUserIngredients(response.data);
-
       } catch (error) {
         console.error('Error:', error);
       }
@@ -37,9 +32,7 @@ const RecipeSubstitutes = ({ userId }) => {
     try {
       const apiKey = '248402bf586449c59ffe2b9624ff978a';
       const response = await axios.get(
-        //`https://api.spoonacular.com/food/ingredients/${selectedIngredient}/substitutes?apiKey=248402bf586449c59ffe2b9624ff978a`
         `https://api.spoonacular.com/food/ingredients/substitutes?ingredientName=${selectedIngredient}&apiKey=${apiKey}`
-        //`https://api.spoonacular.com/food/ingredients/substitutes?ingredientName=butter&apiKey=${apiKey}`
       );
       setSubstitutes(response.data.substitutes);
     } catch (error) {
@@ -48,9 +41,9 @@ const RecipeSubstitutes = ({ userId }) => {
   };
 
   // useEffect to fetch user ingredients when the component mounts
-  //useEffect(() => {
-    //fetchUserIngredients();
-  //}, [userId]);
+  // useEffect(() => {
+  //   fetchUserIngredients();
+  // }, [userId]);
 
   // useEffect to fetch substitutes when the selectedIngredient changes
   useEffect(() => {
@@ -60,22 +53,65 @@ const RecipeSubstitutes = ({ userId }) => {
   }, [selectedIngredient]);
 
   return (
-    <div className="container">
+    <div
+      style={{
+        maxWidth: '600px',
+        margin: '0 auto',
+        padding: '20px',
+      }}
+    >
       <h2>Your Ingredients</h2>
-      <ul className="ingredients-list">
+      <ul
+        style={{
+          listStyle: 'none',
+          padding: 0,
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(70px, 1fr))',
+          gap: '10px',
+        }}
+      >
         {userIngredients.map((ingredient, index) => (
-          <li key={index} onClick={() => setSelectedIngredient(ingredient)} className="ingredients-list-item">
+          <li
+            key={index}
+            onClick={() => setSelectedIngredient(ingredient)}
+            style={{
+              backgroundColor: '#f0f0f0',
+              padding: '10px',
+              borderRadius: '5px',
+              textAlign: 'center',
+              cursor: 'pointer',
+            }}
+          >
             {ingredient}
           </li>
         ))}
       </ul>
       {selectedIngredient && (
         <div>
-          <h2>Substitutes for {selectedIngredient}:</h2>
+          <h2
+            style={{
+              marginBottom: '20px',
+            }}
+          >
+            Substitutes for {selectedIngredient}:
+          </h2>
           {substitutes && substitutes.length > 0 ? (
-            <ul className="substitutes-list">
+            <ul
+              style={{
+                listStyle: 'none',
+                padding: 0,
+              }}
+            >
               {substitutes.map((substitute, index) => (
-                <li key={index} className="substitutes-list-item">
+                <li
+                  key={index}
+                  style={{
+                    backgroundColor: '#e0e0e0',
+                    padding: '10px',
+                    marginBottom: '5px',
+                    borderRadius: '5px',
+                  }}
+                >
                   {substitute}
                 </li>
               ))}
@@ -87,8 +123,6 @@ const RecipeSubstitutes = ({ userId }) => {
       )}
     </div>
   );
-  
-  
 };
 
 export default RecipeSubstitutes;
