@@ -1,7 +1,7 @@
 import { render, screen, act, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { BrowserRouter as Router } from 'react-router-dom';
-import Registration from '../../Pages/Registration';
+import Registration from '../Pages/Registration';
 
 test('HandleSubmit with all fields', async () => {
   const logSpy = jest.spyOn(console, 'log');

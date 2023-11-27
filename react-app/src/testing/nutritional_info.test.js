@@ -1,10 +1,12 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom'; // Import BrowserRouter
-import NutritionalInformation from './nutritional_info';
+import NutritionalInformation from '../Pages/nutritional_info';
 
 describe('NutritionalInformation component', () => {
   it('fetches ingredient ID on button click', async () => {
+    const url = `${window.location.pathname}?data=testUser`;
+    window.history.pushState({}, '', url);
     const { getByText, getByPlaceholderText } = render(
       <Router>
         <NutritionalInformation />
@@ -24,6 +26,8 @@ describe('NutritionalInformation component', () => {
   });
 
   it('displays nutritional information on analyze button click', async () => {
+    const url = `${window.location.pathname}?data=testUser`;
+    window.history.pushState({}, '', url);
     const { getByText, getByPlaceholderText } = render(
       <Router>
         <NutritionalInformation />

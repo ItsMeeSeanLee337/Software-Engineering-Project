@@ -123,7 +123,7 @@ useEffect(() => {
 //When the user type is checked, will redirect makers to the landing page
 useEffect(()=>{
   console.log("This is user param:",dataToSend)
-  if(userType === 1 || userType === -1)
+  if(userType === -1)
 
   {
     //console.log('navigating');

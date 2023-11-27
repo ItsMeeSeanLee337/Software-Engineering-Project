@@ -2,7 +2,7 @@ import{render, screen, act,  cleanup, fireEvent, waitFor, findByTestId} from "@t
 import renderer from "react-test-renderer"
 import "@testing-library/jest-dom";
 import {BrowserRouter as Router} from 'react-router-dom';
-import Personalized_Recipes from "../../Pages/Personalized_Recipes";
+import Personalized_Recipes from "../Pages/Personalized_Recipes";
 
 
 test('FetchData testing', async () => {

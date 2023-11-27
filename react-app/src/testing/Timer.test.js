@@ -3,8 +3,8 @@ import "@testing-library/jest-dom";
 import { BrowserRouter as Router } from 'react-router-dom';
 //import TimerApp from '../../Components/TimerApp';
 //import TimerApp from "../../Pages/Timer";
-import TimerApp from "./Pages/Timer";
-import Timer from "./Pages/Timer.js";
+import TimerApp from "../Pages/Timer.js";
+import Timer from "../Pages/Timer.js";
 
 beforeEach(() => {
   jest.useFakeTimers();

@@ -175,6 +175,7 @@ const hideToolTip = async(e)=>{
               <br></br>
             <button 
             id = 'registerButton'
+            data-testid="registerButton"
             className = "submit_button" 
             type="submit">Sign up</button>
           </form>

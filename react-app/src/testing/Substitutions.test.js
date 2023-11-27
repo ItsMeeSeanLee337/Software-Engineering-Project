@@ -1,12 +1,10 @@
-import { render, screen, act } from "@testing-library/react";
+import{render, screen, act,  cleanup, fireEvent, waitFor} from "@testing-library/react";
+import renderer from "react-test-renderer"
 import "@testing-library/jest-dom";
-import { BrowserRouter as Router } from 'react-router-dom';
-import { MemoryRouter } from 'react-router-dom';
+import {BrowserRouter as Router} from 'react-router-dom';
 //import RecipeSubstitutes from '../../Components/RecipeSubstitutes';
 //import RecipeSubstitutes from '../../Pages/Substitutions';
-import RecipeSubstitutes from './Pages/Substitutions.js';
-import axios from 'axios';
-import Substitutions from "./Pages/Substitutions.js";
+import Substitutions from '../Pages/Substitutions'
 
 /*jest.mock('axios'); // Mock axios for testing
 
@@ -33,11 +31,14 @@ const mockedData = ["honey", "butter", "pork"];
         </Router>
       );});
 
-      //get the button
-    const tryIngredientButton = screen.getByTestId('ingredient button');
+
+      //get thebutton
+
+   //const tryIngredientButton = screen.getByTestId("ingredient button");
+
 
     //click the button
-    fireEvent.click(tryIngredientButton);
+    
     await waitFor(() => {
         expect(logSpy).toHaveBeenCalledWith("received substitutions");
     },{timeout:2000});

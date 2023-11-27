@@ -1183,3 +1183,470 @@ response.forEach((recipe, index) => {
 
 
 
+//Testing updating tag on an existing recipe
+
+//Unit Test: Set Meal Plan Recipes
+// Make sure the endpoint gave a response indicating success
+pm.test("Status code is 200", () => {
+  pm.expect(pm.response.code).to.eql(200);
+});
+
+// Turn the response into a json var for testing
+const response = pm.response.json();
+
+// Make sure there was an actual response in JSON form
+pm.test("Response JSON is not empty", function() {
+    pm.expect(Object.keys(response).length).to.be.greaterThan(0);
+});
+
+// Make sure Title field was properly recieved
+  pm.test("Message field was recieved by server", () => {
+    pm.expect(response).to.have.property("message");
+  });
+
+// Make sure message is properly formatted
+  pm.test("Message field was recieved by server", () => {
+    pm.expect(response.message).to.have.include("Meal Plan Recipe added");
+  });
+
+// Make sure tag field is part of the recipe
+  pm.test("crid field was recieved by server", () => {
+    pm.expect(response).to.have.property("crID");
+  });
+//
+// Make sure crid matches the tage for the recipe
+  pm.test("crid field was recieved by server", () => {
+    pm.expect(response.crID).to.have.include("674");
+  });
+
+   pm.test("username field was recieved by server", () => {
+    pm.expect(response).to.have.property("username");
+  });
+
+   pm.test("username field was recieved by server", () => {
+    pm.expect(response.username).to.have.include("apiuntag");
+  });
+
+
+
+
+
+//Should return at least one recipe if the user has one saved
+//Only returns an empty JSON if the user has no recipes are tagged
+//Unit Test: (SHOULD FAIL IF NEXT PASSES) Get Meal Planned Recipes for a user with no meal planned recipes
+// Make sure the endpoint gave a response indicating success
+pm.test("Status code is 200", () => {
+  pm.expect(pm.response.code).to.eql(200);
+});
+
+// Turn the response into a json var for testing
+const response = pm.response.json();
+
+// Make sure there was an actual response in JSON form
+pm.test("Response JSON is not empty", function() {
+    pm.expect(Object.keys(response).length).to.be.greaterThan(0);
+});
+
+
+
+//Should return at least one recipe if the user has one saved
+//Only returns an empty JSON if the user has no recipes are tagged
+//Unit Test: Get Meal Planned Recipes for a user with meal planned recipes
+// Make sure the endpoint gave a response indicating success
+pm.test("Status code is 200", () => {
+  pm.expect(pm.response.code).to.eql(200);
+});
+
+// Turn the response into a json var for testing
+const response = pm.response.json();
+
+// Make sure there was an actual response in JSON form
+pm.test("Response JSON is not empty", function() {
+    pm.expect(Object.keys(response).length).to.be.greaterThan(0);
+});
+
+
+
+
+//Testing updating tag on an existing recipe
+//Unit Test: Set Meal Plan Day
+// Make sure the endpoint gave a response indicating success
+pm.test("Status code is 200", () => {
+  pm.expect(pm.response.code).to.eql(200);
+});
+
+// Turn the response into a json var for testing
+const response = pm.response.json();
+
+// Make sure there was an actual response in JSON form
+pm.test("Response JSON is not empty", function() {
+    pm.expect(Object.keys(response).length).to.be.greaterThan(0);
+});
+
+// Make sure Title field was properly recieved
+  pm.test("Message field was recieved by server", () => {
+    pm.expect(response).to.have.property("message");
+  });
+
+// Make sure message is properly formatted
+  pm.test("Message field was recieved by server", () => {
+    pm.expect(response.message).to.have.include("Meal Plan Day set");
+  });
+
+// Make sure tag field is part of the recipe
+  pm.test("crid field was recieved by server", () => {
+    pm.expect(response).to.have.property("crID");
+  });
+//
+// Make sure crid matches the tage for the recipe
+  pm.test("crid field was recieved by server", () => {
+    pm.expect(response.crID).to.have.include("674");
+  });
+
+   pm.test("username field was recieved by server", () => {
+    pm.expect(response).to.have.property("username");
+  });
+
+   pm.test("username field was recieved by server", () => {
+    pm.expect(response.username).to.have.include("apiuntag");
+  });
+
+   pm.test("day text field was recieved by server", () => {
+    pm.expect(response).to.have.property("dayText");
+  });
+
+   pm.test("day text field was recieved by server", () => {
+    pm.expect(response.dayText).to.have.include("MONDAY");
+  });
+
+
+
+
+
+
+
+
+
+  //Testing updating tag on an existing recipe
+  //Unit Test: Set Meal Plan Day w/ incorrect day
+// Make sure the endpoint gave a response indicating success
+pm.test("Status code is 500", () => {
+  pm.expect(pm.response.code).to.eql(500);
+});
+
+// Turn the response into a json var for testing
+const response = pm.response.json();
+
+// Make sure there was an actual response in JSON form
+pm.test("Response JSON is not empty", function() {
+    pm.expect(Object.keys(response).length).to.be.greaterThan(0);
+});
+
+// Make sure Title field was properly recieved
+  pm.test("Message field was recieved by server", () => {
+    pm.expect(response).to.have.property("message");
+  });
+
+// Make sure message is properly formatted
+  pm.test("Message field was recieved by server", () => {
+    pm.expect(response.message).to.have.include("Invalid Day!");
+  });
+
+
+
+  //Should return at least one recipe if the user has one saved
+//Only returns an empty JSON if the user has no recipes are tagged
+//Unit Test: Get Meal Planned Day Recipes
+// Make sure the endpoint gave a response indicating success
+pm.test("Status code is 200", () => {
+  pm.expect(pm.response.code).to.eql(200);
+});
+
+// Turn the response into a json var for testing
+const response = pm.response.json();
+
+// Make sure there was an actual response in JSON form
+pm.test("Response JSON is not empty", function() {
+    pm.expect(Object.keys(response).length).to.be.greaterThan(0);
+});
+
+
+
+
+//Testing updating tag on an existing recipe
+//Unit Test: Drop recipe for Meal Planned Day
+// Make sure the endpoint gave a response indicating success
+pm.test("Status code is 200", () => {
+  pm.expect(pm.response.code).to.eql(200);
+});
+
+// Turn the response into a json var for testing
+const response = pm.response.json();
+
+// Make sure there was an actual response in JSON form
+pm.test("Response JSON is not empty", function() {
+    pm.expect(Object.keys(response).length).to.be.greaterThan(0);
+});
+
+// Make sure Title field was properly recieved
+  pm.test("Message field was recieved by server", () => {
+    pm.expect(response).to.have.property("message");
+  });
+
+// Make sure message is properly formatted
+  pm.test("Message field was recieved by server", () => {
+    pm.expect(response.message).to.have.include("Removed recipe!");
+  });
+
+
+// Make sure crid field is part of the recipe
+  pm.test("crid field was recieved by server", () => {
+    pm.expect(response).to.have.property("crID");
+  });
+// Make sure crid matches the tage for the recipe
+  pm.test("crid field was recieved by server", () => {
+    pm.expect(response.crID).to.have.include("674");
+  });
+
+  // Make sure crid field is part of the recipe
+  pm.test("username field was recieved by server", () => {
+    pm.expect(response).to.have.property("username");
+  });
+// Make sure crid matches the tage for the recipe
+  pm.test("username field was recieved by server", () => {
+    pm.expect(response.crID).to.have.include("674");
+  });
+
+
+
+   // Make sure tag field is part of the recipe
+  pm.test("Tag field was recieved by server", () => {
+    pm.expect(response).to.have.property("clickedDay");
+  });
+// Make sure tag matches the tage for the recipe
+  pm.test("Tag field was recieved by server", () => {
+    pm.expect(response.clickedDay).to.have.include("MONDAY");
+  });
+
+
+
+
+  //Testing updating tag on an existing recipe
+//Unit Test: Drop meal for Meal Planner
+// Make sure the endpoint gave a response indicating success
+pm.test("Status code is 200", () => {
+  pm.expect(pm.response.code).to.eql(200);
+});
+
+// Turn the response into a json var for testing
+const response = pm.response.json();
+
+// Make sure there was an actual response in JSON form
+pm.test("Response JSON is not empty", function() {
+    pm.expect(Object.keys(response).length).to.be.greaterThan(0);
+});
+
+// Make sure Title field was properly recieved
+  pm.test("Message field was recieved by server", () => {
+    pm.expect(response).to.have.property("message");
+  });
+
+// Make sure message is properly formatted
+  pm.test("Message field was recieved by server", () => {
+    pm.expect(response.message).to.have.include("Removed recipe from meal planner and days!");
+  });
+
+
+// Make sure crid field is part of the recipe
+  pm.test("crid field was recieved by server", () => {
+    pm.expect(response).to.have.property("crID");
+  });
+// Make sure crid matches the tage for the recipe
+  pm.test("crid field was recieved by server", () => {
+    pm.expect(response.crID).to.have.include("674");
+  });
+
+   
+// Make sure crid field is part of the recipe
+  pm.test("username field was recieved by server", () => {
+    pm.expect(response).to.have.property("username");
+  });
+// Make sure crid matches the tage for the recipe
+  pm.test("username field was recieved by server", () => {
+    pm.expect(response.username).to.have.include("apiuntag");
+  });
+
+
+
+ // NFT02: Registration Part
+  const response = pm.response.json();
+
+pm.test("Status code is 401", () => {
+    pm.expect(pm.response.code).to.eql(401);
+});
+
+// Make sure the response JSON is not empty
+pm.test("Response JSON is not empty", function() {
+    pm.expect(Object.keys(response).length).to.be.greaterThan(0);
+});
+
+// Make sure 'username' field is properly received
+pm.test("username field was received by server", () => {
+    pm.expect(response).to.have.property("username");
+});
+
+// Make sure 'username' matches the expected value
+pm.test("username field has the correct value", () => {
+    pm.expect(response.username).to.eql("e5");
+});
+
+// Make sure 'firstname' field is properly received
+pm.test("firstname field was received by server", () => {
+    pm.expect(response).to.have.property("firstname");
+});
+
+// Make sure 'firstname' matches the expected value
+pm.test("firstname field has the correct value", () => {
+    pm.expect(response.firstname).to.eql("e5");
+});
+
+// Make sure 'lastname' field is properly received
+pm.test("lastname field was received by server", () => {
+    pm.expect(response).to.have.property("lastname");
+});
+
+// Make sure 'lastname' matches the expected value
+pm.test("lastname field has the correct value", () => {
+    pm.expect(response.lastname).to.eql("e5");
+});
+
+// Make sure 'password' field is properly received
+pm.test("password field was received by server", () => {
+    pm.expect(response).to.have.property("password");
+});
+
+// Make sure 'password' matches the expected value
+pm.test("password field has the correct value", () => {
+    pm.expect(response.password).to.eql("$2b$10$Ed8DhVnFrLBdVUx7NEVk3uOy.On8YdJ1LwE5SKs1WoZywiiQNlUl6");
+});
+
+// Make sure 'email' field is properly received
+pm.test("email field was received by server", () => {
+    pm.expect(response).to.have.property("email");
+});
+
+// Make sure 'email' matches the expected value
+pm.test("email field has the correct value", () => {
+    pm.expect(response.email).to.eql("e5");
+});
+
+// Make sure 'isMaker' field is properly received
+pm.test("isMaker field was received by server", () => {
+    pm.expect(response).to.have.property("isMaker");
+});
+
+// Make sure 'isMaker' matches the expected value
+pm.test("isMaker field has the correct value", () => {
+    pm.expect(response.isMaker).to.eql("0");
+});
+
+
+
+
+
+//NFT02: Login Part
+// Make sure the endpoint gave a response indicating success
+pm.test("Status code is 200", () => {
+  pm.expect(pm.response.code).to.eql(200);
+});
+
+// Turn the response into a JSON variable for testing
+const response = pm.response.json();
+
+// Make sure there was an actual response in JSON form
+pm.test("Response JSON is not empty", function() {
+  pm.expect(Object.keys(response).length).to.be.greaterThan(0);
+});
+
+// Make sure UserID field is properly received
+pm.test("UserID field was received by server", () => {
+  pm.expect(response[0]).to.have.property("UserID");
+});
+
+// Make sure the UserID matches the expected value
+pm.test("UserID field has the correct value", () => {
+  pm.expect(response[0].UserID).to.eql(1469);
+});
+
+// Make sure Username field is properly received
+pm.test("Username field was received by server", () => {
+  pm.expect(response[0]).to.have.property("Username");
+});
+
+// Make sure the Username matches the expected value
+pm.test("Username field has the correct value", () => {
+  pm.expect(response[0].Username).to.eql("e5");
+});
+// Make sure Password field is properly received
+pm.test("Password field was received by server", () => {
+  pm.expect(response[0]).to.have.property("Password");
+});
+
+// Make sure the Password matches the expected value
+pm.test("Password field has the correct value", () => {
+  pm.expect(response[0].Password).to.eql("$2b$10$Ed8DhVnFrLBdVUx7NEVk3uOy.On8YdJ1LwE5SKs1WoZywiiQNlUl6");
+});
+
+// Make sure Email field is properly received
+pm.test("Email field was received by server", () => {
+  pm.expect(response[0]).to.have.property("Email");
+});
+
+// Make sure the Email matches the expected value
+pm.test("Email field has the correct value", () => {
+  pm.expect(response[0].Email).to.eql("e");
+});
+
+// Make sure Firstname field is properly received
+pm.test("Firstname field was received by server", () => {
+  pm.expect(response[0]).to.have.property("Firstname");
+});
+
+// Make sure the Firstname matches the expected value
+pm.test("Firstname field has the correct value", () => {
+  pm.expect(response[0].Firstname).to.eql("e5");
+});
+
+// Make sure Lastname field is properly received
+pm.test("Lastname field was received by server", () => {
+  pm.expect(response[0]).to.have.property("Lastname");
+});
+
+// Make sure the Lastname matches the expected value
+pm.test("Lastname field has the correct value", () => {
+  pm.expect(response[0].Lastname).to.eql("e5");
+});
+
+// Make sure isMaker field is properly received
+pm.test("isMaker field was received by server", () => {
+  pm.expect(response[0]).to.have.property("isMaker");
+});
+
+// Make sure the isMaker matches the expected value
+pm.test("isMaker field has the correct value", () => {
+  pm.expect(response[0].isMaker).to.eql(0);
+});
+
+
+
+
+//Unit Test: Set Custom Recipe Nutrition Info
+pm.test("Status code is 200", () => {
+  pm.expect(pm.response.code).to.eql(200);
+});
+
+const response = pm.response
+
+pm.test("Response contains 'Nutrition info Updated'", function () {
+  pm.response.to.have.body("Nutrition info Updated");
+});

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import Home from './Landing_page';
+import Home from '../Pages/Landing_page';
 
 describe('Home Component', () => {
   test('renders welcome message', () => {

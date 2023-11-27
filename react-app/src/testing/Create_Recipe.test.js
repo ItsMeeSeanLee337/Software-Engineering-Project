@@ -3,7 +3,7 @@ import renderer from "react-test-renderer"
 import "@testing-library/jest-dom";
 import {BrowserRouter as Router} from 'react-router-dom';
 //Import your page correctly
-import Create_Recipe from '../../Pages/Create_Recipe.js';
+import Create_Recipe from '../Pages/Create_Recipe.js';
 
 
 test('HandleSubmit with all fields', async () => {

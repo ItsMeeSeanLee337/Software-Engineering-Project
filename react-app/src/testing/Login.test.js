@@ -2,7 +2,7 @@ import{render, screen, act,  cleanup, fireEvent, waitFor} from "@testing-library
 import renderer from "react-test-renderer"
 import "@testing-library/jest-dom";
 import {BrowserRouter as Router} from 'react-router-dom';
-import Login from '../../Pages/Login.js';
+import Login from '../Pages/Login.js';
 
 
 test('HandleSubmit with all fields', async () => {

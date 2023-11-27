@@ -2,7 +2,7 @@ import{render, screen, act,  cleanup, fireEvent, waitFor} from "@testing-library
 import renderer from "react-test-renderer"
 import "@testing-library/jest-dom";
 import {BrowserRouter as Router} from 'react-router-dom';
-import Display_Maker_Recipes from "../../Pages/Display_Maker_Recipes";
+import Display_Maker_Recipes from "../Pages/Display_Maker_Recipes";
 
 
 test('FetchData testing', async () => {
