@@ -1,10 +1,12 @@
 import { render, screen, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { BrowserRouter as Router } from 'react-router-dom';
 import { MemoryRouter } from 'react-router-dom';
 //import RecipeSubstitutes from '../../Components/RecipeSubstitutes';
 //import RecipeSubstitutes from '../../Pages/Substitutions';
 import RecipeSubstitutes from './Pages/Substitutions.js';
 import axios from 'axios';
+import Substitutions from "./Pages/Substitutions.js";
 
 jest.mock('axios'); // Mock axios for testing
 
@@ -29,7 +31,7 @@ const mockedData = ["honey", "butter", "pork"];
         <Router>
           <Substitutions />
         </Router>
-      );
+      );});
 
       // Check if the user ingredients are rendered
   for (const ingredient of mockedData) {
@@ -49,8 +51,4 @@ const mockedData = ["honey", "butter", "pork"];
     expect(substituteElement).toBeInTheDocument();
   }
 });
-    });
 
-  
-
-// Add more tests to cover different scenarios and interactions with the component.

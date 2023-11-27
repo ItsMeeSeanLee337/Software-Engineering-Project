@@ -1,8 +1,10 @@
 import { render, screen, act, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { BrowserRouter as Router } from 'react-router-dom';
 //import TimerApp from '../../Components/TimerApp';
 //import TimerApp from "../../Pages/Timer";
 import TimerApp from "./Pages/Timer";
+import Timer from "./Pages/Timer.js";
 
 beforeEach(() => {
   jest.useFakeTimers();
@@ -25,7 +27,7 @@ afterEach(() => {
         <Router>
           <Timer />
         </Router>
-      );
+      );});
         // Check if the initial timer display is correct
   const initialTimerDisplay = screen.getByText(/05:00/);
   expect(initialTimerDisplay).toBeInTheDocument();
@@ -80,7 +82,5 @@ afterEach(() => {
   expect(restartedTimerDisplay).toBeInTheDocument();
 });
 
-
-    });
 
   
