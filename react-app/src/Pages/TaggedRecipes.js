@@ -12,7 +12,7 @@ function TaggedRecipes() {
     const urlParams = new URLSearchParams(window.location.search);
     const dataToSend = urlParams.get('data');
     const username = decodeURIComponent(dataToSend);
-    console.log("DATA: ", username);
+    //console.log("DATA: ", username);
     const [crid, setcrid] = useState('');
 
 
@@ -21,10 +21,10 @@ function TaggedRecipes() {
     const [userType, setUserType] = useState('');
 
     useEffect(()=>{
-      console.log("This is user param:",dataToSend)
+      //console.log("This is user param:",dataToSend)
       if(dataToSend === 'null' || dataToSend === null)
       {
-        console.log('navigating');
+        //console.log('navigating');
         navigate(`/`);
       }
     },[])
@@ -39,7 +39,7 @@ function TaggedRecipes() {
           const apiUrl = `http://172.16.122.26:8080/checkMaker/${dataToSend}`;
     
           response = await axios.get(apiUrl);
-          console.log('Response:', response.data);
+          //console.log('Response:', response.data);
           setUserType(response.data[0].isMaker);
         } catch (error) {
           //This means an invalid user tried to access the system
@@ -54,10 +54,10 @@ function TaggedRecipes() {
     
     //When the user type is checked, will redirect makers to the landing page
     useEffect(()=>{
-      console.log("This is user param:",dataToSend)
+      //console.log("This is user param:",dataToSend)
       if(userType === 1 || userType === -1)
       {
-        console.log('navigating');
+        //console.log('navigating');
         navigate(`/`);
       }
     }, [userType])
@@ -67,9 +67,11 @@ function TaggedRecipes() {
 
     //ensuring that tags displayed are unique (so no duplicate tags if more than one recipe has the same tag name)
     const [selectedTag, setSelectedTag] = useState(null);
+
     const handleTagClick = (tag) => {
       setSelectedTag(tag);
     };
+
     const uniqueTags = [...new Set(recipes.map((recipe) => recipe.Tag))];
 
 
@@ -82,7 +84,8 @@ function TaggedRecipes() {
             const apiUrl = `http://172.16.122.26:8080/getTaggedRecipes/${dataToSend}`;
     
             response = await axios.get(apiUrl);
-            console.log('Response from request:', response.data);
+            console.log("Succesfully got tagged recipes")
+            //console.log('Response from request:', response.data);
             setRecipes(response.data);
           } catch (error) {
             console.error('Error:', error);
@@ -91,16 +94,18 @@ function TaggedRecipes() {
     
         fetchData();
       }, []);
-      
+
+      //NOT UNIT TESTED, COVERED IN FUNCTIONAL AND ENDPOINT TESTING 
       const removeTag = (id) => {
-        console.log("This is the crid for the tagged recipe: ", id);
+        //console.log("This is the crid for the tagged recipe: ", id);
         try{
           var apiUrlUnTag = `http://172.16.122.26:8080/untagRecipes/${id}`;
           //we dont really care about response, just inserting data, when user clicks show tagged recipies then we care about response, this will be handled in a diff page though
             axios.post(apiUrlUnTag)
               .then(response_tag => {
                 if (response_tag.status === 200) {
-                  console.log('Response:', response_tag.data);
+                  //console.log('Response:', response_tag.data);
+                  console.log("Removed tagged recipe")
                   window.location.reload();
                 } 
               })
@@ -113,12 +118,6 @@ function TaggedRecipes() {
               console.error('Tag Error:');
               window.location.reload();
             } 
-
-            
-            console.log("This is the crid for the tagged recipe: ", id);
-
-            
-
       };
       
 
@@ -132,7 +131,7 @@ function TaggedRecipes() {
                 {uniqueTags.map((tag) => (
                   <div key={tag}>
                     <br />
-                    <button onClick={() => handleTagClick(tag)}>{tag}</button>
+                    <button data-testid="specific_tag_Button" id = 'specific_tag' onClick={() => handleTagClick(tag)}>{tag}</button>
                     <br />
                   </div>
                 ))}
@@ -148,7 +147,7 @@ function TaggedRecipes() {
                     .map((recipe) => (
                       <li key={recipe.crID}>
                         <div className="recipe-box">
-                          <p>Title: {recipe.Title}</p>
+                          <p id = "tagRecipeTitle">Title: {recipe.Title}</p>
                           <p>Description: {recipe.Description}</p>
                           <p>Ingredients:</p>
                           <ul>
@@ -164,7 +163,7 @@ function TaggedRecipes() {
                           </ul>
                           <p>Notes: {recipe.notes}</p>
 
-                          <button className = 'centerButtonCR'
+                          <button data-testid="remove_tag_Button" id ='removeTag' className = 'centerButtonCR'
                             onClick={() => removeTag(recipe.crID)}
                           >Untag this recipe</button>
                         </div>

@@ -13,7 +13,8 @@ function RecipeSearch() {
   const dataToSend = urlParams.get('data');
   const [showPopup, setShowPopup] = useState(false);
   const [isByIngredient, setIsByIngredient] = useState(false);
-  const apiKey = '248402bf586449c59ffe2b9624ff978a';
+  const apiKey = 'KEY';
+
   var response;
   useEffect(()=>{
     console.log("This is user param:",dataToSend)
@@ -58,7 +59,6 @@ function RecipeSearch() {
   }, [userType])
 
   const searchRecipesByName = async () => {
-
     try {
       const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&addRecipeInformation=true&apiKey=${apiKey}`);
 
@@ -130,24 +130,24 @@ function RecipeSearch() {
     {
       const { title } = recipe; // Assuming these are the correct properties
 
-    const ingredients = recipe.analyzedInstructions[0].steps
-  .flatMap((step) => step.ingredients)
-  .map((ingredient) => ingredient.name);
-    // Use a Set to remove duplicates
-  const uniqueIngredients = [...new Set(ingredients)];
+        const ingredients = recipe.analyzedInstructions[0].steps
+      .flatMap((step) => step.ingredients)
+      .map((ingredient) => ingredient.name);
+        // Use a Set to remove duplicates
+      const uniqueIngredients = [...new Set(ingredients)];
 
-    console.log('Title:', title);
+        console.log('Title:', title);
 
-    console.log('Ingredients:', uniqueIngredients);
-    
+        console.log('Ingredients:', uniqueIngredients);
+        
 
 
-  const steps = recipe.analyzedInstructions[0].steps;
+      const steps = recipe.analyzedInstructions[0].steps;
 
-  const concatenatedSteps = steps.map((step) => step.step).join('\n');
+      const concatenatedSteps = steps.map((step) => step.step).join('\n');
 
-  console.log(concatenatedSteps);
-    // Call saveRecipe and pass the necessary values
+      console.log(concatenatedSteps);
+        // Call saveRecipe and pass the necessary values
     await saveRecipe(title, concatenatedSteps, uniqueIngredients, dataToSend);
     }
     else
@@ -164,25 +164,25 @@ function RecipeSearch() {
           console.log(recipe)
           const { title } = recipe; // Assuming these are the correct properties
 
-    const ingredients = recipe.analyzedInstructions[0].steps
-  .flatMap((step) => step.ingredients)
-  .map((ingredient) => ingredient.name);
-    // Use a Set to remove duplicates
-  const uniqueIngredients = [...new Set(ingredients)];
+        const ingredients = recipe.analyzedInstructions[0].steps
+      .flatMap((step) => step.ingredients)
+      .map((ingredient) => ingredient.name);
+        // Use a Set to remove duplicates
+      const uniqueIngredients = [...new Set(ingredients)];
 
-    console.log('Title:', title);
+        console.log('Title:', title);
 
-    console.log('Ingredients:', uniqueIngredients);
-    
+        console.log('Ingredients:', uniqueIngredients);
+        
 
 
-  const steps = recipe.analyzedInstructions[0].steps;
+      const steps = recipe.analyzedInstructions[0].steps;
 
-  const concatenatedSteps = steps.map((step) => step.step).join('\n');
+      const concatenatedSteps = steps.map((step) => step.step).join('\n');
 
-  console.log(concatenatedSteps);
-    // Call saveRecipe and pass the necessary values
-    await saveRecipe(title, concatenatedSteps, uniqueIngredients, dataToSend);
+      console.log(concatenatedSteps);
+        // Call saveRecipe and pass the necessary values
+        await saveRecipe(title, concatenatedSteps, uniqueIngredients, dataToSend);
 
 
         } else {

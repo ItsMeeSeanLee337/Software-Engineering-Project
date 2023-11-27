@@ -17,14 +17,14 @@ function Personalized_Recipes() {
     const [clickedIndex, setClickedIndex] = useState(null);
     const navigate = useNavigate(); //used to navigate to another page
     const [userType, setUserType] = useState('');
-    const apiKEY = 'Key'
+    const apiKEY = '248402bf586449c59ffe2b9624ff978a'
   
 //If no one is loggin in, they go to the landing page
 useEffect(()=>{
-    console.log("This is user param:",dataToSend)
+    //console.log("This is user param:",dataToSend)
     if(dataToSend === 'null' || dataToSend === null)
     {
-      console.log('navigating');
+      //console.log('navigating');
       navigate(`/`);
     }
   },[])
@@ -39,12 +39,12 @@ useEffect(()=>{
         const apiUrl = `http://172.16.122.26:8080/checkMaker/${dataToSend}`;
   
         response = await axios.get(apiUrl);
-        console.log('Response:', response.data);
+       // console.log('Response:', response.data);
         setUserType(response.data[0].isMaker);
       } catch (error) {
         //This means an invalid user tried to access the system
         setUserType(-1);
-        console.error('Error:', error);
+        //console.error('Error:', error);
       }
     };
     }
@@ -54,10 +54,10 @@ useEffect(()=>{
   
   //When the user type is checked, will redirect makers to the landing page
   useEffect(()=>{
-    console.log("This is user param:",dataToSend)
+    //console.log("This is user param:",dataToSend)
     if(userType === 1 || userType === -1)
     {
-      console.log('navigating');
+     // console.log('navigating');
       navigate(`/`);
     }
   }, [userType])
@@ -66,12 +66,11 @@ useEffect(()=>{
 //Getting the change for the check boxes
 const handleCheckboxChange1 = () => {
     setIsChecked1(!isChecked1);
-    
   };
-  const handleCheckboxChange2 = () => {
+const handleCheckboxChange2 = () => {
     setIsChecked2(!isChecked2);
   };
-  const handleCheckboxChange3 = () => {
+const handleCheckboxChange3 = () => {
     setIsChecked3(!isChecked3);
   };
 
@@ -80,7 +79,7 @@ const handleCheckboxChange1 = () => {
 //Debug to see the selected ingredients array
 useEffect(() =>{
 
-    console.log(selectedIngredients);
+   //console.log(selectedIngredients);
 },[selectedIngredients]);
 
 //When the check box for ingredient 1 is selected, this will run to finish the change
@@ -128,6 +127,7 @@ useEffect(() =>{
     console.log(isChecked3);
 },[isChecked3]);
 
+//Unit tested
 //Get the ingredients on page loading
 useEffect(() => {
     const fetchTopIngredients = async () => {
@@ -136,11 +136,12 @@ useEffect(() => {
         const apiUrl = `http://172.16.122.26:8080/topIngredients/${dataToSend}`;
 
         response = await axios.get(apiUrl);
-        console.log('Response:', response.data);
+        //console.log('Response:', response.data);
         setTop1(response.data[0].ingredient)
         setTop2(response.data[1].ingredient)
         setTop3(response.data[2].ingredient)
        // setRecipes(response.data)
+       console.log("Ingredients were fetched");
       } catch (error) {
         console.error('Error:', error);
       }
@@ -149,16 +150,18 @@ useEffect(() => {
     fetchTopIngredients();
   }, []); // Empty dependency array ensures this effect runs once on mount
 
-  const fetchTopIngredientsAgain = async () => {
+//Unit tested
+const fetchTopIngredientsAgain = async () => {
       
     try {
       const apiUrl = `http://172.16.122.26:8080/topIngredients/${dataToSend}`;
 
       response = await axios.get(apiUrl);
-      console.log('Response:', response.data);
+     // console.log('Response:', response.data);
       setTop1(response.data[0].ingredient)
       setTop2(response.data[1].ingredient)
       setTop3(response.data[2].ingredient)
+      console.log("Fetched new ingredients")
      // setRecipes(response.data)
     } catch (error) {
       console.error('Error:', error);
@@ -166,17 +169,25 @@ useEffect(() => {
   };
 
 
+//Unit Tested
 //On button press, search for the ingredients
 let IngResponse;
   const handleIngredientSearch = async () => {
       
     try {
-    
+      
       const apiUrl = `http://172.16.122.26:8080/PersonalizedSearch`;
       const ingredients = selectedIngredients;
-      console.log(ingredients)
+      if(ingredients.length === 0 || ingredients === undefined || ingredients === false
+      || ingredients === "")
+      {
+        console.log("No ingredients selected")
+        return;
+      }
+      //console.log(ingredients)
       IngResponse = await axios.post(apiUrl, {ingredients});
-      console.log('Response:', IngResponse.data);
+      //console.log('Response:', IngResponse.data);
+      console.log("Got ingredient search")
         setRecipes(IngResponse.data)
 
         /* setRecipes([
@@ -190,14 +201,15 @@ let IngResponse;
       console.error('Error:', error);
     }
   };
-
+//Unit tested
   const handleRandomSearch = async () => {
       
     try {
     let randomResponse
       const apiUrl = `http://172.16.122.26:8080/PersonalizedRandomSearch`;
       randomResponse = await axios.post(apiUrl);
-      console.log('Response:', randomResponse.data);
+      //console.log('Response:', randomResponse.data);
+      console.log("Random recipes fetched")
         setRecipes(randomResponse.data)
         /* setRecipes([
             { "id": "633338", "title": "Bacon Wrapped Filet Mignon" },
@@ -211,19 +223,19 @@ let IngResponse;
     }
   };
 
-
+//Unit tested
   const handleSaveRecipe = async(index, id) =>
   {
 
     var recipe;
-      console.log('ID for recipe', id)
+      //console.log('ID for recipe', id)
       try {
         const response = await fetch(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${apiKEY}`);
   
         if (response.ok) {
           const data = await response.json()
           recipe = data;
-          console.log(recipe)
+          //console.log(recipe)
           const { title } = recipe; 
 
     const ingredients = recipe.analyzedInstructions[0].steps
@@ -232,9 +244,9 @@ let IngResponse;
     // Use a Set to remove duplicates
   const uniqueIngredients = [...new Set(ingredients)];
 
-    console.log('Title:', title);
+   // console.log('Title:', title);
 
-    console.log('Ingredients:', uniqueIngredients);
+    //console.log('Ingredients:', uniqueIngredients);
     
 
 
@@ -242,7 +254,7 @@ let IngResponse;
 
   const concatenatedSteps = steps.map((step) => step.step).join('\n');
 
-  console.log(concatenatedSteps);
+  //console.log(concatenatedSteps);
     // Call saveRecipe and pass the necessary values
     await saveRecipeFinal(title, concatenatedSteps, uniqueIngredients, dataToSend, index);
 
@@ -261,12 +273,13 @@ let IngResponse;
    
   }
 
-
+//Unit tested
   const saveRecipeFinal = async (title, steps, ingredients, username, index) => {
     const apiUrl = `http://172.16.122.26:8080/createRecipe/${username}`;
     console.log(ingredients);
     try {
       const response = await axios.post(apiUrl, { title, steps, ingredients});
+      console.log("Recipe saved")
       setSaveRecipe(true);
       // Hide the pop-up after 3 seconds
       setTimeout(() => {
@@ -305,7 +318,9 @@ let IngResponse;
         }}
       >
         <input
+        id = "ing1"
           type="checkbox"
+          data-testid= "input1"
           style={{ marginRight: "5px" }}
           checked={isChecked1}
           onChange={handleCheckboxChange1}
@@ -330,6 +345,8 @@ let IngResponse;
         }}
       >
         <input
+        id = "ing2"
+          data-testid= "input2"
           type="checkbox"
           style={{ marginRight: "5px" }}
           checked={isChecked2}
@@ -355,6 +372,7 @@ let IngResponse;
         }}
       >
         <input
+        id = "ing3"
           type="checkbox"
           style={{ marginRight: "5px" }}
           checked={isChecked3}
@@ -369,11 +387,16 @@ let IngResponse;
         <div id='recipeButtons' style={{ display: "flex", justifyContent: "center", alignContent: "center", textAlign: "center", justifyItems: "row", padding: 0 }}>
             <button style={{margin: "10px"}}
             onClick={() => handleIngredientSearch()}
+            id = "ingredientSearchButton"
+            data-testid = "ingredientSearchButton"
             >Ingredient Search</button>
             <button style={{margin: "10px"}}
             onClick={() => fetchTopIngredientsAgain()}
+            data-testid = "genereateNewButton"
             >Generate New</button>
             <button style={{margin: "10px"}}
+            id="randomButton"
+            data-testid = "randomButton"
             onClick={() => handleRandomSearch()}
             >Random Search</button>
             
@@ -382,6 +405,8 @@ let IngResponse;
             boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)", maxWidth: "400px", margin: '10px auto'}}>
             {recipes.map((item, index) => (
             <li style={{margin: "10px auto", color: clickedIndex === index ? "green" : "black", cursor: "pointer", listStyle: 'none'}} 
+            data-testid="recipeList"
+            id = "recipeList"
             key={item.id}
             onClick={() => handleSaveRecipe(index, item.id)}
             

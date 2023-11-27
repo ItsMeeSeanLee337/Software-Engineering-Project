@@ -31,10 +31,11 @@ return(
       <li><Link id = "goToBio" to={`/Bio?data=${dataToSend}`} className= "noDecoration" >Bio</Link></li>
       <li><Link to={`/Substitutions?data=${dataToSend}`}>Substitutions</Link></li>
       <li><Link to={`/Timer?data=${dataToSend}`}>Timer</Link></li>
-      <li><Link to={`/NutritionalInformation?data=${dataToSend}`} className= "noDecoration" >Nutritional Info</Link></li>
-      <li><Link to={`/RecipeSearch?data=${dataToSend}`} className= "noDecoration" >Search Recipes</Link></li>
-      <li><Link to={`/display-maker-recipes?data=${dataToSend}`} className= "noDecoration" >Maker Recipes</Link></li>
-      <li><Link to={`/Personalized_Recipes?data=${dataToSend}`} className= "noDecoration" >Personalized Search</Link></li>
+      <li><Link id = "goToMealPlanner" to={`/MealPlanner?data=${dataToSend}`} className= "noDecoration" >Meal Planner</Link></li>
+      <li><Link id = "goToNutritionInfo" to={`/NutritionalInformation?data=${dataToSend}`} className= "noDecoration" >Nutritional Info</Link></li>
+      <li><Link id='goToRecipeSearch' to={`/RecipeSearch?data=${dataToSend}`} className= "noDecoration" >Search Recipes</Link></li>
+      <li><Link id= "goToMakerRecipes" to={`/display-maker-recipes?data=${dataToSend}`} className= "noDecoration" >Maker Recipes</Link></li>
+      <li><Link id='goToPersonalizedRecipes' to={`/Personalized_Recipes?data=${dataToSend}`} className= "noDecoration" >Personalized Search</Link></li>
       <li
         onMouseEnter = {handleMouseEnter}
         onMouseLeave={handleMouseLeave}>

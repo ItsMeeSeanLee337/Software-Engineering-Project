@@ -1,0 +1,19 @@
+.r-box {
+    border: 2px solid #008000;
+    padding: 20px; /* Corrected value */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a box shadow for a visual effect */
+    width: 300px; /* Set your desired width */
+    margin: 20px; /* Add margin for spacing between recipe boxes */
+  }
+
+  .r-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+
+  
+  
