@@ -395,7 +395,7 @@ const handleMealPlanner = (id) => {
                   >Nutritional Info
                   </button>
           </div>
-        ))}</di
+        ))}</div>
     </div>
     </>
   )
