@@ -384,6 +384,7 @@ const handleMealPlanner = (id) => {
                   >Delete
                   </button>
                   <button className='centerButtonCR'
+                    id = 'notes'
                     data-testid='showNotesButton'
                     onClick={() => showNotes(recipe.crID)}
                   >Notes
