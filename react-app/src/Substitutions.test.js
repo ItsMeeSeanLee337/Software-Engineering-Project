@@ -1,7 +1,9 @@
 import { render, screen, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { MemoryRouter } from 'react-router-dom';
-import RecipeSubstitutes from '../../Components/RecipeSubstitutes';
+//import RecipeSubstitutes from '../../Components/RecipeSubstitutes';
+//import RecipeSubstitutes from '../../Pages/Substitutions';
+import RecipeSubstitutes from './Pages/Substitutions.js';
 import axios from 'axios';
 
 jest.mock('axios'); // Mock axios for testing

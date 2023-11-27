@@ -1,7 +1,8 @@
 import { render, screen, act, cleanup, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { BrowserRouter as Router } from 'react-router-dom';
-import HomePage from "../../Pages/HomePage";  // Ensure the correct import path
+//import HomePage from "../../Pages/HomePage"; 
+import HomePage from "./Pages/HomePage";
 
 test('Displays featured custom recipes', async () => {
   // Mock console.log

@@ -1,6 +1,8 @@
 import { render, screen, act, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import TimerApp from '../../Components/TimerApp';
+//import TimerApp from '../../Components/TimerApp';
+//import TimerApp from "../../Pages/Timer";
+import TimerApp from "./Pages/Timer";
 
 beforeEach(() => {
   jest.useFakeTimers();
