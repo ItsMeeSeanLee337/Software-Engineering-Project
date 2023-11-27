@@ -20,7 +20,7 @@ import TaggedRecipes from './Pages/TaggedRecipes'
 import Bio from './Pages/Bio'
 import RecipeSearch from './Pages/recipe_search'
 import Substitutions from './Pages/Substitutions';
-import Assistant_Features from './Pages/Assistant_Features';
+import Timer from './Pages/Timer';
 
 import {
   createBrowserRouter,
@@ -103,8 +103,8 @@ const router = createBrowserRouter([
     element:<Personalized_Recipes/>
   },
   {
-    path: "Assistant_Features",
-    element: <Assistant_Features/>,
+    path: "Timer",
+    element: <Timer/>,
   },
   {
     path: "Substitutions",
