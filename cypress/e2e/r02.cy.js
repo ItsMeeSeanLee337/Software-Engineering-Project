@@ -10,7 +10,7 @@ describe('R02', () => {
       cy.url().should('include', '/Login_Success')
 
       //Handling the hover menu
-      cy.visit('http://localhost:3000/display-custom-recipes?data=testuser')
+      cy.get("#goToDisplayRecipe").click();
       
       //Should be on the display maker recipes page
       cy.url().should('include', '/display-custom-recipes')
