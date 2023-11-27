@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Navbar from './Navbar';
 import { Link } from 'react-router-dom'; // Assuming you're using React Router for routing
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -53,6 +54,8 @@ const RecipeSubstitutes = ({ userId }) => {
   }, [selectedIngredient]);
 
   return (
+    <div>
+      <Navbar></Navbar>
     <div
       style={{
         maxWidth: '600px',
@@ -121,6 +124,7 @@ const RecipeSubstitutes = ({ userId }) => {
           )}
         </div>
       )}
+    </div>
     </div>
   );
 };

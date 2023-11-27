@@ -73,6 +73,8 @@ function TimerApp() {
   }, [timeRemaining, isRunning, timer]);
 
   return (
+    <div>
+      <Navbar></Navbar>
     <div
       style={{
         fontFamily: 'Arial, sans-serif',
@@ -173,6 +175,7 @@ function TimerApp() {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 }
