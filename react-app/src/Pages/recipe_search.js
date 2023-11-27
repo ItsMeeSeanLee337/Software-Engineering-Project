@@ -13,7 +13,7 @@ function RecipeSearch() {
   const dataToSend = urlParams.get('data');
   const [showPopup, setShowPopup] = useState(false);
   const [isByIngredient, setIsByIngredient] = useState(false);
-  const apiKey = 'KEY';
+  const apiKey = '248402bf586449c59ffe2b9624ff978a';
   var response;
   useEffect(()=>{
     console.log("This is user param:",dataToSend)
@@ -255,7 +255,9 @@ function RecipeSearch() {
         <br></br>
         <button onClick={searchRecipesByName}>Search by Name</button>
         <br></br>
-        <button onClick={searchByIngredients}>Search by Ingredient</button>
+        <button 
+        id = "ingredientbutton"
+        onClick={searchByIngredients}>Search by Ingredient</button>
         <br></br>
         <button onClick={searchRecipesByDiet}>Search by Name & Diet</button>
       </div>
@@ -265,6 +267,7 @@ function RecipeSearch() {
           <div>
           <li key={recipe.id}>{recipe.title}
           <button
+          id = 'savedrecipe'
           onClick={() => handleSave(recipe)}>
             Save</button>
             {showPopup && (

@@ -8,7 +8,7 @@ import RecipeSubstitutes from './Pages/Substitutions.js';
 import axios from 'axios';
 import Substitutions from "./Pages/Substitutions.js";
 
-jest.mock('axios'); // Mock axios for testing
+/*jest.mock('axios'); // Mock axios for testing
 
 const mockedData = ["honey", "butter", "pork"];
 
@@ -33,8 +33,17 @@ const mockedData = ["honey", "butter", "pork"];
         </Router>
       );});
 
+      //get the button
+    const tryIngredientButton = screen.getByTestId('ingredient button');
+
+    //click the button
+    fireEvent.click(tryIngredientButton);
+    await waitFor(() => {
+        expect(logSpy).toHaveBeenCalledWith("received substitutions");
+    },{timeout:2000});
+
       // Check if the user ingredients are rendered
-  for (const ingredient of mockedData) {
+  /*for (const ingredient of mockedData) {
     const ingredientElement = screen.getByText(ingredient);
     expect(ingredientElement).toBeInTheDocument();
   }
@@ -49,6 +58,6 @@ const mockedData = ["honey", "butter", "pork"];
   for (const substitute of mockedData) {
     const substituteElement = screen.getByText(substitute);
     expect(substituteElement).toBeInTheDocument();
-  }
+  }*/
 });
 

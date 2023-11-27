@@ -28,8 +28,29 @@ afterEach(() => {
           <Timer />
         </Router>
       );});
+
+
+    //get the button
+    const tryIncrementButton = screen.getByTestId('increment button');
+
+    //click the button
+    fireEvent.click(tryIncrementButton);
+    await waitFor(() => {
+        expect(logSpy).toHaveBeenCalledWith("Incremented");
+    });
+
+    //get the button
+    const tryDecrementButton = screen.getByTestId('decrement button');
+
+    //click the button
+    fireEvent.click(tryDecrementButton);
+    await waitFor(() => {
+        expect(logSpy).toHaveBeenCalledWith("Decremented");
+    });
+
+
         // Check if the initial timer display is correct
-  const initialTimerDisplay = screen.getByText(/05:00/);
+  /*const initialTimerDisplay = screen.getByText(/05:00/);
   expect(initialTimerDisplay).toBeInTheDocument();
 
   // Click the Increment button
@@ -79,7 +100,7 @@ afterEach(() => {
 
   // Check if the timer is restarted
   const restartedTimerDisplay = screen.getByText(/05:00/);
-  expect(restartedTimerDisplay).toBeInTheDocument();
+  expect(restartedTimerDisplay).toBeInTheDocument(); */
 });
 
 

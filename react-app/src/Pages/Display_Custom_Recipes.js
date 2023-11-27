@@ -294,6 +294,7 @@ const handleTag = (id) => {
                   >Delete
                   </button>
                   <button className='centerButtonCR'
+                    id = 'notes'
                     onClick={() => showNotes(recipe.crID)}
                   >Notes
                   </button>

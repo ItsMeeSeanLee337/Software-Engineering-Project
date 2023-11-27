@@ -15,10 +15,12 @@ function TimerApp() {
   };
 
   const incrementMinutes = () => {
+    console.log("Incremented");
     setTimerDuration(Math.min(60, timeRemaining / 60 + 1));
   };
 
   const decrementMinutes = () => {
+    console.log("Decremented");
     setTimerDuration(Math.max(1, timeRemaining / 60 - 1));
   };
 
@@ -37,6 +39,7 @@ function TimerApp() {
         requestAnimationFrame(updateTimer);
       } else {
         setIsRunning(false);
+        console.log("Timer expired! Your recipe is ready!");
         setExpiredMessage("Timer expired! Your recipe is ready!");
       }
     };
@@ -110,6 +113,7 @@ function TimerApp() {
         <button
           className="increment-button"
           onClick={incrementMinutes}
+          data-testid = 'increment button'
           disabled={isRunning}
           style={{
             fontSize: '16px',
@@ -122,10 +126,11 @@ function TimerApp() {
           }}
         >
           Increment
-        </button>
+        </button> 
         <button
           className="decrement-button"
           onClick={decrementMinutes}
+          data-testid = 'decrement button'
           disabled={isRunning}
           style={{
             fontSize: '16px',
@@ -144,6 +149,7 @@ function TimerApp() {
         <button
           className="start-button"
           onClick={startTimer}
+          data-testid = 'start button'
           disabled={isRunning}
           style={{
             fontSize: '16px',

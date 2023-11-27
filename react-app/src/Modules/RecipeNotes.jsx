@@ -63,13 +63,16 @@ function handleSaveNotes() {
     <textarea className='notesTextArea'
     rows={20}
     cols={100}
+    id = "noteTextBox"
     onChange={(e) => setfillNotes(e.target.value)}
     value={fillNotes}></textarea>
     
     <br></br>
     <button className = 'notesButtons' onClick={closeNotes}>Close Notes</button>
     <p></p>
-    <button onClick={handleSaveNotes}>Save Notes</button>
+    <button 
+    id = "savenotes"
+    onClick={handleSaveNotes}>Save Notes</button>
     {showPopup && (
         <div className="popup">
           <p>Notes Saved!</p>

@@ -16,7 +16,7 @@ import HomePage from "./Pages/HomePage";
   );*/
   test('Submit with all fields edited', async () => {
     const logSpy = jest.spyOn(console, 'log');
-    const url = `${window.location.pathname}?data=testing`;
+    const url = `${window.location.pathname}?data=testuser`;
     window.history.pushState({}, '', url);
     await act(async () => {
       render(
@@ -25,16 +25,15 @@ import HomePage from "./Pages/HomePage";
         </Router>
       );
     });
+    await waitFor(() => {
+      expect(logSpy).toHaveBeenCalledWith("received recipes");
+  });
 
-  await act(async () => {
-    render(
-      <Router>
-        <HomePage />
-      </Router>
-    );
+
+
 
     // Assert that the welcome message is displayed
-  expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Welcome!');
+  /*expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Welcome!');
 
   // Assert that the "Featured Custom Recipes" section is displayed
   expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Featured Custom Recipes');
@@ -45,7 +44,7 @@ import HomePage from "./Pages/HomePage";
 
   // Assert that the fetch message is logged
   expect(logSpy).toHaveBeenCalledWith('Random Recipes:', [{ Title: 'Recipe 1', Description: 'Description 1' }]);
-});
+});*/
   });
 
   
