@@ -10,6 +10,7 @@ describe('Nutritional Information Page', () => {
     cy.contains('ID of the top result: ').should('exist');
     cy.get('button').contains('Analyze ID').click();
     // Wait for the nutrition info to appear after analyze
+    cy.contains('Nutritional Information for').should('exist');
     cy.contains('Calories').should('exist');
     cy.contains('Protein').should('exist');
     cy.contains('Fat').should('exist');
