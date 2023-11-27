@@ -41,7 +41,7 @@ function Custom_Recipe_Nutritioninfo() {
     }
   );
 
-  /*useEffect(()=>{
+  useEffect(()=>{
       console.log("This is user param:",dataToSend)
       if(dataToSend === 'null' || dataToSend == null)
       {
@@ -81,7 +81,7 @@ function Custom_Recipe_Nutritioninfo() {
       console.log('navigating');
       navigate(`/`);
     }
-  }, [userType])*/
+  }, [userType])
   
   const analyzeRecipe = async () => {
     console.log("recipecrID", recipecrID)
@@ -112,12 +112,12 @@ function Custom_Recipe_Nutritioninfo() {
           const proteinData = data.nutrition.nutrients.find((nutrient) => nutrient.name === 'Protein').amount;
           const carbData = data.nutrition.nutrients.find((nutrient) => nutrient.name === 'Carbohydrates').amount;
           setCalories(calorieData);
-          setFat(fatData);
           setProtein(proteinData);
+          setFat(fatData);
           setCarbs(carbData);
           try{
             const apiUrl = `http://172.16.122.26:8080/setCustomRecipeNutrition/${recipecrID}`;
-              axios.post(apiUrl, {calorieData, fatData, proteinData, carbData})
+              axios.post(apiUrl, {calorieData, proteinData, fatData, carbData})
                 .then(response_tag => {
                   if (response_tag.status === 200) {
                     console.log('Response:', response_tag.data);

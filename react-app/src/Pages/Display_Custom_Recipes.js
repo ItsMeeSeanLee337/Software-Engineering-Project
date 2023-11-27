@@ -73,16 +73,36 @@ const testRecipe3 = { // For the recipe it must be in this specific format, need
     ]
   }
 };
-const [recipes, setRecipes] = useState([testRecipe1, testRecipe2, testRecipe3]);
+const [recipes, setRecipes] = useState([]);
 
 var passID = '';
+var response;
+useEffect(() => {
+  //Unit tested
+    const fetchData = async () => {
+      
+      try {
+        //const apiUrl = 'http://localhost:8080/createRecipe';  
+        const apiUrl = `http://172.16.122.26:8080/CustomRecipe/Display/${dataToSend}`;
+
+        response = await axios.get(apiUrl);
+        //console.log('Response:', response.data);
+        console.log("Got recipes successfully")
+        setRecipes(response.data)
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array ensures this effect runs once on mount
 
 useEffect(() => {
     console.log("useeffect crid", crid)
     getNotes(crid);
 }, [crid]);
 
-/*useEffect(()=>{
+useEffect(()=>{
   console.log("This is user param:",dataToSend)
   if(dataToSend === 'null' || dataToSend === null)
   {
@@ -122,7 +142,7 @@ useEffect(()=>{
     console.log('navigating');
     navigate(`/`);
   }
-}, [userType])*/
+}, [userType])
 
   const handleDelete = async (recipeID) =>  {
     const { Title, Description, crID } = recipeID; // Assuming these are the correct properties

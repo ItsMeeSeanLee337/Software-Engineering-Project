@@ -17,7 +17,7 @@ function NutritionalInformation() {
   // Replace 'YOUR_API_KEY' with your actual Spoonacular API key
   const apiKey = '00298f1246234721b20874aa5f8c7c0f';
   
-  /*useEffect(()=>{
+  useEffect(()=>{
     console.log("This is user param:",dataToSend)
     if(dataToSend === 'null' || dataToSend === null)
     {
@@ -57,7 +57,7 @@ function NutritionalInformation() {
       console.log('navigating');
       navigate(`/`);
     }
-  }, [userType])*/
+  }, [userType])
 
   const fetchIngredientID = async () => {
     try {

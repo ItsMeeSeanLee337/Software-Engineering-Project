@@ -13,7 +13,7 @@ function RecipeSearch() {
   const dataToSend = urlParams.get('data');
   const [showPopup, setShowPopup] = useState(false);
   const [isByIngredient, setIsByIngredient] = useState(false);
-  const apiKey = 'KEY';
+  const apiKey = '00298f1246234721b20874aa5f8c7c0f';
   var response;
   useEffect(()=>{
     console.log("This is user param:",dataToSend)
