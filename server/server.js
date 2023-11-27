@@ -1529,8 +1529,6 @@ app.post('/saveRecipeNotesTest/:username', async (req, res) => {
       console.error('Error executing query:', error);
       res.status(500).send('Internal Server Error');
     }
-
-});
   } catch (error) {
     console.error('Error executing query:', error);
     res.status(500).send('Internal Server Error');
