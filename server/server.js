@@ -1409,6 +1409,25 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
+app.post('/setCustomRecipeNutrition/:crID', async(req, res) => {
+  const crID = req.params.crID;
+  console.log("This is the crid: ", crID);
+    try {
+      const query = `
+      Update CustomRecipe
+      Set calories = calorieData
+      Set protein = proteinData
+      Set fat = fatData
+      Set carbs = carbData
+      where crID = ${crID}
+      `;
+      const result = await db.pool.query(query);
+      console.log(result);
+      console.log(query);
+      res.send("Nutrition info Updated");
+    }
+}
+
 //  THESE ENDPOINTS ARE USED TO TEST ORIGINAL ENDPOINTS WITH SLIGHT ALTERATIONS TO WORK FOR TESTING
 
 const apiRecipe = 8364
@@ -1524,13 +1543,13 @@ app.post('/saveRecipeNotesTest/:username', async (req, res) => {
         message: `Notes Updated with: ${notes}`
       }
       res.status(200).json(response);
-      
-  
+        
     } catch (error) {
       console.error('Error executing query:', error);
       res.status(500).send('Internal Server Error');
     }
 
+});
   } catch (error) {
     console.error('Error executing query:', error);
     res.status(500).send('Internal Server Error');
