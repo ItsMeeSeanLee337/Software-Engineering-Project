@@ -12,12 +12,21 @@ afterEach(() => {
   jest.clearAllTimers();
 });
 
-test('TimerApp functionality', async () => {
+/*test('TimerApp functionality', async () => {
   await act(async () => {
     render(<TimerApp />);
-  });
-
-  // Check if the initial timer display is correct
+  });*/
+  test('Submit with all fields edited', async () => {
+    const logSpy = jest.spyOn(console, 'log');
+    const url = `${window.location.pathname}?data=testing`;
+    window.history.pushState({}, '', url);
+    await act(async () => {
+      render(
+        <Router>
+          <Timer />
+        </Router>
+      );
+        // Check if the initial timer display is correct
   const initialTimerDisplay = screen.getByText(/05:00/);
   expect(initialTimerDisplay).toBeInTheDocument();
 
@@ -70,3 +79,8 @@ test('TimerApp functionality', async () => {
   const restartedTimerDisplay = screen.getByText(/05:00/);
   expect(restartedTimerDisplay).toBeInTheDocument();
 });
+
+
+    });
+
+  

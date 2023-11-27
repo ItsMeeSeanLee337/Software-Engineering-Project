@@ -10,7 +10,7 @@ jest.mock('axios'); // Mock axios for testing
 
 const mockedData = ["honey", "butter", "pork"];
 
-test('RecipeSubstitutes component', async () => {
+/*test('RecipeSubstitutes component', async () => {
   axios.get.mockResolvedValue({ data: mockedData }); // Mock the axios.get method to resolve with your data
 
   await act(async () => {
@@ -19,9 +19,19 @@ test('RecipeSubstitutes component', async () => {
         <RecipeSubstitutes userId={123} />
       </MemoryRouter>
     );
-  });
+  });*/
+  test('Submit with all fields edited', async () => {
+    const logSpy = jest.spyOn(console, 'log');
+    const url = `${window.location.pathname}?data=testing`;
+    window.history.pushState({}, '', url);
+    await act(async () => {
+      render(
+        <Router>
+          <Substitutions />
+        </Router>
+      );
 
-  // Check if the user ingredients are rendered
+      // Check if the user ingredients are rendered
   for (const ingredient of mockedData) {
     const ingredientElement = screen.getByText(ingredient);
     expect(ingredientElement).toBeInTheDocument();
@@ -39,5 +49,8 @@ test('RecipeSubstitutes component', async () => {
     expect(substituteElement).toBeInTheDocument();
   }
 });
+    });
+
+  
 
 // Add more tests to cover different scenarios and interactions with the component.
