@@ -1409,25 +1409,6 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-app.post('/setCustomRecipeNutrition/:crID', async(req, res) => {
-  const crID = req.params.crID;
-  console.log("This is the crid: ", crID);
-    try {
-      const query = `
-      Update CustomRecipe
-      Set calories = calorieData
-      Set protein = proteinData
-      Set fat = fatData
-      Set carbs = carbData
-      where crID = ${crID}
-      `;
-      const result = await db.pool.query(query);
-      console.log(result);
-      console.log(query);
-      res.send("Nutrition info Updated");
-    }
-}
-
 //  THESE ENDPOINTS ARE USED TO TEST ORIGINAL ENDPOINTS WITH SLIGHT ALTERATIONS TO WORK FOR TESTING
 
 const apiRecipe = 8364
