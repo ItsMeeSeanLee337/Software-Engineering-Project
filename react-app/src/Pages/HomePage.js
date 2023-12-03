@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Assuming you're using React Router for routing
+import { Link } from 'react-router-dom';
 import '../styles/homepage.css';
 import axios from 'axios';
 import Navbar from './Navbar';
@@ -17,7 +17,6 @@ const urlParams = new URLSearchParams(window.location.search);
           const apiUrl = `http://172.16.122.26:8080/getRandomRecipes/${dataToSend}`;
           const response = await axios.get(apiUrl);
           setRandomRecipes(response.data);
-          //console.log('Random Recipes:', randomRecipes);
           console.log("received recipes")
         } catch (error) {
           console.error('Error fetching random recipes:', error);
@@ -26,41 +25,6 @@ const urlParams = new URLSearchParams(window.location.search);
   
       fetchData();
     }, []);
-
-/*var response;
-useEffect(() => {
-      const fetchData = async () => {
-        
-        try {
-          //const apiUrl = 'http://localhost:8080/createRecipe';  
-          const apiUrl = `http://172.16.122.26:8080/CustomRecipe/Display/${dataToSend}`;
-  
-          response = await axios.get(apiUrl);
-          console.log('Response:', response.data);
-          setRecipes(response.data)
-        } catch (error) {
-          console.error('Error:', error);
-        }
-      };
-  
-      fetchData();
-    }, []); */
-
-/*const HomePage = () => {
-    const [randomRecipes, setRandomRecipes] = useState([]);
-
-  useEffect(() => {
-    // Fetch random recipes from your server's /getRandomRecipes endpoint
-    fetch('/getRandomRecipes')
-      .then((response) => response.json())
-      .then((data) => {
-        setRandomRecipes(data);
-      })
-      .catch((error) => {
-        console.error('Error fetching random recipes:', error);
-      });
-  }, []);*/
-
 
   return (
     <>

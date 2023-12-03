@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
-import { Link } from 'react-router-dom'; // Assuming you're using React Router for routing
 
 const urlParams = new URLSearchParams(window.location.search);
 const dataToSend = urlParams.get('data');
@@ -41,11 +40,6 @@ const RecipeSubstitutes = ({ userId }) => {
       console.error('Error fetching substitutes:', error);
     }
   };
-
-  // useEffect to fetch user ingredients when the component mounts
-  // useEffect(() => {
-  //   fetchUserIngredients();
-  // }, [userId]);
 
   // useEffect to fetch substitutes when the selectedIngredient changes
   useEffect(() => {
