@@ -1,10 +1,9 @@
 import Navbar from './Navbar'
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Login from './Login';
-import { Link } from 'react-router-dom';
+
 function Login_Success(){
     //getting username data fro succesful login 
     const urlParams = new URLSearchParams(window.location.search);
@@ -14,7 +13,7 @@ function Login_Success(){
     const navigate = useNavigate(); //used to navigate to another page
     const [userType, setUserType] = useState('');
     var response;
-    console.log("DATA: ", username);
+    console.log("username: ", username);
 
     useEffect(()=>{
         console.log("This is user param:",data)
@@ -58,11 +57,6 @@ function Login_Success(){
         }
       }, [userType])
 
-
-
-
-
-
     //Checking to see if the user is a recipe maker
     //Will send them to create custom recipe if they are
     useEffect(() => {
@@ -91,21 +85,6 @@ function Login_Success(){
           navigate(`/Create_Recipe?data=${username}`);
         }
       }, [maker]);
-
-   /*
-    const handleGoToBio = async (event) => {
-        console.log("moved to biopage");
-        event.preventDefault();
-        const dataToSend = encodeURIComponent(username)
-        window.location.href = `/Display_Personal_Bio?data=${dataToSend}`;
-    }
-    const handleCreateEditBio = async (event) => {
-        console.log("moved to biopage");
-        event.preventDefault();
-        const dataToSend = encodeURIComponent(username)
-        window.location.href = `/Create_Edit_Personal_Bio?data=${dataToSend}`;
-    }
-    */
 
     return(
     <div>
