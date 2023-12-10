@@ -76,24 +76,6 @@ const hideToolTip = async(e)=>{
   setToolTipVisible(false);
 }
 
-  /*const handlesSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:5000/registration', {
-        firstname,
-        lastname,
-        username,
-        password,
-        email
-      });
-      console.log('Registration successful:', response.data);
-      // Handle success, e.g., redirect to a dashboard or display a success message
-    } catch (error) {
-      console.error('Registration failed:', error.response.data);
-      // Handle error, e.g., display an error message to the user
-    }
-  };*/
-
   return (
     <div>
       <Navbar></Navbar>
