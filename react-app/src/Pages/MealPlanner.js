@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/meal_planner.css'
 
 function MealPlanner() {
-
   const navigate = useNavigate(); //used to navigate to another page
   const [userType, setUserType] = useState('');
   const urlParams = new URLSearchParams(window.location.search);
@@ -71,21 +70,21 @@ function MealPlanner() {
   }, [userType])
 
     //gets the meal planned recipes that we saved from display recipe page
-    var response;
-    useEffect(() => {
-      const fetchMealPlanRecipes = async () => {
-        try {
-          const apiUrl = `http://172.16.122.26:8080/getMealPlannerRecipes/${dataToSend}`;
-          response = await axios.get(apiUrl);
-          //console.log('Response from request:', response.data);
-          console.log('Got meal planned recipes');
-          setRecipes(response.data);
-        } catch (error) {
-          console.error('Error:', error);
-        }
-      };
-      fetchMealPlanRecipes();
-    }, []);
+  var response;
+  useEffect(() => {
+    const fetchMealPlanRecipes = async () => {
+      try {
+        const apiUrl = `http://172.16.122.26:8080/getMealPlannerRecipes/${dataToSend}`;
+        response = await axios.get(apiUrl);
+        //console.log('Response from request:', response.data);
+        console.log('Got meal planned recipes');
+        setRecipes(response.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+    fetchMealPlanRecipes();
+  }, []);
 
   //gets the recipes saved from the meal planner for the specific day
   const handleButtonClickDay = (day) => {

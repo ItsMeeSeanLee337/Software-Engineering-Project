@@ -10,6 +10,7 @@ function Display_Personal_Bio() {
   const [userType, setUserType] = useState('');
   //bio variable expects a list response
   const [bio, setBio] = useState([]);
+  //gets the username data
   const urlParams = new URLSearchParams(window.location.search);
   const data = urlParams.get('data');
   const username = decodeURIComponent(data);
@@ -57,29 +58,30 @@ function Display_Personal_Bio() {
     }
   }, [userType])
 
-    //automatically gets bio information and displays for the user accessing the /getBio endpoint on server.js using the users username
-    useEffect(() => {
-      const apiUrl = `http://172.16.122.26:8080/getBio`;
-      axios.post(apiUrl, { username })
-        .then((response) => {
-          //sets bio variable (list) to the response
-          setBio(response.data);
-          console.log("Got Bio information succesfully!")
-        })
-        .catch((error) => {
-          console.error('Retriving Bio Error:', error);
-        });
-    }, []);
+  //automatically gets bio information and displays for the user accessing the /getBio endpoint on server.js using the users username
+  useEffect(() => {
+    const apiUrl = `http://172.16.122.26:8080/getBio`;
+    axios.post(apiUrl, { username })
+      .then((response) => {
+        //sets bio variable (list) to the response
+        setBio(response.data);
+        console.log("Got Bio information succesfully!")
+      })
+      .catch((error) => {
+        console.error('Retriving Bio Error:', error);
+      });
+  }, []);
 
-    //user can click back to edit page if they want to edit their bio after viewing it
-    const handleBackEdit = async (event) => {
-      event.preventDefault();
-      window.location.href = `/Create_Edit_Personal_Bio?data=${dataToSend}`;
+  //user can click back to edit page if they want to edit their bio after viewing it
+  const handleBackEdit = async (event) => {
+    event.preventDefault();
+    window.location.href = `/Create_Edit_Personal_Bio?data=${dataToSend}`;
   }
-    //user can click back to login success page if they are done viewing their bio 
-    const handleBackHome = async (event) => {
-      event.preventDefault();
-      window.location.href = `/Login_Success?data=${dataToSend}`;
+
+  //user can click back to login success page if they are done viewing their bio 
+  const handleBackHome = async (event) => {
+    event.preventDefault();
+    window.location.href = `/Login_Success?data=${dataToSend}`;
   }
   
   return (

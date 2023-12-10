@@ -649,6 +649,7 @@ app.post('/untagRecipes/:crID' , async(req, res) => {
 
 });
 
+//setting tags to recipes 
 app.post('/setTaggedRecipes/:crID', async(req, res) => {
   const crID = req.params.crID;
   console.log("This is the crID for taggedRecipes: ", crID);
@@ -757,7 +758,7 @@ app.post('/login', async (req, res) => {
    
 });
 
-
+//setting recipes to save to meal planner based on the button they click for the recipe
 app.post('/setMealPlannerRecipes/:crID', async(req, res) => {
   const crID = req.params.crID;
   console.log("This is the crID for setting meal planner recipies: ", crID);

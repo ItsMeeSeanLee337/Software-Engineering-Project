@@ -95,7 +95,7 @@ function Create_Edit_Personal_Bio() {
       //console.log("selected image", selectedImage);
   }, [selectedImage]);
 
-    //on click of image button set selected image associating with that button
+  //on click of image button set selected image associating with that button
   const handleImageSelect = (imgUrl) => {
     setSelectedImage(imgUrl);
   };

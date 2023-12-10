@@ -79,7 +79,7 @@ function TaggedRecipes() {
       };
   
       fetchTaggedRecipes();
-    }, []);
+  }, []);
 
   //ensuring that tags displayed are unique (so no duplicate tags if more than one recipe has the same tag name)
   const uniqueTags = [...new Set(recipes.map((recipe) => recipe.Tag))];
@@ -101,7 +101,7 @@ function TaggedRecipes() {
             console.error('Tag Error:', error);
             window.location.reload();
           });
-    
+
         } catch {
           console.error('Tag Error:');
           window.location.reload();

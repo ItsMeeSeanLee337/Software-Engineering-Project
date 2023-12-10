@@ -105,7 +105,7 @@ function Bio(){
   }
 
   return(
-  <div>
+    <div>
       <Navbar></Navbar>
       <p>Welcome to your Bio page! Click on Create/Edit Bio to edit your bio and Go to Bio to view your bio!</p>
       <button id='goToEditBio'  type="button" onClick={handleCreateEditBio}>Create/Edit Bio</button>
@@ -114,7 +114,7 @@ function Bio(){
       <button id='goToBioPage' type="button" onClick={handleGoToBio}>Go to Bio</button>
       <br />
       <br />
-  </div> 
+    </div> 
   )
 };
 
