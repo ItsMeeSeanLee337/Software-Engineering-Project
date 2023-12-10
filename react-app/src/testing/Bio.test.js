@@ -2,8 +2,8 @@ import{render, screen, act,  cleanup, fireEvent, waitFor} from "@testing-library
 import renderer from "react-test-renderer"
 import "@testing-library/jest-dom";
 import {BrowserRouter as Router} from 'react-router-dom';
-import Create_Edit_Personal_Bio from '../../Pages/Create_Edit_Personal_Bio.js';
-import Display_Personal_Bio from '../../Pages/Display_Personal_Bio.js';
+import Create_Edit_Personal_Bio from '../Pages/Create_Edit_Personal_Bio.js';
+import Display_Personal_Bio from '../Pages/Display_Personal_Bio.js';
 
 
 test('Submit with all fields edited', async () => {

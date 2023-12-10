@@ -14,6 +14,7 @@ const RecipeSubstitutes = ({ userId }) => {
   // Function to fetch user-specific ingredients
   var response;
   useEffect(() => {
+    console.log("received substitutions")
     const fetchTopIngredients = async () => {
       try {
         const apiUrl = `http://172.16.122.26:8080/listOfIngredients/${dataToSend}`;
@@ -35,7 +36,7 @@ const RecipeSubstitutes = ({ userId }) => {
       const response = await axios.get(
         `https://api.spoonacular.com/food/ingredients/substitutes?ingredientName=${selectedIngredient}&apiKey=${apiKey}`
       );
-      console.log("received substitutions")
+      
       setSubstitutes(response.data.substitutes);
     } catch (error) {
       console.error('Error fetching substitutes:', error);
@@ -78,7 +79,7 @@ const RecipeSubstitutes = ({ userId }) => {
           <li
             key={index}
             onClick={() => setSelectedIngredient(ingredient)}
-            data-testid = 'ingredient button'
+            data-testid="ingredient button"
             style={{
               backgroundColor: '#f0f0f0',
               padding: '10px',

@@ -4,3 +4,24 @@ react-app/node_modules/.cache/.eslintcache
 react-app/node_modules/.cache/.eslintcache
 *.pack
 node_modules/
+react-app/cypress/screenshots/PageAccessTesting.cy.js/Create Recipe Access Testing Both Regular and Makers -- Accessing create recipe as an invalid user (Goes to Landing Page) (failed).png
+react-app/cypress/screenshots/PageAccessTesting.cy.js/Create Recipe Access Testing Both Regular and Makers -- Accessing create recipe as an invalid user (Goes to Landing Page) (failed).png
+react-app/cypress/screenshots/PageAccessTesting.cy.js/Create Recipe Access Testing Both Regular and Makers -- Accessing create recipe while not logged in (Goes to Landing Page) (failed).png
+react-app/cypress/screenshots/PageAccessTesting.cy.js/Disaply Recipe Access Testing Both Regular and Makers -- Accessing display recipe as a recipe maker (Success) (failed).png
+react-app/cypress/screenshots/PageAccessTesting.cy.js/Disaply Recipe Access Testing Both Regular and Makers -- Accessing display recipe as an invalid user (Goes to Landing Page) (failed).png
+react-app/cypress/screenshots/PageAccessTesting.cy.js/Disaply Recipe Access Testing Both Regular and Makers -- Accessing display recipe while not logged in (Goes to Landing Page) (failed).png
+*.png
+*.png
+react-app/cypress/screenshots/PageAccessTesting.cy.js/Disaply Recipe Access Testing Both Regular and Makers -- Accessing display recipe as an invalid user (Goes to Landing Page) (failed).png
+*.png
+*.png
+react-app/cypress/screenshots/PageAccessTesting.cy.js/Create Recipe Access Testing Both Regular and Makers -- Accessing create recipe as an invalid user (Goes to Landing Page) (failed).png
+react-app/cypress/screenshots/PageAccessTesting.cy.js/Create Recipe Access Testing Both Regular and Makers -- Accessing create recipe while not logged in (Goes to Landing Page) (failed).png
+react-app/cypress/screenshots/PageAccessTesting.cy.js/Disaply Recipe Access Testing Both Regular and Makers -- Accessing display recipe as a recipe maker (Success) (failed).png
+react-app/cypress/screenshots/PageAccessTesting.cy.js/Disaply Recipe Access Testing Both Regular and Makers -- Accessing display recipe as an invalid user (Goes to Landing Page) (failed).png
+react-app/cypress/screenshots/PageAccessTesting.cy.js/Disaply Recipe Access Testing Both Regular and Makers -- Accessing display recipe while not logged in (Goes to Landing Page) (failed).png
+*.png
+*.png
+*.png
+*.png
+*.png

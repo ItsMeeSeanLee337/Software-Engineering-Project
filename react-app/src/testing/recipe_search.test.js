@@ -1,10 +1,12 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom'; // Import BrowserRouter
-import RecipeSearch from './recipe_search';
+import RecipeSearch from '../Pages/recipe_search';
 
 describe('RecipeSearch', () => {
   it('renders search fields and buttons', () => {
+    const url = `${window.location.pathname}?data=testUser`;
+    window.history.pushState({}, '', url);
     const { getByPlaceholderText, getByText, getByRole } = render(
       <Router>
         <RecipeSearch />
@@ -25,6 +27,8 @@ describe('RecipeSearch', () => {
   });
 
   it('searches recipes by name', async () => {
+    const url = `${window.location.pathname}?data=testUser`;
+    window.history.pushState({}, '', url);
     const { getByPlaceholderText, getByText, getAllByRole } = render(
       <Router>
         <RecipeSearch />

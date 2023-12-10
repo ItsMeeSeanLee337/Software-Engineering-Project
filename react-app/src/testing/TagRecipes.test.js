@@ -2,8 +2,8 @@ import{render, screen, act,  cleanup, fireEvent, waitFor} from "@testing-library
 import renderer from "react-test-renderer"
 import "@testing-library/jest-dom";
 import {BrowserRouter as Router} from 'react-router-dom';
-import Display_Custom_Recipes from '../../Pages/Display_Custom_Recipes.js';
-import TaggedRecipes from '../../Pages/TaggedRecipes.js';
+import Display_Custom_Recipes from '../Pages/Display_Custom_Recipes.js';
+import TaggedRecipes from '../Pages/TaggedRecipes.js';
 
 
 //adding tag
