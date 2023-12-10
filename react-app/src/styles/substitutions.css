@@ -1,0 +1,40 @@
+/* RecipeSubstitutes.css */
+
+/* Container styles */
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Ingredients list styles */
+.ingredients-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); /* Adjusted for 6 columns */
+  gap: 10px;
+}
+
+/* Ingredient item styles */
+.ingredients-list li {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* Substitutes list styles */
+.substitutes-list {
+  list-style: none;
+  padding: 0;
+}
+
+/* Substitute item styles */
+.substitutes-list li {
+  background-color: #e0e0e0;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}

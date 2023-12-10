@@ -170,7 +170,22 @@ const titleLines = splitStepsIntoLines(title, maxTitleLineLen);
         <br />
         You can label the steps, write a paragraph,
         <br />
-        however you want to format the steps
+        however you want to format the steps.
+        <br />
+        <br />
+        When writing the ingredients please list
+        <br />
+        The amount for each ingredient as well. Ex: 
+        <br />
+        1 egg
+        <br />
+        1 lb spaghetti
+        <br />
+        3.5 oz pancetta
+        <br />
+        2 Tbsps olive oil
+        <br />
+        0.5 cup parmesan cheese
       </h5>
       <IngredientList updateIngredients={updateIngredients} />
       <button data-testid="addRecipeButton" id="addRecipeButton" className= "buttonMargin" onClick={handleSubmit}>Create Recipe</button>

@@ -9,15 +9,15 @@ const urlParams = new URLSearchParams(window.location.search);
   const dataToSend = urlParams.get('data');
 
   const HomePage = () => {
-    const [randomRecipes, setRandomRecipes] = useState([]);
-  
+    const [randomRecipes, setRandomRecipes] = useState([]); 
+    
     useEffect(() => {
       const fetchData = async () => {
         try {
+          console.log("received recipes")
           const apiUrl = `http://172.16.122.26:8080/getRandomRecipes/${dataToSend}`;
           const response = await axios.get(apiUrl);
           setRandomRecipes(response.data);
-          console.log('Random Recipes:', randomRecipes);
         } catch (error) {
           console.error('Error fetching random recipes:', error);
         }
@@ -82,7 +82,7 @@ useEffect(() => {
           </Link>
         </div>
         <div className="link-box">
-          <Link to={`/RecipeSearch?data=${dataToSend}`}>
+          <Link to={`/RecipeSearch?data=${dataToSend}`}> 
             <img src={require("../images/searchRecipe.jpg")} alt="Look up Recipe" />
             <h3>Look up Recipe</h3>
           </Link>
@@ -100,7 +100,7 @@ useEffect(() => {
           </Link>
         </div>
         <div className="link-box">
-          <Link to={`/meal-planner?data=${dataToSend}`}>
+          <Link to={`/MealPlanner?data=${dataToSend}`}>
             <img src={require("../images/mealPlanning.png")} alt="Meal Planner" />
             <h3>Meal Planner</h3>
           </Link>

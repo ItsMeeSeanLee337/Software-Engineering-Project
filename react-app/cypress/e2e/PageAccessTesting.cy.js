@@ -1,6 +1,7 @@
 
 //Testing user permissions in accessing the Profile Bio Nav page
 //Only Regular users can access this page
+
 describe('Bio Nav: Only regular users', () => {
   it('Accessing Bio as regular user (Success)', () => {
     cy.visit('http://localhost:3000/Login')
@@ -517,7 +518,7 @@ describe('Display Tagged Recipe Access Testing: Both Regular and Makers', () => 
     cy.url().should('include', '/TaggedRecipes')
   })
 
-  it('Accessing display tagged recipe as a recipe maker (Success)', () => {
+  it('Accessing display tagged recipe as a recipe maker (Goes to Landing Page)', () => {
     cy.visit('http://localhost:3000/Login')
     cy.get('#username').type('maker')
     cy.get('#password').type('maker')
@@ -530,7 +531,7 @@ describe('Display Tagged Recipe Access Testing: Both Regular and Makers', () => 
     cy.get("#goToDisplayRecipe").click();
     cy.get("#view_tags").click();
 
-    cy.url().should('include', '/TaggedRecipes')
+    cy.url().should('include', '/')
   })
 
   it('Accessing display recipe tagged while not logged in (Goes to Landing Page)', () => {

@@ -10,7 +10,6 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 function Display_Custom_Recipes() {
 
-const [recipes, setRecipes] = useState([]);
 const [title, setNewTitle] = useState("")
 const [steps, setNewStep] = useState("")
 //const [username, setNewUsername] = useState("");
@@ -30,11 +29,64 @@ const urlParams = new URLSearchParams(window.location.search);
 const dataToSend = urlParams.get('data');
 const [userType, setUserType] = useState('');
 
+const testRecipe1 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
+  "crID": 1,
+  "Title": "Spaghetti Carbonara",
+  "Description": "Bring a large pot of water to a boil and season generously with salt. Add the pasta to the water once boiling and cook until al dente. Reserve 2 cups of cooking water and drain the pasta. ",
+  "list": {
+    "ingredients": [
+      "1 lb spaghetti",
+      "3.5 oz pancetta",
+      "2 Tbsps olive oil",
+      "1 egg",
+      "0.5 cup parmesan cheese"
+    ]
+  }
+}; 
+
+const testRecipe2 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
+  "crID": 2,
+  "Title": "Grilled Cheese",
+  "Description": "Make the grilled cheese sandwich",
+  "list": {
+    "ingredients":
+    [
+      "2 pc white bread",
+      "3 slices cheddar cheese",
+      "2 Tbsps olive oil",
+      "1 egg",
+      "2 Tbsps mayo sauce"
+    ]
+  }
+}; 
+
+const testRecipe3 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
+  "crID": 3,
+  "Title": "Chicken Fried Rice",
+  "Description": "Make the chicken fried rice ",
+  "list": {
+    ingredients:
+    [
+      "1 cup white rice",
+      "1 lb chicken breast",
+      "2 Tbsps olive oil",
+      "1  egg",
+      "2 Tbsps soy sauce"
+    ]
+  }
+};
+const [recipes, setRecipes] = useState([]);
+
 //setting username
 const username = dataToSend;
 
 
 var passID = '';
+
+useEffect(() => {
+    console.log("useeffect crid", crid)
+    getNotes(crid);
+}, [crid]);
 
 useEffect(()=>{
   //console.log("This is user param:",dataToSend)
@@ -70,15 +122,14 @@ useEffect(() => {
 
 //When the user type is checked, will redirect makers to the landing page
 useEffect(()=>{
-  //console.log("This is user param:",dataToSend)
+  console.log("This is user param:",dataToSend)
   if(userType === -1)
+
   {
     //console.log('navigating');
     navigate(`/`);
   }
 }, [userType])
-  
-
 
 useEffect(() => {
     //console.log("useeffect crid", crid)
@@ -154,8 +205,6 @@ useEffect(() => {
   //console.log('fillNotes has been updated:', fillNotes);
 }, [fillNotes]);
 
-
-
 // Note united tested since endpoint testing covers this
 const deleteRecipe = async (crID, username) => {
   const apiUrl = 'http://172.16.122.26:8080/deleteCustomRecipe';
@@ -210,7 +259,6 @@ const handleViewTags = async (event) => {
 
 }
 
-
 //handler for when add tag is clicked
 const handleTag = (id) => {
   //show text box
@@ -224,6 +272,11 @@ const handleTag = (id) => {
 
 };
 
+const handleNutritionalInfo = (recipe) => {
+  // Navigate to the nutritional information page and pass the recipe details
+  navigate(`/Custom_Recipe_Nutritioninfo?crID=${recipe.crID}&title=${recipe.Title}&description=${recipe.Description}&list=${JSON.stringify(recipe.list)}&data=${dataToSend}`);
+};
+  
 const handleMealPlanner = (id) => {
   //console.log("ID:", id);
   //console.log("Inside handleMealPlanner");
@@ -331,18 +384,20 @@ const handleMealPlanner = (id) => {
                   >Delete
                   </button>
                   <button className='centerButtonCR'
+                    id = 'notes'
                     data-testid='showNotesButton'
                     onClick={() => showNotes(recipe.crID)}
                   >Notes
                   </button>
+                  
                 </ul>
-            
+                <button className='centerButtonCR' 
+                    onClick={() => handleNutritionalInfo(recipe)}
+                  >Nutritional Info
+                  </button>
           </div>
-
         ))}</div>
-    
     </div>
-      
     </>
   )
 }
