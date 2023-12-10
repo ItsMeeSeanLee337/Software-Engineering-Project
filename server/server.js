@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const { createConnection } = require('mariadb');
 const e = require('express');
 const PORT = 8080;
-const apiKEY = 'key '
+const apiKEY = 'key'
 const bcrypt = require('bcrypt');
 app.use(cors())
 
@@ -57,62 +57,52 @@ app.get('/Nutripro', async (req, res) => {
 /*Used for Create Recipe Section */
 //Will insert a recipe into the database given a title, steps, and ingredients
 app.post('/createRecipe/:username', async (req, res) => {
-  try{
-  const username = req.params.username;
-  console.log(username);
-  var userID = await getUserID(username, res);
-  //Getting the parameters from the form
+  try {
+    const username = req.params.username; //Get the username from the parameter passed
+
+    //Use a function to turn the username into the userID
+    var userID = await getUserID(username, res);
+    //Getting the parameters from the form
     const { title } = req.body;
     const { steps } = req.body;
     const { ingredients } = req.body;
-    console.log('Title:', title)
-    console.log('steps:', steps)
-    console.log('ingredients:', ingredients)
-  
-    if (title === undefined || steps === undefined || ingredients === undefined)
-    {
+
+    //Make sure the fields are valid
+    //If they aren't return a JSON with an error message
+    if (title === undefined || steps === undefined || ingredients === undefined) {
       let responseData = {
         error: "missing recipe field"
       };
       console.error(responseData);
       res.status(400).json(responseData);
-      return;
+      return; //Don't let the rest of the function run
     }
-    
-  
-  
 
-  //Creating a unique ilID for the ingredients table
-  var ilID = Math.floor(Math.random() * 10000) + 1;
-  console.log('Random integer for ingredient ID:', ilID);
+    //Creating a unique ilID for the ingredients table
+    var ilID = Math.floor(Math.random() * 10000) + 1;
+    console.log('Random integer for ingredient ID:', ilID);
 
-  //Have to make sure the primary key is unique
-  //Checking the ingredientList table to ensure generated id is unique
-  var isUnique = false;
-  while(!isUnique)
-  {
-    while (!isUnique) {
-      ilID = Math.floor(Math.random() * 10000) + 1;
-      console.log('Random integer for ingredient ID:', ilID);
-  
-      try {
-        const rows = await db.pool.query(`SELECT ilID FROM IngredientList WHERE ilID = ${ilID}`);
-        
-        if (rows.length === 0) {
-          isUnique = true;
-          console.log('No rows found for ilID:', ilID);
-        } else {
-          isUnique = false;
-          console.log('Rows found for ilID:', ilID);
+    //Have to make sure the primary key is unique
+    //Checking the ingredientList table to ensure generated id is unique
+    var isUnique = false;
+      while (!isUnique) {
+        ilID = Math.floor(Math.random() * 10000) + 1;
+        console.log('Random integer for ingredient ID:', ilID);
+        try {
+          const rows = await db.pool.query(`SELECT ilID FROM IngredientList WHERE ilID = ${ilID}`);
+          if (rows.length === 0) {
+            isUnique = true;
+            console.log('No rows found for ilID:', ilID);
+          } else {
+            isUnique = false;
+            console.log('Rows found for ilID:', ilID);
+          }
+        } catch (error) {
+          console.error('Query error:', error);
         }
-      } catch (error) {
-        console.error('Query error:', error);
       }
-    }
-}
-  
     
-
+  
   //Converting the ingredient array from the form into JSON
   const ingredientsJSONString = JSON.stringify({ingredients});
   console.log('JSON: ', ingredientsJSONString);
@@ -125,10 +115,9 @@ app.post('/createRecipe/:username', async (req, res) => {
   queryDatabase(query_IL, values_IL);
 
   //Have to see if they are a recipe maker account type and mark that on the CR
-
   var isMaker = await db.pool.query(`Select isMaker from User where userID = ${userID}`)
   const makerFinal = isMaker[0].isMaker
-  console.log("In custom recipe isMake value: ", makerFinal)
+
   //Constructing query to insert the custom recipe into the table on DB with ilID
   const query_CR = 'INSERT INTO CustomRecipe (crID, Title, Description, ilID, isMakerRecipe) VALUES (?, ?, ?, ?, ?)';
   const values_CR = [ilID, title, steps, ilID, makerFinal];
@@ -138,9 +127,10 @@ app.post('/createRecipe/:username', async (req, res) => {
   //Now add it to the userrecipe table to link it to them
   const query_UR = 'Insert into UserRecipes(userID, crID) Values(?, ?);';
   const values_UR = [userID, ilID];
-
+      
   queryDatabase(query_UR, values_UR);
-
+    
+  //Construct a JSON with the final fields and data to send back
   let responseData = {
     title: title,
     steps: steps,
@@ -177,8 +167,7 @@ async function getUserID(Username, res) {
 
 
 //Returns all of the custom recipe for a given user on request
-app.get('/CustomRecipe/Display/:username', async(req,res) =>{
-  
+app.get('/CustomRecipe/Display/:username', async (req, res) => {
   try {
     //Get the userID based on the username passed in the url params
     const username = req.params.username;
@@ -186,76 +175,77 @@ app.get('/CustomRecipe/Display/:username', async(req,res) =>{
     var finalUserID = await getUserID(username, res);
 
     //Check if the username was given
-    if(username === undefined){
+    if (username === undefined) {
       let responseData = {
-    error: 'No username for display recipes'
-    };
+        error: 'No username for display recipes'
+      };
       res.status(400).json(responseData)
       console.log(responseData)
     }
 
-  query = `
-  SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list
-  FROM CustomRecipe
-  JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
-  JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
-  WHERE UserRecipes.userID = ${finalUserID};
-  `;
-  try {
-    const result = await db.pool.query(query);
-    console.log(result);
-    console.log(query);
-    res.send(result);
-    
-
+    //Query for the data base for the recipes
+    query = `
+    SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list
+    FROM CustomRecipe
+    JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
+    JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
+    WHERE UserRecipes.userID = ${finalUserID};
+    `;
+    try {
+      const result = await db.pool.query(query);
+      console.log(result);
+      console.log(query);
+      res.send(result);
+    } catch (error) {
+      console.error('Error executing query:', error);
+      res.status(500).send('Internal Server Error');
+    }
   } catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).send('Internal Server Error');
+    console.error('An error occurred with username:', error);
+    return; // Stop further execution
   }
-} catch (error) {
-  console.error('An error occurred with username:', error);
-  return; // Stop further execution
-}
 })
 
-
-app.get('/MakerRecipes/Display', async(req,res) =>{
-  
+app.get('/MakerRecipes/Display', async (req, res) => {
   try {
-  query = `
+    query = `
   SELECT CustomRecipe.crID, CustomRecipe.Title, CustomRecipe.Description, IngredientList.list
   FROM CustomRecipe
   JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
   WHERE CustomRecipe.isMakerRecipe = 1;
   `;
-  try {
-    const result = await db.pool.query(query);
-    console.log(result);
-    console.log(query);
-    res.send(result);
-    
+    try {
+      const result = await db.pool.query(query);
+      console.log(result);
+      console.log(query);
+      res.send(result);
 
+
+    } catch (error) {
+      console.error('Error executing query:', error);
+      res.status(500).send('Internal Server Error');
+    }
   } catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).send('Internal Server Error');
+    console.error('An error occurred with username:', error);
+    res.status(400).send({ error: "invalid user" });
+    return; // Stop further execution
   }
-} catch (error) {
-  console.error('An error occurred with username:', error);
-  res.status(400).send({ error: "invalid user" });
-  return; // Stop further execution
-}
 })
 
-app.post('/deleteCustomRecipe' , async(req,res)=>{
+/*
+  Deletes a recipe from the data base given the crid and username
+*/
+app.post('/deleteCustomRecipe', async (req, res) => {
   console.log("here in deleteCustom");
-  const {username} = req.body;
+  const { username } = req.body;
   const { crID } = req.body;
   console.log(username);
   console.log(crID)
 
+  //Get the user id for the username
   const userID = await getUserID(username, res);
 
-
+  //Construct the query to delete the recipe
   const query = `
   DELETE ur
   FROM CustomRecipe cr
@@ -264,86 +254,67 @@ app.post('/deleteCustomRecipe' , async(req,res)=>{
   WHERE u.Username = '${username}'
   AND cr.crID = '${crID}';`
 
-
+  //Try to delete the recipe
   try {
     const result = await db.pool.query(query);
     console.log(result);
     console.log(query);
-
-    const query2 = `
-    Delete from CustomRecipe where crID = ${crID};`
-
-
-  try {
-    const result = await db.pool.query(query);
-    console.log(result);
-    console.log(query);
-    //res.send("Recipe Deleted");
-    
-
+    try {
+      const result = await db.pool.query(query);
+      console.log(result);
+      console.log(query);
+      //res.send("Recipe Deleted");
+    } catch (error) {
+      console.error('Error executing query:', error);
+      res.status(500).send('Internal Server Error');
+    }
   } catch (error) {
     console.error('Error executing query:', error);
     res.status(500).send('Internal Server Error');
   }
-    
-    
-
-  } catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).send('Internal Server Error');
-  }
-
-
-  
   res.send("Recipe Deleted");
-
 })
 
-
+/*
+  Save the recipe notes for a user given the crid and the notes for the user
+*/
 app.post('/saveRecipeNotes/:username', async (req, res) => {
   try{
   const username = req.params.username;
   console.log(username);
   var finalUserID = await getUserID(username, res);
-  
   const {notes} = req.body;
   const {thiscrID} = req.body;
   console.log(notes);
   console.log(thiscrID);
 
-
   //Query for adding notes based on the userID to custom recipe table
-
     const query = `
     Update CustomRecipe
     Set notes = '${notes}'
     where crID = ${thiscrID};
     `;
-
     try {
       const result = await db.pool.query(query);
       console.log(result);
       console.log(query);
       res.send("Notes Updated");
-      
-  
     } catch (error) {
       console.error('Error executing query:', error);
       res.status(500).send('Internal Server Error');
     }
-
   } catch (error) {
     console.error('Error executing query:', error);
     res.status(500).send('Internal Server Error');
   }
-
 });
 
-
+/*
+  Will get the notes for a given crid
+*/
 app.get('/getRecipeNotes/:crID', async (req, res) => {
   try {
       const crID = req.params.crID;
-      //const {crID} = req.body;
       console.log(crID)
       const result = await db.pool.query(`SELECT notes FROM CustomRecipe WHERE crID = ${crID}`);
       res.send(result);
