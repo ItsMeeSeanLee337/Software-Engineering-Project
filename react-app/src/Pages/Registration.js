@@ -47,6 +47,8 @@ const Registration = () => {
     console.log("email", email);
     console.log("isMaker ", isMaker);
 
+    
+
     const apiUrl = 'http://172.16.122.26:8080/registration';
     axios.post(apiUrl, {firstname, lastname, username, password, email, isMaker})
       .then(response => {
