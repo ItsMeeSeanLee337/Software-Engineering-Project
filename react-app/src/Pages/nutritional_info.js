@@ -15,7 +15,7 @@ function NutritionalInformation() {
   const dataToSend = urlParams.get('data');
   var response;
   // Replace 'YOUR_API_KEY' with your actual Spoonacular API key
-  const apiKey = '00298f1246234721b20874aa5f8c7c0f';
+  const apiKey = 'KEY';
   
   useEffect(()=>{
     console.log("This is user param:",dataToSend)

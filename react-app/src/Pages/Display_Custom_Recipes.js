@@ -28,6 +28,7 @@ function Display_Custom_Recipes() {
     It reacts to any change to the crid variable
   */
   useEffect(() => {
+
     getNotes(crid);
   }, [crid]);
 
