@@ -29,52 +29,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const dataToSend = urlParams.get('data');
 const [userType, setUserType] = useState('');
 
-const testRecipe1 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
-  "crID": 1,
-  "Title": "Spaghetti Carbonara",
-  "Description": "Bring a large pot of water to a boil and season generously with salt. Add the pasta to the water once boiling and cook until al dente. Reserve 2 cups of cooking water and drain the pasta. ",
-  "list": {
-    "ingredients": [
-      "1 lb spaghetti",
-      "3.5 oz pancetta",
-      "2 Tbsps olive oil",
-      "1 egg",
-      "0.5 cup parmesan cheese"
-    ]
-  }
-}; 
-
-const testRecipe2 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
-  "crID": 2,
-  "Title": "Grilled Cheese",
-  "Description": "Make the grilled cheese sandwich",
-  "list": {
-    "ingredients":
-    [
-      "2 pc white bread",
-      "3 slices cheddar cheese",
-      "2 Tbsps olive oil",
-      "1 egg",
-      "2 Tbsps mayo sauce"
-    ]
-  }
-}; 
-
-const testRecipe3 = { // For the recipe it must be in this specific format, need to figure out how to get all custom recipes to adhere to this format
-  "crID": 3,
-  "Title": "Chicken Fried Rice",
-  "Description": "Make the chicken fried rice ",
-  "list": {
-    ingredients:
-    [
-      "1 cup white rice",
-      "1 lb chicken breast",
-      "2 Tbsps olive oil",
-      "1  egg",
-      "2 Tbsps soy sauce"
-    ]
-  }
-};
 const [recipes, setRecipes] = useState([]);
 
 //setting username
