@@ -1,0 +1,149 @@
+Date : 2023-12-04 19:49:50
+Directory : c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project
+Total : 102 files,  9415 codes, 1654 comments, 2222 blanks, all 13291 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |         76 |      7,519 |      1,592 |      2,035 |     11,146 |
+| JSON       |          5 |      1,153 |          0 |          6 |      1,159 |
+| CSS        |         16 |        665 |         39 |        145 |        849 |
+| Markdown   |          2 |         51 |          0 |         35 |         86 |
+| HTML       |          2 |         26 |         23 |          1 |         50 |
+| XML        |          1 |          1 |          0 |          0 |          1 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                                         | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                            |        102 |      9,415 |      1,654 |      2,222 |     13,291 |
+| . (Files)                                                                                                                                    |          2 |         19 |          1 |          3 |         23 |
+| cypress                                                                                                                                      |          8 |         82 |         62 |         29 |        173 |
+| cypress\e2e                                                                                                                                  |          5 |         76 |         20 |         26 |        122 |
+| cypress\fixtures                                                                                                                             |          1 |          5 |          0 |          1 |          6 |
+| cypress\support                                                                                                                              |          2 |          1 |         42 |          2 |         45 |
+| react-app                                                                                                                                    |         88 |      7,038 |      1,451 |      1,860 |     10,349 |
+| react-app (Files)                                                                                                                            |          3 |         96 |          1 |         36 |        133 |
+| react-app\cypress                                                                                                                            |         21 |      1,049 |        203 |        305 |      1,557 |
+| react-app\cypress\e2e                                                                                                                        |         19 |      1,048 |        161 |        303 |      1,512 |
+| react-app\cypress\support                                                                                                                    |          2 |          1 |         42 |          2 |         45 |
+| react-app\public                                                                                                                             |          2 |         45 |         23 |          2 |         70 |
+| react-app\src                                                                                                                                |         62 |      5,848 |      1,224 |      1,517 |      8,589 |
+| react-app\src (Files)                                                                                                                        |          7 |        209 |          7 |         28 |        244 |
+| react-app\src\Modules                                                                                                                        |          4 |        135 |         13 |         28 |        176 |
+| react-app\src\Pages                                                                                                                          |         21 |      3,009 |        407 |        523 |      3,939 |
+| react-app\src\styles                                                                                                                         |         14 |        620 |         39 |        137 |        796 |
+| react-app\src\testing                                                                                                                        |         16 |      1,875 |        758 |        801 |      3,434 |
+| server                                                                                                                                       |          4 |      2,276 |        140 |        330 |      2,746 |
++----------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                                                     | language   | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\README.md                                               | Markdown   |         13 |          0 |          2 |         15 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\cypress.config.js                                       | JavaScript |          6 |          1 |          1 |          8 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\cypress\e2e\customRecipeNutritionalInfo.cy.js           | JavaScript |         17 |          8 |          8 |         33 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\cypress\e2e\displayCustomRecipe.cy.js                   | JavaScript |         11 |          2 |          2 |         15 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\cypress\e2e\ingredientNutritionalInfo.cy.js             | JavaScript |         16 |          2 |          2 |         20 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\cypress\e2e\r02.cy.js                                   | JavaScript |         15 |          4 |          5 |         24 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\cypress\e2e\r18.cy.js                                   | JavaScript |         17 |          4 |          9 |         30 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\cypress\fixtures\example.json                           | JSON       |          5 |          0 |          1 |          6 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\cypress\support\commands.js                             | JavaScript |          0 |         25 |          0 |         25 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\cypress\support\e2e.js                                  | JavaScript |          1 |         17 |          2 |         20 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\README.md                                     | Markdown   |         38 |          0 |         33 |         71 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress.config.js                             | JavaScript |          6 |          1 |          1 |          8 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\PageAccessTesting.cy.js           | JavaScript |        384 |         56 |        107 |        547 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\R03.cy.js                         | JavaScript |          8 |         15 |          7 |         30 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\R04.cy.js                         | JavaScript |         15 |          5 |          8 |         28 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\R05.cy.js                         | JavaScript |         21 |         13 |         14 |         48 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\R12.cy.js                         | JavaScript |         10 |         11 |         10 |         31 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\R13.cy.js                         | JavaScript |         19 |         10 |         13 |         42 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\R17.cy.js                         | JavaScript |         30 |          7 |         10 |         47 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\R18.cy.js                         | JavaScript |         17 |          4 |          9 |         30 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\R20.cy.js                         | JavaScript |         19 |          7 |         12 |         38 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\bio.cy.js                         | JavaScript |         60 |          0 |         18 |         78 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\create_recipe.cy.js               | JavaScript |         63 |          0 |          7 |         70 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\customRecipeNutritionalInfo.cy.js | JavaScript |         17 |          8 |          8 |         33 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\displayCustomRecipe.cy.js         | JavaScript |         11 |          2 |          2 |         15 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\ingredientNutritionalInfo.cy.js   | JavaScript |         16 |          2 |          2 |         20 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\login.cy.js                       | JavaScript |         40 |          1 |         17 |         58 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\meal_planner.cy.js                | JavaScript |        167 |          0 |         19 |        186 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\r02.cy.js                         | JavaScript |         15 |          4 |          6 |         25 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\registration.cy.js                | JavaScript |         64 |          1 |         26 |         91 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\e2e\tagged_recipe.cy.js               | JavaScript |         72 |         15 |          8 |         95 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\support\commands.js                   | JavaScript |          0 |         25 |          0 |         25 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\cypress\support\e2e.js                        | JavaScript |          1 |         17 |          2 |         20 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\package.json                                  | JSON       |         52 |          0 |          2 |         54 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\public\index.html                             | HTML       |         20 |         23 |          1 |         44 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\public\manifest.json                          | JSON       |         25 |          0 |          1 |         26 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\App.css                                   | CSS        |         33 |          0 |          6 |         39 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\App.js                                    | JavaScript |         23 |          0 |          3 |         26 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Modules\IngredientListForm.jsx            | JavaScript |         44 |          0 |         10 |         54 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Modules\NavDropDown.jsx                   | JavaScript |         16 |          0 |          2 |         18 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Modules\RecipeMakerToolTip.jsx            | JavaScript |         12 |          0 |          2 |         14 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Modules\RecipeNotes.jsx                   | JavaScript |         63 |         13 |         14 |         90 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Bio.js                              | JavaScript |         94 |          9 |         23 |        126 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Create_Edit_Personal_Bio.js         | JavaScript |        154 |         19 |         25 |        198 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Create_Recipe.js                    | JavaScript |        181 |         45 |         19 |        245 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Custom_Recipe_Nutritioninfo.js      | JavaScript |        143 |         16 |         16 |        175 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Display_Custom_Recipes.js           | JavaScript |        292 |         54 |         59 |        405 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Display_Maker_Recipes.js            | JavaScript |        152 |         25 |         35 |        212 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Display_Personal_Bio.js             | JavaScript |        109 |         11 |         22 |        142 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Home.js                             | JavaScript |         53 |          4 |         16 |         73 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\HomePage.js                         | JavaScript |         82 |         32 |         10 |        124 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Landing_page.js                     | JavaScript |         46 |          0 |          3 |         49 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Login.js                            | JavaScript |         78 |         10 |         10 |         98 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Login_Success.js                    | JavaScript |         77 |         23 |         22 |        122 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\MealPlanner.js                      | JavaScript |        258 |         30 |         43 |        331 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Navbar.js                           | JavaScript |         41 |          0 |         15 |         56 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Personalized_Recipes.js             | JavaScript |        315 |         55 |         55 |        425 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Registration.js                     | JavaScript |        157 |         17 |         16 |        190 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Substitutions.js                    | JavaScript |        118 |          7 |         11 |        136 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\TaggedRecipes.js                    | JavaScript |        135 |         17 |         33 |        185 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\Timer.js                            | JavaScript |        168 |          0 |         22 |        190 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\nutritional_info.js                 | JavaScript |        136 |         14 |         17 |        167 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Pages\recipe_search.js                    | JavaScript |        220 |         19 |         51 |        290 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\index.css                                 | CSS        |         12 |          0 |          2 |         14 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\index.js                                  | JavaScript |        127 |          3 |         13 |        143 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\logo.svg                                  | XML        |          1 |          0 |          0 |          1 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\reportWebVitals.js                        | JavaScript |         12 |          0 |          2 |         14 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\setupTests.js                             | JavaScript |          1 |          4 |          2 |          7 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\styles\IngredientListForm.css             | CSS        |         41 |          1 |          8 |         50 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\styles\assistant_features.css             | CSS        |         36 |          1 |          8 |         45 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\styles\bio.css                            | CSS        |          7 |          0 |          4 |         11 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\styles\create_recipe.css                  | CSS        |        123 |          2 |         27 |        152 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\styles\displayCustomRecipe.css            | CSS        |         97 |          3 |         20 |        120 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\styles\homepage.css                       | CSS        |         60 |         14 |         12 |         86 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\styles\landing_page.css                   | CSS        |         44 |          8 |         10 |         62 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\styles\login.css                          | CSS        |         30 |          1 |          6 |         37 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\styles\meal_planner.css                   | CSS        |         14 |          0 |          5 |         19 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\styles\navbar.css                         | CSS        |         58 |          1 |         11 |         70 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\styles\nutritional_info.css               | CSS        |         30 |          1 |          7 |         38 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\styles\registration.css                   | CSS        |         30 |          1 |          6 |         37 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\styles\substitutions.css                  | CSS        |         29 |          6 |          6 |         41 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\styles\tag_recipes.css                    | CSS        |         21 |          0 |          7 |         28 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\Bio.test.js                       | JavaScript |         96 |         23 |         46 |        165 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\Create_Recipe.test.js             | JavaScript |        129 |         55 |         65 |        249 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\Display_Custom_Recipe.test.js     | JavaScript |         40 |         43 |          8 |         91 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\Display_Maker.test.js             | JavaScript |         65 |         15 |         12 |         92 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\HomePage.test.js                  | JavaScript |         20 |         25 |         11 |         56 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\Login.test.js                     | JavaScript |         27 |          7 |         11 |         45 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\MealPlanner.test.js               | JavaScript |        227 |          5 |        110 |        342 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\Personalized_Recipes.test.js      | JavaScript |        158 |         37 |         46 |        241 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\Postman_Testing.js                | JavaScript |        838 |        425 |        389 |      1,652 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\Registration.test.js              | JavaScript |         40 |         15 |         17 |         72 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\Substitutions.test.js             | JavaScript |         19 |         36 |         10 |         65 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\TagRecipes.test.js                | JavaScript |         76 |          3 |         39 |        118 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\Timer.test.js                     | JavaScript |         32 |         62 |         13 |        107 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\landingPage.test.js               | JavaScript |         20 |          1 |          4 |         25 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\nutritional_info.test.js          | JavaScript |         46 |          5 |         11 |         62 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\testing\recipe_search.test.js             | JavaScript |         42 |          1 |          9 |         52 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\server\home.html                                        | HTML       |          6 |          0 |          0 |          6 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\server\package-lock.json                                | JSON       |      1,050 |          0 |          1 |      1,051 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\server\package.json                                     | JSON       |         21 |          0 |          1 |         22 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\server\server.js                                        | JavaScript |      1,199 |        140 |        328 |      1,667 |
+| Total                                                                                                                                        |            |      9,415 |      1,654 |      2,222 |     13,291 |
++----------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

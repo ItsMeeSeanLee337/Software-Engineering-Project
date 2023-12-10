@@ -1,0 +1,28 @@
+Date : 2023-12-04 19:47:46
+Directory : c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Modules
+Total : 4 files,  135 codes, 13 comments, 28 blanks, all 176 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |          4 |        135 |         13 |         28 |        176 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                              | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                 |          4 |        135 |         13 |         28 |        176 |
++-----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                                          | language   | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Modules\IngredientListForm.jsx | JavaScript |         44 |          0 |         10 |         54 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Modules\NavDropDown.jsx        | JavaScript |         16 |          0 |          2 |         18 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Modules\RecipeMakerToolTip.jsx | JavaScript |         12 |          0 |          2 |         14 |
+| c:\Users\blake\Desktop\RutgersSem4\Software Engineering\Software-Engineering-Project\react-app\src\Modules\RecipeNotes.jsx        | JavaScript |         63 |         13 |         14 |         90 |
+| Total                                                                                                                             |            |        135 |         13 |         28 |        176 |
++-----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
