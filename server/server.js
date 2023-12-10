@@ -43,16 +43,6 @@ function queryDatabase(query, values) {
 
 }
 
-
-app.get('/Nutripro', async (req, res) => {
-  try {
-      const result = await db.pool.query("select * from User");
-      res.send(result);
-  } catch (err) {
-      throw err;
-  }
-});
-
 // Unit Tested
 /*Used for Create Recipe Section */
 //Will insert a recipe into the database given a title, steps, and ingredients
@@ -149,7 +139,6 @@ app.post('/createRecipe/:username', async (req, res) => {
 }
 });
 
-/* ----------------------------------------------- */
 
 async function getUserID(Username, res) {
   try{
@@ -314,12 +303,12 @@ app.post('/saveRecipeNotes/:username', async (req, res) => {
 */
 app.get('/getRecipeNotes/:crID', async (req, res) => {
   try {
-      const crID = req.params.crID;
-      console.log(crID)
-      const result = await db.pool.query(`SELECT notes FROM CustomRecipe WHERE crID = ${crID}`);
-      res.send(result);
+    const crID = req.params.crID;
+    console.log(crID)
+    const result = await db.pool.query(`SELECT notes FROM CustomRecipe WHERE crID = ${crID}`);
+    res.send(result);
   } catch (err) {
-      throw err;
+    throw err;
   }
 });
 
@@ -344,6 +333,9 @@ app.get('/getRandomRecipes/:username', async (req, res) => {
   }
 });
 
+/*
+  Gets all ingredients for a give user's saved recipes
+*/
 app.get('/listOfIngredients/:username', async (req, res) => {
   try {
     // Get the userID for the user
@@ -953,21 +945,26 @@ app.post('/dropMealPlanMeal/:crID', async(req, res) => {
   }
 });
 
-const getEncryptedPassword = async function(plaintextPassword) {
+/*
+  Will return an encrypted password for a password upon registration
+  This is an async function so it can be waited on
+*/
+const getEncryptedPassword = async function (plaintextPassword) {
   const saltRounds = 0;
-
+  //Make the function that called it wait 
   return new Promise((resolve, reject) => {
-      bcrypt.hash(plaintextPassword, saltRounds, (err, hash) => {
-          if (err) {
-              // Handle error
-              console.error(err);
-              reject(err);
-          } else {
-              // Resolve with the hash value
-              console.log('Hashed Password:', hash);
-              resolve(hash);
-          }
-      });
+    //User bcrypt to has the password
+    bcrypt.hash(plaintextPassword, saltRounds, (err, hash) => {
+      if (err) {
+        // Handle error
+        console.error(err);
+        reject(err);
+      } else {
+        // Resolve with the hash value
+        console.log('Hashed Password:', hash);
+        resolve(hash);
+      }
+    });
   });
 };
 
@@ -1078,54 +1075,43 @@ app.post('/registration', async (req, res) => {
 });
 
 //Returns the JSON of [ { isMaker: 1 } ]
-app.get('/checkMaker/:username', async (req,res)=>{
-  try{
+/*
+  Used to check the user access permissions upon page loading
+  Will return whether they are a maker or not
+  If there is no username, it will return an error to the frontend to catch
+*/
+app.get('/checkMaker/:username', async (req, res) => {
+  try {
+    //Get the user name
+    const username = req.params.username;
+    console.log(username);
+    var finalUserID = await getUserID(username, res);
 
- 
-  const username = req.params.username;
-  console.log(username);
-  var finalUserID = await getUserID(username,res);
-
-  //Query the database for the isMaker param
-  const result = await db.pool.query(`Select isMaker from User where userID = ${finalUserID}`)
-  console.log("here")
-  if(result != null)
-  {
-    console.log("here", result[0].isMaker)
-    if(result[0].isMaker != 1 && result[0].isMaker != 0)
-    {
-      res.status(400).send({ error: "Invalid isMaker value" });
+    //Query the database for the isMaker param
+    const result = await db.pool.query(`Select isMaker from User where userID = ${finalUserID}`)
+    console.log("here")
+    if (result != null) {
+      console.log("here", result[0].isMaker)
+      //If they are not a maker or regular user, an error is thrown to the frontend
+      if (result[0].isMaker != 1 && result[0].isMaker != 0) {
+        res.status(400).send({ error: "Invalid isMaker value" });
+      }
+      else {
+        //Sends what kind of user they are on successful user type
+        console.log("sending maker result");
+        res.send(result);
+      }
     }
-    else
-    {
-      console.log("sending maker result");
-      res.send(result);
-      
+    else {
+      //Catch all error
+      res.status(400).send({ error: "Invalid isMaker was null" });
     }
   }
-  else
-  {
+  catch {
+    console.log("User was invalid")
     res.status(400).send({ error: "Invalid isMaker was null" });
   }
-}
-catch{
-    console.log("User was invalid")
-}
 })
-
-
-app.get('/getCustomRecipe', async (req, res) => {
-
-  //Data from the post request
-  try {
-      const result = await db.pool.query("Select crID, Title, Description, il.ilID, list from CustomRecipe as cs JOIN IngredientList as il on cs.crID = il.ilID WHERE il.ilID = 5090");
-      res.send(result);
-  } catch (err) {
-      throw err;
-  }
-
-});
-
 
 app.post('/saveSearchedRecipe', async (req,res) =>{
   const {summary} = req.body.summary;
@@ -1137,67 +1123,73 @@ app.post('/saveSearchedRecipe', async (req,res) =>{
 
 })
 
-app.get('/topIngredients/:username', async (req, res) =>{
+/*
+  Used to get ingredients from a user's saved recipes
+  Will select 5 of them to return
+*/
+app.get('/topIngredients/:username', async (req, res) => {
+  try {
+    //Get the userID for the user
+    const username = req.params.username;
+    console.log(username);
+    var finalUserID = await getUserID(username, res);
+    //Query the database for all ingredients from every recipe
+    query = `
+    SELECT IngredientList.list
+    FROM CustomRecipe
+    JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
+    JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
+    WHERE UserRecipes.userID = ${finalUserID};
+    `;
+    const result = await db.pool.query(query);
+    console.log(result);
 
-  try{
-  //Get the userID for the user
-  const username = req.params.username;
-  console.log(username);
-  var finalUserID = await getUserID(username,res);
+    //Turn ingredients from JSON in to a list of every single item repeated, not unique like a set
+    var allIngredients = result.map(item => item.list.ingredients).flat();
+    console.log(allIngredients);
 
-  //Query the database for all ingredients from every recipe
-  query = `
-  SELECT IngredientList.list
-  FROM CustomRecipe
-  JOIN UserRecipes ON CustomRecipe.crID = UserRecipes.crID
-  JOIN IngredientList ON CustomRecipe.ilID = IngredientList.ilID
-  WHERE UserRecipes.userID = ${finalUserID};
-  `;
-  const result = await db.pool.query(query);
-  console.log(result);
+    // Create an object to store the count of each ingredient
+    const ingredientCount = {};
 
-  //Turn ingredients from JSON in to a list of every single item repeated, not unique like a set
-  var allIngredients = result.map(item => item.list.ingredients).flat();
-  console.log(allIngredients);
+    // Count occurrences of each ingredient
+    allIngredients.forEach(ingredient => {
+      ingredientCount[ingredient] = (ingredientCount[ingredient] || 0) + 1;
+    });
 
-  // Create an object to store the count of each ingredient
-  const ingredientCount = {};
+    // Convert the object into an array of { ingredient, count } pairs
+    const countArray = Object.entries(ingredientCount).map(([ingredient, count]) => ({ ingredient, count }));
 
-  // Count occurrences of each ingredient
-  allIngredients.forEach(ingredient => {
-    ingredientCount[ingredient] = (ingredientCount[ingredient] || 0) + 1;
-  });
+    // Sort the array in descending order based on count
+    for (let i = countArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [countArray[i], countArray[j]] = [countArray[j], countArray[i]];
+    }
 
-  // Convert the object into an array of { ingredient, count } pairs
-  const countArray = Object.entries(ingredientCount).map(([ingredient, count]) => ({ ingredient, count }));
+    // Get 5 ingredients
+    const top5Ingredients = countArray.slice(0, 5);
 
-  // Sort the array in descending order based on count
-  for (let i = countArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [countArray[i], countArray[j]] = [countArray[j], countArray[i]];
+    //Send the ingredients back
+    console.log(top5Ingredients);
+    res.send(top5Ingredients);
   }
-
-  // Get the top 3 most common ingredients
-  const top5Ingredients = countArray.slice(0, 5);
-
-  console.log(top5Ingredients);
-  res.send(top5Ingredients);
-}
-catch{
-  res.status(404)
-}
-  
-
-
+  catch {
+    res.status(404)
+  }
 })
 
-app.post("/PersonalizedSearch", async (req, res)=>{
-  
-  const {ingredients} = req.body;
-  console.log("Ingredients in personalized search",ingredients);
+/*
+  Uses ingredients to conduct a query into the Spoonacular API
+  It will return 5 recipes that are related to the ingredients passed to it
+*/
+app.post("/PersonalizedSearch", async (req, res) => {
+
+  //Get ingredients
+  const { ingredients } = req.body;
+  console.log("Ingredients in personalized search", ingredients);
 
   //Want to format ingredients like [ing1, ing2] -> "ing1,ing2"
   let ingredientString = ingredients.join(',');
+
   //Want to get rid of any whitespace
   ingredientString = ingredientString.replace(/\s/g, '')
   console.log(ingredientString)
@@ -1205,11 +1197,12 @@ app.post("/PersonalizedSearch", async (req, res)=>{
   //Now we just have to query the api for the recipes matching those ingredients
   let apiQuery = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredientString}&number=5&apiKey=${apiKEY}`
 
+  //Need to convert the JSON we get into a JSON that
+  //only has the id and title
   let responseArray = [];
   axios(apiQuery)
-  .then(result =>{
+    .then(result => {
       console.log(result)
-
       //Get the title and id for each element
       result.data.forEach(element => {
         console.log(element.id)
@@ -1218,7 +1211,6 @@ app.post("/PersonalizedSearch", async (req, res)=>{
         responseArray.push(element.title)
       });
       console.log(responseArray);
-
       //Map each id to its title in a dictionary like way
       const finalJSON = {};
       for (let i = 0; i < responseArray.length; i += 2) {
@@ -1226,7 +1218,6 @@ app.post("/PersonalizedSearch", async (req, res)=>{
         const title = responseArray[i + 1];
         finalJSON[id] = title;
       }
-
       const finalArray = [];
       //Give the keys a name of id and the titles a name of title
       for (let i = 0; i < responseArray.length; i += 2) {
@@ -1234,72 +1225,66 @@ app.post("/PersonalizedSearch", async (req, res)=>{
         const title = responseArray[i + 1];
         finalArray.push({ id: id.toString(), title });
       }
-
       console.log(finalArray);
-      
       res.send(finalArray);
-
-      
-  })
-  //Want to get the titles and Ids from each recipe in the JSON
-  
+    })
 })
 
+/*
+  Will return random recipes from the api, these will only contain the
+  id and the title of the recipe
+  PARAM: numberOfRecipes -> the amount of recipes desired
+  Is async so the function calling can wait on it
+*/
 async function getRandomRecipes(numberOfRecipes) {
   const responseArray = [];
-
   // Make multiple calls to the "Random Recipe" endpoint
   for (let i = 0; i < numberOfRecipes; i++) {
     let apiQuery = `https://api.spoonacular.com/recipes/random?apiKey=${apiKEY}`
     const result = await axios(apiQuery)
-
-      console.log(result.data.recipes)
-          
-      //Get the title and id for each element
-      result.data.recipes.forEach(element => {
-        console.log(element.id)
-        console.log(element.title)
-        responseArray.push(element.id)
-        responseArray.push(element.title)
-      });
-      console.log(responseArray);
-    
+    console.log(result.data.recipes)
+    //Get the title and id for each element
+    result.data.recipes.forEach(element => {
+      console.log(element.id)
+      console.log(element.title)
+      responseArray.push(element.id)
+      responseArray.push(element.title)
+    });
+    console.log(responseArray);
   }
   return responseArray;
-  
 }
 
 
-
-app.post("/PersonalizedRandomSearch", async (req, res)=>{
-
-getRandomRecipes(3)
-.then(result =>{
-    console.log(result)
-    let responseArray = result;
-     //Map each id to its title in a dictionary like way
-     const finalJSON = {};
-     for (let i = 0; i < responseArray.length; i += 2) {
-       const id = responseArray[i];
-       const title = responseArray[i + 1];
-       finalJSON[id] = title;
-     }
-
-     const finalArray = [];
-     //Give the keys a name of id and the titles a name of title
-     for (let i = 0; i < responseArray.length; i += 2) {
-       const id = responseArray[i];
-       const title = responseArray[i + 1];
-       finalArray.push({ id: id.toString(), title });
-     }
-
-     console.log(finalArray);
-     
-     res.send(finalArray);
-
+/*
+  Will return 3 formatted random recipe that have the title and id
+  Can be altered to give more random recipes if needed
+*/
+app.post("/PersonalizedRandomSearch", async (req, res) => {
+  //Get 3 random recipes from the function
+  getRandomRecipes(3)
+    .then(result => {
+      console.log(result)
+      //Convert them into the appropriate JSON to return to the page
+      let responseArray = result;
+      //Map each id to its title in a dictionary like way
+      const finalJSON = {};
+      for (let i = 0; i < responseArray.length; i += 2) {
+        const id = responseArray[i];
+        const title = responseArray[i + 1];
+        finalJSON[id] = title;
+      }
+      const finalArray = [];
+      //Give the keys a name of id and the titles a name of title
+      for (let i = 0; i < responseArray.length; i += 2) {
+        const id = responseArray[i];
+        const title = responseArray[i + 1];
+        finalArray.push({ id: id.toString(), title });
+      }
+      console.log(finalArray);
+      res.send(finalArray);
+    })
 })
-      
-  })
 
   
 

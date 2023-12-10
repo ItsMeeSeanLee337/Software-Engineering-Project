@@ -98,6 +98,7 @@ function Create_Recipe() {
       //Send the post request to the server
       axios.post(apiUrl, { title, steps, ingredients })
         .then(() => {
+          console.log("Recipe successfully inserted")
           //Upon successful insertion, show the pop on the page for 3 seconds
           setShowPopup(true);
           setTimeout(() => {
